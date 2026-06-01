@@ -1,0 +1,25 @@
+{
+  "name": "CortexEdge — Embedded Platforms Certificate",
+  "short_name": "Embedded",
+  "description": "Embedded Platforms Certificate — Hobby to industrial embedded — RTOS, architecture, compliance. Part of CortexEdge E-Learning.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f5f0e8",
+  "theme_color": "#1a1208",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
