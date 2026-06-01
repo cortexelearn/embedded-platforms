@@ -1,7 +1,7 @@
 {
   "name": "CortexEdge — Embedded Platforms Certificate",
   "short_name": "Embedded",
-  "description": "Embedded Platforms Certificate — Hobby to industrial embedded — RTOS, architecture, compliance. Part of CortexEdge E-Learning.",
+  "description": "Embedded Platforms Certificate. Part of CortexEdge E-Learning.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

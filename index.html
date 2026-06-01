@@ -11470,6 +11470,22 @@ function CourseApp() {
                   <div style={{ fontFamily: "Georgia, serif", fontSize: 10, fontStyle: "italic", color: "#b5ccdf" }}>learning</div>
                 </div>
               </div>
+              {/* Back to courses — exits the track PWA to the landing page */}
+              <a
+                href="../"
+                style={{
+                  display: "flex", alignItems: "center", gap: 6,
+                  marginTop: 12, padding: "8px 10px",
+                  fontFamily: "monospace", fontSize: 11, letterSpacing: "0.12em",
+                  textTransform: "uppercase", textDecoration: "none",
+                  color: "#b3a292", border: "1px solid rgba(200,75,17,0.28)",
+                  borderRadius: 3, transition: "color .2s, border-color .2s",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = "#f5f0e8"; e.currentTarget.style.borderColor = "rgba(200,75,17,0.55)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = "#b3a292"; e.currentTarget.style.borderColor = "rgba(200,75,17,0.28)"; }}
+              >
+                <span style={{ fontSize: 13 }}>&#8592;</span> All Courses
+              </a>
             </div>
 
             <div style={{ padding: "12px 18px", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
