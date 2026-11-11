@@ -910,17 +910,31 @@ function renderInline(text) {
   });
 }
 
-function Callout({ variant = "info", label, text, isComfortable }) {
+function Callout(props) {
+  const { variant = "info", label, text, isComfortable, calloutStyle } = props;
   const styles = {
     info:    { bg: "#e8f4fd", border: "#1c4a7a", labelColor: "#1c4a7a" },
     warning: { bg: "#fef3e2", border: "#c84b11", labelColor: "#c84b11" },
     success: { bg: "#e8f5ee", border: "#1a6b3c", labelColor: "#1a6b3c" },
+    key:     { bg: "#fbf4df", border: "#b8860b", labelColor: "#7a6000" },
   };
-  const s = styles[variant] || styles.info;
+  const aliases = {
+    note: "info", tip: "success", important: "key", takeaway: "key",
+    caution: "warning", danger: "warning", error: "warning",
+  };
+  const resolve = (value) => {
+    if (value != null && typeof value !== "string") return null;
+    const normalized = String(value ?? "").trim().toLowerCase();
+    const candidate = Object.prototype.hasOwnProperty.call(aliases, normalized) ? aliases[normalized] : normalized;
+    return Object.prototype.hasOwnProperty.call(styles, candidate) ? candidate : null;
+  };
+  // An omitted variant must let calloutStyle resolve before the info default.
+  const key = (props.variant !== undefined && resolve(variant)) || resolve(calloutStyle) || "info";
+  const s = styles[key];
   const bodyFont = isComfortable ? 15 : 13;
   const pad = isComfortable ? "16px 20px" : "14px 18px";
   return (
-    <div style={{ background: s.bg, borderLeft: `4px solid ${s.border}`, borderRadius: "0 8px 8px 0", padding: pad, margin: "16px 0", fontSize: bodyFont, lineHeight: 1.75 }}>
+    <div className={"callout callout--" + key} data-callout={key} style={{ background: s.bg, borderLeft: `4px solid ${s.border}`, borderRadius: "0 8px 8px 0", padding: pad, margin: "16px 0", fontSize: bodyFont, lineHeight: 1.75 }}>
       {label && <div style={{ fontFamily: "monospace", fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: s.labelColor, fontWeight: 700, marginBottom: 6 }}>{label}</div>}
       <div style={{ whiteSpace: "pre-wrap" }}>{renderInline(text)}</div>
     </div>
@@ -3144,7 +3158,7 @@ function LessonView({ lesson, lessonIdx, totalLessons, onPrev, onNext, isComplet
           {renderInline(block.text)}
         </h3>
       );
-      case "callout": return <Callout key={i} variant={block.variant} label={block.label} text={block.text} isComfortable={isComfortable} />;
+      case "callout": return <Callout key={i} variant={block.variant} calloutStyle={block.style} label={block.label} text={block.text} isComfortable={isComfortable} />;
       case "grid": return <ConceptGrid key={i} items={block.items} isComfortable={isComfortable} />;
       case "ul": return (
         <ul key={i} style={{ margin: `0 0 ${pSpacing}px`, paddingLeft: 22, color: "#2a2018", fontSize: pFont }}>

@@ -5,7 +5,7 @@
 // cortexelearn.github.io), so this worker only ever manages caches that carry
 // its own prefix.
 const CACHE_PREFIX = 'cortexedge-embedded-platforms-';
-const CACHE_NAME = CACHE_PREFIX + 'v4';
+const CACHE_NAME = CACHE_PREFIX + 'v5';
 const PRECACHE_URLS = [
   './',
   './index.html',
