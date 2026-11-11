@@ -1,7 +1,11 @@
 // Service Worker for CortexEdge — AI Mastery for Aerospace (standalone track)
 // Provides offline support after first visit
 
-const CACHE_NAME = 'cortexedge-embedded-platforms-v3';
+// Cache names are origin-wide (shared with the portal and sibling tracks on
+// cortexelearn.github.io), so this worker only ever manages caches that carry
+// its own prefix.
+const CACHE_PREFIX = 'cortexedge-embedded-platforms-';
+const CACHE_NAME = CACHE_PREFIX + 'v4';
 const PRECACHE_URLS = [
   './',
   './index.html',
@@ -31,7 +35,9 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(
-        keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))
+        keys
+          .filter((k) => k.startsWith(CACHE_PREFIX) && k !== CACHE_NAME)
+          .map((k) => caches.delete(k))
       )
     )
   );

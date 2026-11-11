@@ -57,6 +57,20 @@
     @media (prefers-reduced-motion: reduce) {
       .boot-loader .plane { animation: none; }
     }
+    /* Lesson tables: horizontal scroll on narrow viewports */
+    .lesson-table-wrap { overflow-x: auto; margin: 16px 0 20px; -webkit-overflow-scrolling: touch; }
+    .lesson-table { border-collapse: collapse; width: 100%; font-size: 14px; }
+    .lesson-table th {
+      text-align: left; padding: 10px 12px;
+      border-bottom: 2px solid #c84b11; color: #c84b11;
+      font-family: monospace; letter-spacing: 0.03em; font-size: 11px;
+      font-weight: 700; text-transform: uppercase; white-space: nowrap;
+    }
+    .lesson-table td {
+      padding: 10px 12px; border-bottom: 1px solid #c8bfaa;
+      color: #2a2018; vertical-align: top; line-height: 1.5;
+    }
+    .lesson-table tr:last-child td { border-bottom: none; }
   </style>
 </head>
 <body>
@@ -882,6 +896,20 @@ const AI_LESSONS = [
 
 // ─── COMPONENTS ────────────────────────────────────────────────────────────────
 
+function renderInline(text) {
+  if (text == null) return null;
+  const parts = String(text).split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
+  return parts.map((p, i) => {
+    if (p.startsWith("**") && p.endsWith("**") && p.length >= 4) {
+      return <strong key={i}>{p.slice(2, -2)}</strong>;
+    }
+    if (p.startsWith("`") && p.endsWith("`") && p.length >= 2) {
+      return <code key={i} style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace", fontSize: "0.92em", background: "#ede7d6", padding: "1px 5px", borderRadius: 3 }}>{p.slice(1, -1)}</code>;
+    }
+    return p;
+  });
+}
+
 function Callout({ variant = "info", label, text, isComfortable }) {
   const styles = {
     info:    { bg: "#e8f4fd", border: "#1c4a7a", labelColor: "#1c4a7a" },
@@ -894,7 +922,7 @@ function Callout({ variant = "info", label, text, isComfortable }) {
   return (
     <div style={{ background: s.bg, borderLeft: `4px solid ${s.border}`, borderRadius: "0 8px 8px 0", padding: pad, margin: "16px 0", fontSize: bodyFont, lineHeight: 1.75 }}>
       {label && <div style={{ fontFamily: "monospace", fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: s.labelColor, fontWeight: 700, marginBottom: 6 }}>{label}</div>}
-      <div style={{ whiteSpace: "pre-wrap" }}>{text}</div>
+      <div style={{ whiteSpace: "pre-wrap" }}>{renderInline(text)}</div>
     </div>
   );
 }
@@ -908,8 +936,8 @@ function ConceptGrid({ items, isComfortable }) {
     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap, margin: "16px 0" }}>
       {items.map((item, i) => (
         <div key={i} style={{ background: "#ede7d6", border: "1px solid #c8bfaa", borderRadius: 8, padding: pad }}>
-          <div style={{ fontSize: titleFont, fontWeight: 700, marginBottom: 6, color: "#1a1208" }}>{item.title}</div>
-          <div style={{ fontSize: bodyFont, lineHeight: 1.65, color: "#5a4e3f" }}>{item.text}</div>
+          <div style={{ fontSize: titleFont, fontWeight: 700, marginBottom: 6, color: "#1a1208" }}>{renderInline(item.title)}</div>
+          <div style={{ fontSize: bodyFont, lineHeight: 1.65, color: "#5a4e3f" }}>{renderInline(item.text)}</div>
         </div>
       ))}
     </div>
@@ -3109,15 +3137,47 @@ function LessonView({ lesson, lessonIdx, totalLessons, onPrev, onNext, isComplet
 
   const renderBlock = (block, i) => {
     switch (block.type) {
-      case "p": return <p key={i} style={{ fontSize: pFont, lineHeight: 1.7, marginBottom: pSpacing, color: "#2a2018" }}>{block.text}</p>;
+      case "p": return <p key={i} style={{ fontSize: pFont, lineHeight: 1.7, marginBottom: pSpacing, color: "#2a2018" }}>{renderInline(block.text)}</p>;
       case "h3": return (
         <h3 key={i} style={{ fontSize: h3Font, fontWeight: 600, margin: h3Margin, display: "flex", alignItems: "center", gap: 10, color: "#1a1208" }}>
           <span style={{ width: 3, height: h3Font + 1, background: "#c84b11", borderRadius: 2, flexShrink: 0, display: "inline-block" }} />
-          {block.text}
+          {renderInline(block.text)}
         </h3>
       );
       case "callout": return <Callout key={i} variant={block.variant} label={block.label} text={block.text} isComfortable={isComfortable} />;
       case "grid": return <ConceptGrid key={i} items={block.items} isComfortable={isComfortable} />;
+      case "ul": return (
+        <ul key={i} style={{ margin: `0 0 ${pSpacing}px`, paddingLeft: 22, color: "#2a2018", fontSize: pFont }}>
+          {(block.items || []).map((item, j) => (
+            <li key={j} style={{ lineHeight: 1.65, margin: "0 0 10px" }}>{renderInline(item)}</li>
+          ))}
+        </ul>
+      );
+      case "ol": return (
+        <ol key={i} style={{ margin: `0 0 ${pSpacing}px`, paddingLeft: 22, color: "#2a2018", fontSize: pFont }}>
+          {(block.items || []).map((item, j) => (
+            <li key={j} style={{ lineHeight: 1.65, margin: "0 0 10px" }}>{renderInline(item)}</li>
+          ))}
+        </ol>
+      );
+      case "table": return (
+        <div key={i} className="lesson-table-wrap">
+          <table className="lesson-table">
+            <thead>
+              <tr>
+                {(block.headers || []).map((h, j) => <th key={j}>{renderInline(h)}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {(block.rows || []).map((row, ri) => (
+                <tr key={ri}>
+                  {(row || []).map((cell, ci) => <td key={ci}>{renderInline(cell)}</td>)}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
       default: return null;
     }
   };
