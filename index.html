@@ -9273,11 +9273,11 @@ const COPILOT_LESSONS = [
       rows: [
         ["Web grounding (Bing)", "Yes (admin toggleable)", "Yes (admin toggleable)"],
         ["Files you upload in prompt", "Yes — stored to your OneDrive", "Yes"],
-        ["Your emails (Outlook)", "No", "Yes"],
+        ["Your emails (Outlook)", "Limited — Copilot Chat in Outlook (eligible work/school users) can answer about your inbox, calendar, and meetings; no Graph-wide reasoning", "Yes"],
         ["Your Teams chats and meetings", "No", "Yes"],
         ["Your SharePoint and OneDrive files (auto)", "No — only files you explicitly upload", "Yes — automatic via Microsoft Graph"],
         ["Microsoft Graph user activity signals", "No", "Yes"],
-        ["Copilot in Word / Excel / PowerPoint / Outlook / Teams apps", "Limited (chat sidebar only)", "Yes — full in-app integration"],
+        ["Copilot in Word / Excel / PowerPoint / Outlook / Teams apps", "Depends on your org's Copilot label — Outlook: Copilot Chat for eligible work/school users; Word / Excel / PowerPoint / OneNote: not in Copilot Chat (Basic), standard fair-use access in Microsoft 365 Copilot (Basic)", "Yes — full in-app integration"],
         ["Pre-built premium agents (Researcher, Analyst)", "No", "Yes"],
         ["Build custom agents grounded in org data", "No (web-only declarative agents)", "Yes — Agent Builder + Studio"],
         ["Enterprise Data Protection (EDP)", "Yes — automatic with Entra ID sign-in", "Yes"]
@@ -9290,7 +9290,7 @@ const COPILOT_LESSONS = [
       "**Yes** — paste a specification, datasheet, or document into the prompt and have Copilot help you analyze, summarize, or rewrite it. The pasted content is protected by Enterprise Data Protection.",
       "**Yes** — ask general engineering and business questions, draft prose, brainstorm options, generate boilerplate text or code snippets, do unit conversions, summarize PDFs you upload.",
       "**No** — ask Copilot 'what did Mike say in our Tuesday design review?' or 'pull the latest revision of drawing 12345-100 from SharePoint.' Those require the Enterprise license and a M365 Copilot subscription.",
-      "**No** — let Copilot draft your Outlook reply from inside Outlook with full thread context, generate a PowerPoint from a Word document, or analyze your engineering Excel data with full app integration. Those are all M365 Copilot Enterprise features."
+      "**Depends on your license label** — eligible work/school users get Copilot Chat inside Outlook without the add-on. Copilot inside Word, Excel, PowerPoint, and OneNote is not included with Copilot Chat (Basic); Microsoft 365 Copilot (Basic) gives standard, fair-use-limited access there. Copilot that reasons across your whole mailbox, chats, meetings, and files via Microsoft Graph, with the full priority in-app experience, is the M365 Copilot Enterprise add-on."
     ]},
 
     { type: "callout", style: "key",
@@ -9529,7 +9529,7 @@ const COPILOT_LESSONS = [
     { type: "p", text: "Outlook and Teams are where most engineers spend most of their day. Copilot's integration into these apps is the highest-frequency productivity win — small time savings on dozens of daily interactions add up to real impact. This lesson covers the use cases that actually save time, plus the ones that look exciting but create more work than they save." },
 
     { type: "h3", text: "Outlook with Copilot" },
-    { type: "p", text: "Free Copilot Chat from inside Outlook is limited; the real value is from M365 Copilot Enterprise integrated into the Outlook UI. Key features:" },
+    { type: "p", text: "Eligible work/school users get Copilot Chat inside Outlook even without the add-on: it can answer questions about your inbox, calendar, and meetings, such as summarizing the thread you are reading. M365 Copilot Enterprise (the add-on) widens what Copilot can reason over to your Teams chats, files, and other work data via Microsoft Graph, and adds the deeper in-app features. The list below is the full Enterprise feature set; which items a Chat-only user sees depends on the tenant's Copilot label. Key features:" },
     { type: "ul", items: [
       "**Summarize a long email thread** — 'summarize this thread' on a 30-message back-and-forth gives you the current state in two paragraphs. Excellent for jumping into threads mid-discussion.",
       "**Draft a reply** — give Copilot a one-line intent ('decline politely, suggest we revisit next quarter') and it generates a draft using the thread context.",
@@ -9567,18 +9567,18 @@ const COPILOT_LESSONS = [
     ]},
 
     { type: "callout", style: "key",
-      text: "**Copilot Chat (free) gives you:** chat-window-based summarization of email or meeting content you paste in. **M365 Copilot Enterprise additionally unlocks:** the in-app Copilot panes inside Outlook and Teams, meeting summaries from transcripts, thread catch-up via Microsoft Graph, search across all your Outlook history, and the live meeting Q&A. For most engineers, this is the most-used set of Copilot features once Enterprise is licensed." },
+      text: "**Copilot Chat (free) gives you:** for eligible work/school users, Copilot Chat inside Outlook that can answer questions about your inbox, calendar, and meetings (including summarizing an email thread), plus chat-window summarization of any email or meeting content you paste in. **M365 Copilot Enterprise additionally unlocks:** reasoning over your wider work data (Teams chats, files, meeting transcripts) via Microsoft Graph, Copilot inside Teams meetings, meeting summaries from transcripts, and the live meeting Q&A. For most engineers, this is the most-used set of Copilot features once Enterprise is licensed." },
   ],
   quizzes: [
     { question: "An engineer with Copilot Chat (free) wants to summarize a long Outlook email thread. Can they do it?",
       options: [
-        "Yes, automatically through Copilot Chat's direct integration with the Outlook desktop and web clients",
+        "No — Copilot Chat has no presence in Outlook at all; copying the thread into a separate chat window is the only route",
         "No — email summarization is blocked for all users regardless of license to prevent data exposure",
-        "Only by manually copying the email text and pasting it into Copilot Chat — there's no in-Outlook integration without the Enterprise license",
+        "Yes — if they are an eligible work/school user, Copilot Chat in Outlook can summarize the thread without the add-on; Enterprise is what extends Copilot to their wider chats, files, and Graph work data",
         "Yes, after enabling the optional 'Outlook bridge' feature in the Copilot Chat admin settings"
       ],
       correct: 2,
-      explanation: "Copilot Chat free doesn't integrate into Outlook beyond a sidebar/chat panel. Auto-summarizing emails from inside Outlook is an M365 Copilot Enterprise feature. The workaround for free users is to copy thread content into the Copilot Chat prompt manually." },
+      explanation: "Eligible Microsoft 365 work/school users get Copilot Chat in Outlook without the Microsoft 365 Copilot add-on, and it can answer questions about their inbox, calendar, and meetings, including summarizing a thread. The add-on (M365 Copilot Enterprise) is what lets Copilot reason over a much wider set of work data, such as Teams chats and files, via Microsoft Graph. Pasting text into a separate chat still works but is not the only option, and there is no 'Outlook bridge' setting." },
     { question: "What's the most common failure mode of relying on Copilot meeting summaries?",
       options: [
         "Summaries are excessively brief — typically reducing a 60-minute meeting to under 50 words",
@@ -9659,7 +9659,7 @@ const COPILOT_LESSONS = [
     ]},
 
     { type: "callout", style: "key",
-      text: "**Copilot Chat (free) gives you:** drafting prose by pasting source content into the prompt. **M365 Copilot Enterprise additionally unlocks:** Copilot directly in Word and PowerPoint, the Word-to-PowerPoint generation feature, reference to other Word/PowerPoint/PDF files in your tenant via `/` mention, and template-respecting deck generation. The Word-to-PowerPoint feature alone justifies the Enterprise upgrade for many engineering teams." },
+      text: "**Copilot Chat (free) gives you:** drafting prose by pasting source content into the prompt and, only if your organization's label is Microsoft 365 Copilot (Basic) rather than Copilot Chat (Basic), standard fair-use-limited Copilot inside Word and PowerPoint. **M365 Copilot Enterprise additionally unlocks:** the full, priority Copilot experience in Word and PowerPoint, the Word-to-PowerPoint generation feature, reference to other Word/PowerPoint/PDF files in your tenant via `/` mention, and template-respecting deck generation. The Word-to-PowerPoint feature alone justifies the Enterprise upgrade for many engineering teams." },
   ],
   quizzes: [
     { question: "What's the highest-value Copilot feature in PowerPoint for engineering review preparation?",
@@ -9756,7 +9756,7 @@ const COPILOT_LESSONS = [
     ]},
 
     { type: "callout", style: "key",
-      text: "**Copilot Chat (free) gives you:** ability to paste tabular data into the prompt and have Copilot suggest analysis approaches or formulas — but no in-Excel integration. **M365 Copilot Enterprise additionally unlocks:** Copilot directly in Excel (ribbon button, cell-level sparkle icon), formula generation in-place, PivotTable creation, charting, trend analysis, and (Premium tier) Python execution for advanced analysis. For engineers who live in Excel, this is the second-most-valuable Enterprise feature after Word-to-PowerPoint." },
+      text: "**Copilot Chat (free) gives you:** ability to paste tabular data into the prompt and have Copilot suggest analysis approaches or formulas. Whether you also get Copilot inside Excel depends on your organization's label: Copilot Chat (Basic) does not include Excel, while Microsoft 365 Copilot (Basic) gives standard, fair-use-limited in-app access. **M365 Copilot Enterprise additionally unlocks:** the full, priority Copilot experience directly in Excel (ribbon button, cell-level sparkle icon), formula generation in-place, PivotTable creation, charting, trend analysis, and (Premium tier) Python execution for advanced analysis. For engineers who live in Excel, this is the second-most-valuable Enterprise feature after Word-to-PowerPoint." },
   ],
   quizzes: [
     {
@@ -9844,7 +9844,7 @@ const COPILOT_LESSONS = [
     ]},
 
     { type: "callout", style: "key",
-      text: "**Copilot Chat (free) lets you:** open Copilot Chat in OneNote and ask questions about content you've copied into the prompt. **M365 Copilot Enterprise additionally unlocks:** Copilot directly inside OneNote, Loop, and Pages with automatic access to your notebooks and shared workspaces; Copilot Notebooks for aggregated project context; cross-notebook search; smart suggestions and rewriting in-place. For knowledge-capture-heavy engineering teams, the difference is between 'notebooks I can search' and 'notebooks I can talk to.'" },
+      text: "**Copilot Chat (free) lets you:** ask questions about notebook content you've copied into the prompt. Copilot inside OneNote itself depends on your organization's label: Copilot Chat (Basic) does not include OneNote, while Microsoft 365 Copilot (Basic) gives standard, fair-use-limited in-app access. **M365 Copilot Enterprise additionally unlocks:** Copilot directly inside OneNote, Loop, and Pages with automatic access to your notebooks and shared workspaces; Copilot Notebooks for aggregated project context; cross-notebook search; smart suggestions and rewriting in-place. For knowledge-capture-heavy engineering teams, the difference is between 'notebooks I can search' and 'notebooks I can talk to.'" },
   ],
   quizzes: [
     { question: "What are Copilot Notebooks in OneNote (Spring 2025 Wave) designed to do?",
@@ -12028,13 +12028,13 @@ const COPILOT_FINAL_EXAM = [
     "phase": 2,
     "question": "Free Copilot Chat user wants to summarize an Outlook email thread. Can they?",
     "options": [
-      "Only by manually copying email text into Copilot Chat — in-Outlook integration requires Enterprise",
-      "Yes — Copilot Chat free has full integration with Outlook desktop and web clients",
+      "Yes, if eligible — work/school users get Copilot Chat in Outlook without the add-on; Enterprise extends Copilot to their wider chats, files, and Graph data",
+      "No — Copilot Chat has no presence in Outlook; copying the text into a separate chat window is the only route",
       "No — email summarization is restricted for all users regardless of license to prevent data exposure",
       "Yes, after enabling the optional 'Outlook bridge' add-in from the Microsoft Store"
     ],
     "correct": 0,
-    "explanation": "Copilot Chat free has no in-Outlook integration. Workaround: copy thread, paste into chat. Auto-summarize requires Enterprise."
+    "explanation": "Eligible work/school users get Copilot Chat in Outlook without the add-on and can ask about the inbox, calendar, and meetings, including a thread summary. The Enterprise add-on widens reasoning to chats, files, and other Graph work data. Pasting into chat still works but is not the only route."
   },
   {
     "phase": 2,
