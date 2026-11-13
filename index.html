@@ -9292,7 +9292,7 @@ const COPILOT_LESSONS = [
 
     { type: "h3", text: "The Three Products" },
     { type: "ul", items: [
-      "**Microsoft 365 Copilot Chat** — the free tier. Available at no extra cost to anyone with an eligible Microsoft 365 business subscription (Business Standard, Business Premium, E3, E5, G3, G5, etc.) signed in with an Entra ID work or school account. Grounded in the web and any files the user explicitly uploads or pastes into the prompt. Does NOT have access to your organization's emails, files, Teams chats, or Microsoft Graph data. Enterprise Data Protection (EDP) is automatically applied. The green shield icon next to 'New chat' confirms it.",
+      "**Microsoft 365 Copilot Chat** — the free tier. Available at no extra cost to anyone with an eligible Microsoft 365 business, enterprise, frontline, government, or education plan (see Microsoft's current eligibility list) signed in with an Entra ID work or school account. Grounded in the web and any files the user explicitly uploads or pastes into the prompt. Does NOT have access to your organization's emails, files, Teams chats, or Microsoft Graph data. Enterprise Data Protection (EDP) is automatically applied. The green shield icon next to 'New chat' confirms it.",
       "**Microsoft 365 Copilot (Enterprise)** — the paid add-on. $30/user/month for enterprise, $21/user/month for SMB (under 300 employees) as of December 2025. Adds: grounding in your tenant's Microsoft Graph data (emails, chats, files, meetings); deep integration into Word, Excel, PowerPoint, Outlook, Teams; access to pre-built premium agents like Researcher and Analyst; the ability to build custom agents in Agent Builder and Copilot Studio with organizational data grounding.",
       "**Microsoft Copilot Studio** — the agent-building platform. Used to create custom agents that can be deployed back to either Copilot Chat users (via Copilot Credits / metered consumption) or M365 Copilot users. Standalone Studio subscription or pay-as-you-go billing. Not a consumer product — this is where IT, citizen developers, and process owners build agents."
     ]},
@@ -9362,7 +9362,7 @@ const COPILOT_LESSONS = [
         "Copilot Chat can answer that directly by querying Teams data through its standard search interface",
         "The question requires accessing controlled technical data and violates ITAR regardless of tenant",
         "Bing's search index covers Teams meetings within an organization once consent is granted",
-        "Copilot Chat can't — it doesn't have access to your Teams chats or meeting recordings. The engineer needs an M365 Copilot Enterprise license, or has to paste meeting notes into the prompt manually"
+        "Copilot Chat can't see Teams meetings; the engineer needs M365 Copilot Enterprise or must paste in the meeting notes"
       ],
       correct: 3,
       explanation: "Copilot Chat (free) has no automatic access to Teams chats or meeting recordings. Either upgrade to M365 Copilot Enterprise (which can search Teams content via Microsoft Graph), or manually paste the meeting summary/notes into the Copilot Chat prompt. This is the canonical example of where the Enterprise upgrade pays off in engineering work." }
@@ -9384,7 +9384,7 @@ const COPILOT_LESSONS = [
       "**Orchestrator** — Microsoft's coordinator. Parses your prompt, decides what additional data is needed, fetches that data, sends an enriched prompt to the LLM, and applies Responsible AI safety checks throughout. The orchestrator is the part that makes Copilot a system, not just a chatbot.",
       "**Knowledge and skills** — Microsoft Graph (your tenant's emails, files, chats, calendar), the Semantic Index (the lexical-plus-vector index across your tenant content), web search (Bing, optional), pre-built and custom agents, connectors to non-Microsoft data sources.",
       "**Foundational model** — the underlying LLM. Today, primarily Azure OpenAI models (GPT-4 class, GPT-5 rolling out as of August 2025). Anthropic models are also available as opt-in for some workloads.",
-      "**Enterprise Data Protection (EDP) boundary** — the contractual and technical perimeter that keeps prompts, responses, and Graph data inside your tenant. Azure OpenAI does not cache customer content; prompts and responses are not used to train foundation models."
+      "**Enterprise Data Protection (EDP) boundary** — the contractual and technical perimeter that keeps prompts, responses, and Graph data inside your tenant. Azure OpenAI does not cache customer content; prompts and responses are not used to train foundation models. These commitments describe the default Azure-hosted models; if your admin enables another model provider (such as Anthropic), check that provider's separate data-handling and residency terms."
     ]},
 
     { type: "h3", text: "What Happens When You Hit Enter" },
@@ -9404,7 +9404,7 @@ const COPILOT_LESSONS = [
     { type: "ul", items: [
       "**It's RAG at enterprise scale.** Retrieval-Augmented Generation is the technical pattern: retrieve relevant grounding data, then generate. RAG is what reduces hallucination and lets the LLM cite sources.",
       "**Permissions are honored.** Copilot retrieves only what the signed-in user has permission to access. If a user can't open a SharePoint file, Copilot can't read it for them. This is critical to understand: Copilot doesn't break your existing data governance — but it does ruthlessly expose any oversharing you already have.",
-      "**Prompts aren't training data.** Under EDP, your prompts and responses don't go into training data for any model. Azure OpenAI doesn't cache them. This is a contractual commitment, not just policy.",
+      "**Prompts aren't training data.** Under EDP, your prompts and responses don't go into training data for any model. Azure OpenAI doesn't cache them. For the default Azure-hosted models, this is a contractual commitment, not just policy.",
       "**The model can still hallucinate.** Even with grounding, the LLM can fabricate plausible-sounding answers — especially when the retrieved context is thin or contradictory. The citation links Copilot provides are your defense: always verify."
     ]},
 
@@ -9436,11 +9436,11 @@ const COPILOT_LESSONS = [
       options: [
         "They're aggregated anonymously and used to improve Microsoft's foundation models over time",
         "They're encrypted in transit but logged at the provider for support and debugging purposes",
-        "They stay within your tenant's Microsoft 365 service boundary, aren't used to train foundation models, and Azure OpenAI doesn't cache them",
+        "Under the default setup, they stay in your tenant's service boundary, aren't used for training, and aren't cached by Azure OpenAI",
         "They become accessible to other Microsoft customers through a shared knowledge base by default"
       ],
       correct: 2,
-      explanation: "EDP is a contractual commitment under the Microsoft Data Protection Addendum and Product Terms: prompts and responses stay in your tenant, aren't used to train foundation models, aren't cached at Azure OpenAI. This is the foundation for using Copilot with sensitive business data." },
+      explanation: "EDP is a contractual commitment under the Microsoft Data Protection Addendum and Product Terms: prompts and responses stay in your tenant, aren't used to train foundation models, aren't cached at Azure OpenAI. This is the foundation for using Copilot with sensitive business data. These terms cover the default Azure-hosted models; opt-in third-party models have their own terms." },
     { question: "What's the practical effect of permissions inheritance in Copilot?",
       options: [
         "Copilot can only retrieve content the signed-in user already has permission to access — but it will ruthlessly expose existing oversharing because the Semantic Index makes finding content easier",
@@ -9464,7 +9464,7 @@ const COPILOT_LESSONS = [
 
     { type: "h3", text: "Prerequisites for Copilot Chat (free)" },
     { type: "ul", items: [
-      "**Eligible Microsoft 365 subscription**: Business Standard, Business Premium, Apps for Business, E3, E5, F3, G3, G5, or Education equivalents.",
+      "**Eligible Microsoft 365 subscription**: a qualifying business, enterprise, frontline, government, or education plan. Check Microsoft's current eligibility list rather than relying on a fixed list of SKUs.",
       "**Entra ID work or school account** signed in (not a personal Microsoft account).",
       "**Multi-factor authentication** strongly recommended (and required for many enterprise tenants).",
       "Once those are in place, Copilot Chat is available at no extra cost via the web at m365.cloud.microsoft, in the M365 Copilot app, in Teams, Outlook, and Microsoft Edge."
@@ -9486,7 +9486,7 @@ const COPILOT_LESSONS = [
     { type: "ul", items: [
       "**Sensitivity labels** (Microsoft Purview Information Protection) applied to documents containing confidential, restricted, or CUI content. Labels that apply encryption carry their access rules into Copilot: Copilot can use the content only for a user who has the needed usage rights (VIEW and EXTRACT). Copilot also offers to carry the label onto new content it creates from labeled files. Labels that only classify or mark content help with visual marking and DLP but don't block access by themselves.",
       "**SharePoint permission audit** — run the SharePoint Advanced Management permission state report. Identify oversharing (sites with 'Everyone except external users' or overly-broad groups) and remediate. This is the #1 source of post-Copilot 'wait, who can see this?' incidents.",
-      "**Restricted SharePoint Search (RSS)** — limits Copilot's view to specifically allowed SharePoint sites during initial rollout. Reduces blast radius while you remediate oversharing.",
+      "**Restricted SharePoint Search (RSS)** — a temporary control that limits both organization-wide SharePoint search and Copilot to an admin-approved, size-capped list of sites, plus content users already own or have recently worked with. Use it as a stopgap while you remediate oversharing; SharePoint Advanced Management controls such as Restricted Content Discovery are the longer-term fix.",
       "**Data Loss Prevention (DLP) policies** — block sensitive content (Social Security numbers, credit cards, custom CUI patterns) from being shared via Copilot responses, email, or Teams.",
       "**Retention policies** — Copilot interactions are auditable; set retention per your compliance program.",
       "**Inactive site cleanup** — old SharePoint sites with stale, possibly sensitive content. SharePoint Advanced Management can identify and archive these."
@@ -9531,10 +9531,10 @@ const COPILOT_LESSONS = [
         "Blocks all SharePoint search functionality across the tenant during the Copilot rollout phase",
         "Provides an RSS-feed-style notification system for new SharePoint content additions",
         "A licensing tier that restricts how many SharePoint sites a single user can access concurrently",
-        "Limits Copilot's view to specifically allowed SharePoint sites during initial rollout — reduces blast radius while oversharing is remediated"
+        "Temporarily limits org-wide search and Copilot to an approved list of sites while oversharing is remediated"
       ],
       correct: 3,
-      explanation: "RSS is a Copilot-specific feature that scopes the Semantic Index to an allowlist of SharePoint sites during initial deployment. Lets you bring Copilot online safely before you've completed full tenant remediation. Standard practice for measured rollout." },
+      explanation: "RSS temporarily limits organization-wide SharePoint search and Copilot to an approved, size-capped list of sites, plus content each user already owns or has recently used. It's a stopgap that lets you bring Copilot online while oversharing is fixed; SharePoint Advanced Management controls (such as Restricted Content Discovery) are the longer-term fix." },
     { question: "Why are sensitivity labels (Microsoft Purview) a key prerequisite for safe Copilot use with sensitive engineering content?",
       options: [
         "Labels improve Copilot's response speed by routing queries through optimized indexing paths",
@@ -9614,7 +9614,7 @@ const COPILOT_LESSONS = [
         "Summaries are excessively brief — typically reducing a 60-minute meeting to under 50 words",
         "Summaries are restricted to meetings shorter than 30 minutes due to processing limits",
         "Summaries lose all technical terminology and replace it with non-domain-specific paraphrases",
-        "Action items can be fabricated or incorrectly assigned, and decision rationale gets flattened — always review the summary against the actual recording for high-stakes meetings"
+        "Action items can be invented or misassigned, and the reasoning behind decisions gets flattened"
       ],
       correct: 3,
       explanation: "Copilot meeting summaries are good starting points but not gospel. Action items can be misassigned or invented; conditional decisions can be flattened into unconditional ones. For design reviews, contract negotiations, or program decisions, review against the actual recording or have an attendee confirm." },
@@ -9622,12 +9622,12 @@ const COPILOT_LESSONS = [
       question: "An aerospace engineer is in a Teams meeting where ITAR-controlled technical data is discussed. What's the right approach for Copilot?",
       options: [
         "Use Copilot freely — the Teams meeting is encrypted in transit which satisfies ITAR data-in-motion requirements",
-        "Confirm the meeting and its recording are in a properly classified location (sensitivity-labeled, in a compliance-appropriate tenant — GCC High if applicable) before letting Copilot summarize",
+        "Confirm the meeting and recording are labeled and in a compliance-appropriate tenant (GCC High if applicable), and that meeting Copilot is offered there",
         "Never use Copilot for any Teams meeting regardless of content classification or tenant authorization",
         "Use Copilot but manually scrub the summary afterward to remove any controlled technical specifics"
       ],
       correct: 1,
-      explanation: "ITAR-controlled technical data requires GCC High (Microsoft only commits to ITAR contract language in GCC High). In commercial M365, you'd be violating ITAR by routing the technical data through Copilot's commercial infrastructure. Phase 4 covers this in depth, but the rule applies here too."
+      explanation: "ITAR-controlled technical data requires GCC High (Microsoft only commits to ITAR contract language in GCC High). In commercial M365, you'd be violating ITAR by routing the technical data through Copilot's commercial infrastructure. Phase 4 covers this in depth, but the rule applies here too. Also check that meeting Copilot is actually offered in that tenant: some Teams Copilot features reach GCC High later than commercial. If it isn't offered, take manual minutes or summarize an exported transcript with Copilot Chat in the same tenant."
     }
   ]
 },
@@ -9839,8 +9839,8 @@ const COPILOT_LESSONS = [
       "**Q&A over your notebook** — 'what did we decide about the thermal interface material last month?' searches your notes conceptually."
     ]},
 
-    { type: "h3", text: "OneNote Copilot Notebooks (Spring 2025 Wave)" },
-    { type: "p", text: "A newer feature: **Copilot Notebooks** within OneNote create AI-powered workspaces that aggregate documents, emails, PowerPoint slides, Word files, meeting notes, and web links into one place. Copilot can then reason across the entire notebook — generating summaries, drafting reports, answering questions, even creating audio summaries. The promise: 'all your project context in one searchable AI workspace.' Useful for design history files, supplier qualification packages, IRAD project documentation." },
+    { type: "h3", text: "OneNote Copilot Notebooks" },
+    { type: "p", text: "**Copilot Notebooks** within OneNote create AI-powered workspaces that aggregate documents, emails, PowerPoint slides, Word files, meeting notes, and web links into one place. Copilot can then reason across the entire notebook — generating summaries, drafting reports, answering questions, even creating audio summaries. The promise: 'all your project context in one searchable AI workspace.' Useful for design history files, supplier qualification packages, IRAD project documentation." },
 
     { type: "h3", text: "Microsoft Loop" },
     { type: "p", text: "Loop is Microsoft's newer collaborative-document app — somewhere between a wiki, Notion, and shared sticky notes. Loop components embed live into Teams chats, Outlook emails, and Word documents. Copilot in Loop:" },
@@ -9877,7 +9877,7 @@ const COPILOT_LESSONS = [
       text: "**Copilot Chat (free) lets you:** ask questions about notebook content you've copied into the prompt. Copilot inside OneNote itself depends on your organization's label: Copilot Chat (Basic) does not include OneNote, while Microsoft 365 Copilot (Basic) gives standard, fair-use-limited in-app access. **M365 Copilot Enterprise additionally unlocks:** Copilot directly inside OneNote, Loop, and Pages with automatic access to your notebooks and shared workspaces; Copilot Notebooks for aggregated project context; cross-notebook search; smart suggestions and rewriting in-place. For knowledge-capture-heavy engineering teams, the difference is between 'notebooks I can search' and 'notebooks I can talk to.'" },
   ],
   quizzes: [
-    { question: "What are Copilot Notebooks in OneNote (Spring 2025 Wave) designed to do?",
+    { question: "What are Copilot Notebooks in OneNote designed to do?",
       options: [
         "Aggregate documents, emails, slides, files, notes, and links into one AI-powered workspace where Copilot can reason across all the content",
         "Replace traditional OneNote with a faster AI-first interface optimized for handwriting input",
@@ -9931,8 +9931,8 @@ const COPILOT_LESSONS = [
     { type: "h3", text: "The Semantic Index" },
     { type: "p", text: "Microsoft builds a Semantic Index across your tenant content. Two tiers:" },
     { type: "ul", items: [
-      "**Tenant-level index** — covers SharePoint and OneDrive content the organization owns. Automatically built, no admin involvement required.",
-      "**User-level index** — personalized index of each user's working set: emails they've sent/received, documents they've created or commented on or been @mentioned in, content they've accessed.",
+      "**Tenant-level index** — covers broadly shared SharePoint content across the organization. Personal OneDrive files are not in this tier; each user's own index (below) covers them. Automatically built, no admin involvement required.",
+      "**User-level index** — personalized index of each user's working set: their personal OneDrive files, emails they've sent/received, documents they've created or commented on or been @mentioned in, content they've accessed.",
       "These two indexes together make Copilot's answers personalized and high-relevance for the signed-in user."
     ]},
 
@@ -9954,22 +9954,22 @@ const COPILOT_LESSONS = [
       "**Grounded (good)**: 'Using /TR-2025-103-Thermal-Analysis.docx, what's the predicted thermal margin at end-of-life for the X-band amplifier?'"
     ]},
 
-    { type: "h3", text: "What's NOT Indexed (the Sharp Edges)" },
+    { type: "h3", text: "What's NOT Indexed, or Indexed Only for Some Users (the Sharp Edges)" },
     { type: "ul", items: [
-      "**Personal Teams chats** — typically indexed for the participants but not others.",
+      "**1:1 and group Teams chats** — indexed only for their participants. Copilot can use a chat to answer someone who was in it, never anyone else.",
       "**Encrypted files where the user lacks the needed rights** — Copilot needs the user's VIEW and EXTRACT usage rights; a user who can open a file but lacks EXTRACT still won't get Copilot to summarize it.",
       "**External shared content (from outside the tenant)** — generally not indexed.",
-      "**Files in non-Microsoft cloud storage** — Google Drive, Dropbox, etc. — not indexed unless you've set up a Microsoft Graph connector (admin task).",
+      "**Files in non-Microsoft cloud storage** — Google Drive, Dropbox, etc. — not indexed unless you've set up a Copilot connector, formerly called a Microsoft Graph connector (admin task).",
       "**Some specialty file types** — CAD files (STEP, IGES, native CAD formats) are not indexed for content; only their metadata. Engineering drawing PDFs may be indexed only for text-extractable content.",
       "**Very large files** — files beyond size thresholds may be excluded.",
       "**Recently uploaded content** — indexing isn't instantaneous; expect minutes to hours of lag."
     ]},
 
-    { type: "h3", text: "Extending the Index — Microsoft Graph Connectors" },
-    { type: "p", text: "For content that's not natively in M365 (your PLM system, your test data platform, your supplier portal), Microsoft Graph Connectors index that external content into the Semantic Index. Once indexed, Copilot can ground answers in it. Connectors are an IT-deployment task; about 100 pre-built connectors exist for major systems (ServiceNow, Salesforce, etc.) and custom connectors can be built with the Graph SDK." },
+    { type: "h3", text: "Extending the Index — Copilot Connectors" },
+    { type: "p", text: "For content that's not natively in M365 (your PLM system, your test data platform, your supplier portal), Copilot connectors (the newer name for Microsoft Graph connectors) bring that external content into the Semantic Index. Once indexed, Copilot can ground answers in it. Connectors are an IT-deployment task: Microsoft keeps a growing gallery of pre-built connectors for major systems (ServiceNow, Salesforce, etc.), and your team can build a custom connector when none fits." },
 
     { type: "callout", style: "key",
-      text: "**Copilot Chat (free) gives you:** local data grounding only — content you upload or paste into the prompt is used for the response. **M365 Copilot Enterprise additionally unlocks:** automatic work grounding via Microsoft Graph + Semantic Index across your tenant's emails, files, chats, meetings; the `/` file reference syntax; @ person mentions; and extensibility via Microsoft Graph Connectors to non-M365 systems. RAG at enterprise scale is the headline Enterprise feature." },
+      text: "**Copilot Chat (free) gives you:** local data grounding only — content you upload or paste into the prompt is used for the response. **M365 Copilot Enterprise additionally unlocks:** automatic work grounding via Microsoft Graph + Semantic Index across your tenant's emails, files, chats, meetings; the `/` file reference syntax; @ person mentions; and extensibility via Copilot connectors to non-M365 systems. RAG at enterprise scale is the headline Enterprise feature." },
 
     { type: "callout", style: "warning",
       text: "**The hallucination defense.** Even with strong grounding, Copilot can hallucinate — especially when the retrieved context is thin, contradictory, or absent. The citation links in Copilot's responses are your defense: always click through to verify the source matches the claim. If Copilot says something striking, the citation should back it up — or the answer is suspect." },
@@ -10000,10 +10000,10 @@ const COPILOT_LESSONS = [
         "Yes, fully — including 3D geometry, feature trees, and parametric design data",
         "CAD files are excluded from indexing entirely as a security precaution against industrial espionage",
         "Only after conversion to STEP format — native CAD files require manual upload to the Copilot prompt",
-        "Only their metadata (filename, location, modified date) — not the geometric content. Copilot can find that a CAD file exists but can't read its design content"
+        "Only their metadata (filename, location, modified date) — Copilot can find the file but can't read its geometry"
       ],
       correct: 3,
-      explanation: "Microsoft 365 doesn't natively understand CAD geometry. Filenames and metadata are indexed; design content isn't. For PLM/CAD integration, you'd need a custom Microsoft Graph Connector — and even then, the connector typically provides metadata/text content, not 3D understanding." }
+      explanation: "Microsoft 365 doesn't natively understand CAD geometry. Filenames and metadata are indexed; design content isn't. For PLM/CAD integration, you'd need a custom Copilot connector — and even then, the connector typically provides metadata/text content, not 3D understanding." }
   ]
 },
 
@@ -10047,7 +10047,7 @@ const COPILOT_LESSONS = [
 
     { type: "h3", text: "Declarative Agents vs Autonomous Agents" },
     { type: "ul", items: [
-      "**Declarative agents** — what Agent Builder produces. The agent responds to user prompts, grounded in the knowledge sources you specified. It doesn't take actions on its own. Most engineering Q&A agents are declarative.",
+      "**Declarative agents** — what Agent Builder produces. The agent acts only when a user prompts it, grounded in the knowledge sources you specified. It can include actions (for example, API plugins or connectors), but they run only inside that conversation when the user asks; it never starts work on its own. Most engineering Q&A agents are declarative and need no actions.",
       "**Autonomous agents** — agents with triggers and actions. They run based on events (new email, scheduled time, condition met) and can take actions (send email, update SharePoint, call APIs) without a user in the loop. Built in Copilot Studio (next lesson), not Agent Builder."
     ]},
 
@@ -10084,11 +10084,11 @@ const COPILOT_LESSONS = [
       options: [
         "Declarative agents are built in Copilot Studio; autonomous agents are built only in Power Automate",
         "Declarative agents are read-only; autonomous agents can modify their own configuration over time",
-        "Declarative agents respond to user prompts (no actions); autonomous agents have triggers and can take actions (send email, update SharePoint, call APIs) without a user in the loop",
+        "Declarative agents act only when a user prompts them, and any actions run inside that conversation; autonomous agents start from triggers and can act with no user present",
         "Declarative agents use smaller models; autonomous agents use frontier-tier models for complex reasoning"
       ],
       correct: 2,
-      explanation: "Declarative = Q&A agent grounded in knowledge sources, user-driven. Autonomous = event-triggered, action-taking, builds in Copilot Studio. Different use cases, different complexity, different risk profile." },
+      explanation: "Declarative = user-driven agent grounded in knowledge sources; any actions it has run only when the user asks in the conversation. Autonomous = event-triggered, action-taking, builds in Copilot Studio. Different use cases, different complexity, different risk profile." },
     { question: "Microsoft's pre-built 'Analyst' agent is best suited for:",
       options: [
         "Drafting professional emails with appropriate tone for executive audiences",
@@ -10103,7 +10103,7 @@ const COPILOT_LESSONS = [
         "When the budget for Copilot Studio metered consumption exceeds the team's monthly software allocation",
         "When the team has fewer than 50 users — Microsoft requires a minimum user count for agent deployment",
         "When the knowledge sources are stored on SharePoint rather than in a dedicated Dataverse environment",
-        "One-off questions, highly variable work, sprawling messy knowledge sources, or safety-critical reference material where confident wrong answers are worse than no answer"
+        "One-off questions, highly variable work, messy knowledge sources, or safety-critical reference material"
       ],
       correct: 3,
       explanation: "Agents are repeatability-leverage tools. They shine on repeated patterns with curated knowledge. They flop on one-off questions, variable work, messy sources, and safety-critical content where confident wrong is unacceptable." }
@@ -10161,7 +10161,7 @@ const COPILOT_LESSONS = [
       "**Files** — direct file uploads (Word, PDF, PowerPoint, Excel, text). Up to a per-agent file count limit.",
       "**Public websites** — agent can ground in specific public web URLs.",
       "**Dataverse tables** — structured data with field-level controls.",
-      "**Microsoft Graph connectors** — for non-M365 systems.",
+      "**Copilot connectors** (formerly Microsoft Graph connectors) — for non-M365 systems.",
       "**Enterprise knowledge** — Graph-connected internal data sources.",
       "**Note**: when SharePoint is used as a source, Work IQ (advanced retrieval) provides better answer quality if the agent is grounded in SharePoint."
     ]},
@@ -10190,7 +10190,7 @@ const COPILOT_LESSONS = [
       "**Pre-purchase plans** offer Copilot Credit Commit Units with discounts.",
       "**Pay-as-you-go** for variable usage.",
       "**Some agents are free** — declarative agents grounded only in public web content cost nothing. Agents grounded in SharePoint or Graph connectors consume Copilot Credits when used by people without a Microsoft 365 Copilot license (for example, Copilot Chat users). Use by licensed Microsoft 365 Copilot users inside Microsoft 365 Copilot is generally covered by their license. Billing rules change, so check Microsoft's current Copilot Studio billing page.",
-      "**As of April 2026**: no Azure subscription required for pay-as-you-go billing; can be set up directly in Studio."
+      "**Pay-as-you-go setup changes over time** — for example, whether you need an Azure subscription; check Microsoft's current Copilot Studio billing setup before you plan around it."
     ]},
 
     { type: "callout", style: "key",
@@ -10487,7 +10487,7 @@ const COPILOT_LESSONS = [
       "**Data is private** — Microsoft doesn't use your data except as you instruct. Tenant boundary isolation.",
       "**Your access controls and policies apply** — Copilot respects existing M365 permissions, sensitivity labels, retention policies, audit settings.",
       "**Compliance commitments** — GDPR, EU Data Boundary (for EU), ISO/IEC 27018, HIPAA-compatible (with proper configuration).",
-      "**No training on your data** — prompts and responses are NOT used to train Microsoft's foundation models. Azure OpenAI doesn't cache customer content."
+      "**No training on your data** — prompts and responses are NOT used to train Microsoft's foundation models. Azure OpenAI doesn't cache customer content. These commitments describe the default Azure-hosted models; if your admin enables another model provider, check its separate data-handling and residency terms."
     ]},
 
     { type: "h3", text: "The Green Shield" },
@@ -10495,7 +10495,7 @@ const COPILOT_LESSONS = [
 
     { type: "h3", text: "What Crosses Tenant Boundaries" },
     { type: "ul", items: [
-      "**Your prompts and responses**: do NOT cross your tenant boundary. They stay within the M365 service boundary applied to your tenant.",
+      "**Your prompts and responses**: do NOT cross your tenant boundary when the default Azure-hosted models are used. They stay within the M365 service boundary applied to your tenant (see the Anthropic note below for the opt-in exception).",
       "**Web search queries** (when grounding is ON): are sent to Bing. Bing is operated separately from M365 and has different data handling. Microsoft commits that web queries are NOT used to train AI, are NOT used to create advertising profiles, are NOT used to improve Bing — but they leave the strict tenant boundary.",
       "**File uploads to Copilot Chat**: stored in your OneDrive (your tenant). Don't cross boundary.",
       "**Microsoft Graph data**: never leaves the tenant. Indexed by the Semantic Index within tenant scope.",
@@ -10630,7 +10630,7 @@ const COPILOT_LESSONS = [
       "**Subsystem Lead Assistant (declarative agent in M365 Copilot)** — Each subsystem lead gets a personalized M365 Copilot agent grounded in their subsystem's standards, recent ECRs, related drawings. Helps draft detailed impact analyses.",
       "**ECB Prep Workflow** — On schedule (3 days before ECB meeting): an agent flow gathers all closed impact analyses for the upcoming ECB agenda, drafts a Word document with each ECR's summary/impact/recommendation, generates a PowerPoint deck via Copilot, posts to the ECB SharePoint site.",
       "**Status Communications** — a scheduled Power Automate flow (or the Workflows Agent, where the Frontier preview is enabled) used by the ECR coordinator to send templated status emails to originators weekly.",
-      "**ECB Minutes & Closure** — During the ECB Teams meeting, Copilot meeting summarization captures decisions. A post-meeting flow distributes decisions and closes out approved ECRs in SharePoint."
+      "**ECB Minutes & Closure** — During the ECB Teams meeting, Copilot meeting summarization captures decisions where your tenant offers it. If it doesn't (for example, a GCC High tenant without meeting Copilot), export the transcript and summarize it with Copilot Chat in the same tenant, or take manual minutes. A post-meeting flow distributes decisions and closes out approved ECRs in SharePoint."
     ]},
 
     { type: "h3", text: "Step 4 — Account for Data Sensitivity" },
@@ -10695,7 +10695,7 @@ const COPILOT_LESSONS = [
         "Copilot Chat in manual triage mode where an engineer reviews each ECR and asks Copilot to classify it individually",
         "A simple Power Automate flow with no AI involvement — just rule-based routing on email subject keywords",
         "M365 Copilot Enterprise's built-in classification feature for engineering documents (no Studio agent needed)",
-        "A Copilot Studio autonomous agent — triggered on new ECR arrival, grounded in ECR examples and subsystem taxonomy, posts triage to Teams for review"
+        "A Copilot Studio autonomous agent, triggered by each new ECR and grounded in past ECRs and the subsystem taxonomy"
       ],
       correct: 3,
       explanation: "Studio autonomous agents are designed for this pattern: event-triggered, knowledge-grounded classification with human review in the loop. The agent does the prep work; senior engineers review before commitment. The other distractors represent common architecture mistakes — over-reliance on humans (manual triage doesn't scale), over-reliance on rules (can't classify ambiguous ECRs), or assuming features exist that don't (no built-in M365 classification for engineering)." },
@@ -11940,7 +11940,7 @@ const COPILOT_FINAL_EXAM = [
     "options": [
       "Chat can answer that directly by querying Teams content through its standard search functionality",
       "The query violates ITAR by attempting to retrieve controlled technical discussion content",
-      "Chat can't access Teams chats or meetings; engineer needs M365 Copilot Enterprise OR must manually paste meeting notes into the prompt",
+      "Chat can't see Teams content; the engineer needs M365 Copilot Enterprise or must paste in the meeting notes",
       "Bing's enterprise search index includes Teams meetings within the organization with consent"
     ],
     "correct": 2,
@@ -11962,13 +11962,13 @@ const COPILOT_FINAL_EXAM = [
     "phase": 1,
     "question": "Under Enterprise Data Protection, what happens to prompts?",
     "options": [
-      "Stay in your tenant's service boundary; not used to train foundation models; Azure OpenAI doesn't cache them",
+      "By default: stay in your tenant's service boundary, aren't used for training, and Azure OpenAI doesn't cache them",
       "Used in aggregate (anonymized) to improve Microsoft's foundation models over time",
       "Shared with advertising partners to enable targeted ads in Microsoft's consumer products",
       "Made publicly searchable through Bing as part of Microsoft's transparency commitment"
     ],
     "correct": 0,
-    "explanation": "EDP is the contractual commitment under DPA and Product Terms. Tenant-bounded, no training, no caching."
+    "explanation": "EDP is the contractual commitment under DPA and Product Terms. Tenant-bounded, no training, no caching under the default Azure-hosted models; opt-in third-party models have separate terms."
   },
   {
     "phase": 1,
@@ -12001,10 +12001,10 @@ const COPILOT_FINAL_EXAM = [
       "Blocks all SharePoint search globally across the tenant during Copilot rollout phases",
       "A licensing feature that caps the number of SharePoint sites users can access concurrently",
       "Provides an RSS-style feed of new SharePoint content for administrators to review",
-      "Limits Copilot's view to specifically allowed SharePoint sites during initial rollout — reduces blast radius while oversharing is remediated"
+      "Temporarily limits org-wide search and Copilot to an approved list of sites while oversharing is remediated"
     ],
     "correct": 3,
-    "explanation": "RSS is a Copilot-scoped allowlist of SharePoint sites. Lets you bring Copilot online safely before completing full tenant remediation."
+    "explanation": "RSS temporarily limits org-wide SharePoint search and Copilot to an approved, size-capped list of sites, plus content users already own or recently used. A stopgap while oversharing is fixed; SharePoint Advanced Management controls such as Restricted Content Discovery are the longer-term fix."
   },
   {
     "phase": 1,
@@ -12036,11 +12036,11 @@ const COPILOT_FINAL_EXAM = [
     "options": [
       "A personal Microsoft account signed in through any modern web browser without additional setup",
       "Web browser access alone — no Microsoft account or license is required for free Copilot Chat",
-      "Eligible M365 business subscription (Business Standard, Premium, E3, E5, G3, G5, etc.) signed in with Entra ID work or school account",
+      "An eligible Microsoft 365 business, enterprise, frontline, government, or education plan, signed in with an Entra ID work or school account",
       "A separately purchased Copilot Chat license at $10/user/month for any organization"
     ],
     "correct": 2,
-    "explanation": "Copilot Chat is included free with eligible M365 business subscriptions. Entra ID sign-in is what activates Enterprise Data Protection and the green shield."
+    "explanation": "Copilot Chat is included free with eligible Microsoft 365 business, enterprise, frontline, government, and education plans. Entra ID sign-in is what activates Enterprise Data Protection and the green shield."
   },
   {
     "phase": 1,
@@ -12071,7 +12071,7 @@ const COPILOT_FINAL_EXAM = [
     "question": "Most common failure mode of Copilot meeting summaries?",
     "options": [
       "Summaries are excessively brief, typically condensing a 60-minute meeting to under 50 words total",
-      "Action items can be fabricated or misassigned, and decision rationale gets flattened — always review against the actual recording for high-stakes meetings",
+      "Action items can be invented or misassigned, and decision reasoning gets flattened in the summary",
       "Summaries are restricted to meetings shorter than 30 minutes due to processing constraints",
       "Summaries strip technical terminology and replace it with generic non-domain language"
     ],
@@ -12084,11 +12084,11 @@ const COPILOT_FINAL_EXAM = [
     "options": [
       "Use Copilot freely — Teams encryption in transit satisfies ITAR data-in-motion requirements",
       "Never use Copilot for any Teams meeting regardless of content or tenant configuration",
-      "Confirm the meeting and recording are in a properly classified location (sensitivity-labeled, in GCC High) before letting Copilot summarize",
+      "Confirm the meeting and recording are labeled and in GCC High, and that meeting Copilot is offered in that tenant",
       "Use Copilot but manually scrub the generated summary to remove controlled technical specifics"
     ],
     "correct": 2,
-    "explanation": "ITAR technical data requires GCC High. Commercial M365 isn't authorized; sensitivity labels help but don't change authorization."
+    "explanation": "ITAR technical data requires GCC High. Commercial M365 isn't authorized; sensitivity labels help but don't change authorization. Also confirm meeting Copilot is offered there, since GCC High features can lag commercial."
   },
   {
     "phase": 2,
@@ -12164,7 +12164,7 @@ const COPILOT_FINAL_EXAM = [
   },
   {
     "phase": 2,
-    "question": "What do Copilot Notebooks in OneNote (Spring 2025) do?",
+    "question": "What do Copilot Notebooks in OneNote do?",
     "options": [
       "Replace traditional OneNote with a faster AI-first interface optimized for stylus input",
       "Aggregate documents, emails, slides, files, notes, links into one AI-powered workspace where Copilot reasons across all content",
@@ -12263,12 +12263,12 @@ const COPILOT_FINAL_EXAM = [
     "question": "Are CAD files (STEP, IGES) indexed by the Semantic Index?",
     "options": [
       "Yes, fully — including 3D geometry, feature trees, and parametric design data",
-      "Only metadata (filename, location, dates) — not geometric content; Copilot can find that a CAD file exists but can't read its design",
+      "Only metadata (filename, location, dates) — not the geometry or design content",
       "CAD files are excluded from indexing entirely as a security precaution against industrial espionage",
       "Only after conversion to STEP format — native CAD requires manual upload to Copilot prompts"
     ],
     "correct": 1,
-    "explanation": "M365 doesn't natively understand CAD geometry. Filenames/metadata indexed; design content isn't. Custom Graph Connector might add metadata, not 3D understanding."
+    "explanation": "M365 doesn't natively understand CAD geometry. Filenames/metadata indexed; design content isn't. A custom Copilot connector might add metadata, not 3D understanding."
   },
   {
     "phase": 3,
@@ -12276,11 +12276,11 @@ const COPILOT_FINAL_EXAM = [
     "options": [
       "Declarative agents are built in Copilot Studio; autonomous agents are built in Power Automate",
       "Declarative agents are read-only; autonomous agents can modify their own configuration over time",
-      "Declarative responds to user prompts (no actions); autonomous has triggers and takes actions (email, SharePoint, APIs) without a user in the loop",
+      "Declarative acts only when a user prompts it, and any actions run in that conversation; autonomous starts from triggers and can act with no user present",
       "Declarative agents use smaller models; autonomous agents access frontier-tier reasoning models"
     ],
     "correct": 2,
-    "explanation": "Declarative = Q&A agent, user-driven. Autonomous = event-triggered, action-taking, built in Studio. Different risk profiles."
+    "explanation": "Declarative = user-driven; any actions run only at the user's request in the conversation. Autonomous = event-triggered, action-taking, built in Studio. Different risk profiles."
   },
   {
     "phase": 3,
@@ -12298,7 +12298,7 @@ const COPILOT_FINAL_EXAM = [
     "phase": 3,
     "question": "When is building a custom agent NOT worth it?",
     "options": [
-      "One-off questions, highly variable work, sprawling messy knowledge sources, or safety-critical reference material where confident wrong is worse than no answer",
+      "One-off questions, highly variable work, messy knowledge sources, or safety-critical reference material",
       "When the Copilot Studio metered consumption budget exceeds the team's monthly allocation",
       "When the team has fewer than 50 users — Microsoft requires minimums for agent deployment",
       "When the knowledge sources are stored on SharePoint rather than in a dedicated Dataverse environment"
@@ -12337,7 +12337,7 @@ const COPILOT_FINAL_EXAM = [
       "Free for Copilot Chat users — Microsoft absorbs the agent cost as a consumer-tier feature",
       "Free for the first 1000 messages monthly, then per-message billing applies above the threshold",
       "Same as M365 Copilot Enterprise users — flat per-user fee with unlimited agent usage",
-      "Metered via Copilot Credits — unlicensed Chat users consume credits when using agents that reach into SharePoint or Graph connector content"
+      "Metered via Copilot Credits, consumed when unlicensed Chat users run agents that reach tenant data"
     ],
     "correct": 3,
     "explanation": "Users without an M365 Copilot license consume Copilot Credits when using tenant-data agents. Licensed users' use inside M365 Copilot is generally covered. Declarative web-only agents are free. Check current billing rules."
@@ -12468,11 +12468,11 @@ const COPILOT_FINAL_EXAM = [
     "options": [
       "Always safe — EDP automatically extends to any third-party content the user is authorized to view",
       "Never safe — all third-party NDA content must be processed only in air-gapped systems",
-      "Usually OK under EDP — but check NDA language; some NDAs prohibit third-party processing (Microsoft and Azure OpenAI are technically third parties); supplier may have specific cloud-AI restrictions",
+      "Usually OK under EDP, but check the NDA first; some forbid third-party or cloud-AI processing",
       "Same as ITAR — always requires GCC High regardless of NDA terms or supplier preferences"
     ],
     "correct": 2,
-    "explanation": "EDP is strong but doesn't override contract terms. Always check the NDA. Some prohibit cloud-AI processing explicitly."
+    "explanation": "EDP is strong but doesn't override contract terms. Always check the NDA. Some prohibit cloud-AI processing explicitly, and Microsoft and Azure OpenAI count as third parties from the supplier's point of view."
   },
   {
     "phase": 4,
@@ -12481,7 +12481,7 @@ const COPILOT_FINAL_EXAM = [
       "Manual triage by engineers using Copilot Chat to classify each ECR individually as they arrive",
       "M365 Copilot Enterprise's built-in classification feature for engineering change documents",
       "A rule-based Power Automate flow with no AI involvement — routing based on email subject keywords",
-      "A Copilot Studio autonomous agent — event-triggered, grounded in ECR examples and subsystem taxonomy, posts triage to Teams for review"
+      "A Copilot Studio autonomous agent, triggered by each new ECR and grounded in past ECRs and the subsystem taxonomy"
     ],
     "correct": 3,
     "explanation": "Studio autonomous agents: event-triggered, knowledge-grounded classification with human review. Standard pattern for agentic workflows in regulated industries."
