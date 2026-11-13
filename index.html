@@ -5956,7 +5956,7 @@ const MOTOR_LESSONS = [
   time: "40 min", type: "Motor Type",
   video: { id: "59HBoIXzX_c", title: "How Electric Motors Work — 3 phase AC induction motors — The Engineering Mindset" },
   content: [
-    { type: "p", text: "AC induction motors run more horsepower in the world than every other motor type combined. Pumps, fans, conveyors, compressors, machine tool spindles — anywhere there's three-phase grid power and a fixed-speed load, induction is king. In aerospace they're rarer but still appear in ground equipment, test stands, and some auxiliary systems." },
+    { type: "p", text: "AC induction motors run more horsepower in the world than every other motor type combined. Pumps, fans, conveyors, compressors, machine tool spindles — anywhere there's three-phase grid power and a fixed-speed load, induction is king. In aerospace they're rarer but still appear in ground equipment, test stands, and some on-aircraft pumps and fans run directly from a 400 Hz AC bus." },
 
     { type: "h3", text: "How Induction Works" },
     { type: "p", text: "Three-phase AC current in the stator windings creates a rotating magnetic field that sweeps around the stator at synchronous speed (n_sync = 120f/p, where f is line frequency in Hz and p is number of poles). The rotor — typically a 'squirrel cage' of conductive bars — sees this rotating field as a relative motion, which induces currents in the rotor bars (Faraday). Those induced currents in the magnetic field produce torque (Lorentz). The rotor accelerates to follow the field." },
@@ -5995,7 +5995,7 @@ const MOTOR_LESSONS = [
     ]},
 
     { type: "h3", text: "Aerospace-Adjacent Cases" },
-    { type: "p", text: "Where you'll see induction motors in aerospace contexts: ground support equipment (test stands, baggage handlers, fuel pumps), facility HVAC, machine tools used to make aerospace parts, hangar door drives, fixed-installation cargo handling. On the aircraft itself, almost never." },
+    { type: "p", text: "Where you'll see induction motors in aerospace contexts: ground support equipment (test stands, baggage handlers, fuel pumps), facility HVAC, machine tools used to make aerospace parts, hangar door drives, fixed-installation cargo handling. On the aircraft itself, induction motors remain mainly where a fixed-frequency 400 Hz AC bus can run them directly, such as some fuel and hydraulic pumps and cooling fans. For new weight-critical, variable-speed actuation, PMSM has largely taken over." },
 
     { type: "callout", style: "key",
       text: "**The right framing.** Induction motors aren't 'less advanced' than PMSM — they're optimized for a different operating regime (line power, fixed speed, robustness, low cost). For their regime, they're unbeatable. For aerospace's regime (battery/inverter power, variable speed, weight-critical), PMSM dominates." },
