@@ -166,12 +166,12 @@ const AI_LESSONS = [
     { type: "h3", text: "Idea 1: Tokens, Not Words" },
     { type: "p", text: "LLMs don't read words the way humans do. They read tokens — small chunks of text converted to numbers. A token is roughly 3-4 characters on average. Every model has a context window — a hard limit on how many tokens it can process in one conversation. Think of it as the model's working memory." },
     { type: "grid", items: [
-      { title: "GPT-4o", text: "~128,000 token context window — roughly 96,000 words or about 320 pages of text." },
+      { title: "OpenAI GPT models", text: "Context windows vary by model and change between releases — check OpenAI's model list for the current limit. For scale: 128,000 tokens is roughly 96,000 words or about 320 pages of text." },
       { title: "Claude Sonnet", text: "~200,000 token context window — roughly 150,000 words or about 500 pages." },
       { title: "Gemini (long-context)", text: "Up to ~1,000,000 tokens on long-context Gemini models — roughly 750,000 words, a small library. (Gemini 1.5 Pro, which popularized this, was retired in 2025 — check Google's current model list for today's limits.)" },
       { title: "Local Models (Llama)", text: "Typically 8,000-128,000 tokens depending on your hardware configuration." },
     ]},
-    { type: "callout", variant: "info", label: "Aerospace Example", text: "A 50-page AS9100 quality manual is roughly 25,000 tokens — easily fits in Claude or GPT-4o's context window. You can paste the whole document and ask specific questions about clauses. We build exactly this in Phase 2." },
+    { type: "callout", variant: "info", label: "Aerospace Example", text: "A 50-page AS9100 quality manual is roughly 25,000 tokens — easily fits in the context window of any current frontier model. You can paste the whole document and ask specific questions about clauses. We build exactly this in Phase 2." },
     { type: "h3", text: "Idea 2: Prediction, Not Understanding" },
     { type: "p", text: "LLMs don't understand text the way a human expert does. They predict: given all the text so far, what token is statistically most likely to come next? This process repeats one token at a time — every word of a response is generated this way. The result is remarkably human-like text — but it is pattern completion, not genuine comprehension." },
     { type: "p", text: "This is why LLMs can seem brilliant (they have absorbed enormous amounts of human knowledge) and also confidently wrong. When a model generates a plausible-sounding but incorrect fact, that is called hallucination — and it is a fundamental characteristic of how these systems work, not a temporary bug." },
@@ -227,9 +227,9 @@ const AI_LESSONS = [
     { type: "h3", text: "Frontier Cloud Models" },
     { type: "grid", items: [
       { title: "Claude (Anthropic)", text: "Haiku (fast/cheap), Sonnet (balanced), Opus (most capable). Exceptional at long documents, careful reasoning, and complex instructions. Strong safety design — well suited to regulated industries. Best for: document analysis, technical writing, compliance work." },
-      { title: "GPT-4o (OpenAI)", text: "Highly capable and multimodal (text + images + audio). Massive developer ecosystem and integrations. OpenAI models are one of several model families available in GitHub Copilot, which is multi-model (OpenAI, Anthropic, Google and others). Best for: code generation, general tasks, and analyzing images of parts or drawings." },
+      { title: "GPT (OpenAI)", text: "As of late 2026 the current family is GPT-6, from a flagship model down to fast, efficient ones, with reasoning offered as a mode rather than a separate model line. Names change often — check OpenAI's model list. Highly capable and multimodal (text + images). Massive developer ecosystem and integrations. OpenAI models are one of several model families available in GitHub Copilot, which is multi-model (OpenAI, Anthropic, Google and others). Best for: code generation, general tasks, and analyzing images of parts or drawings." },
       { title: "Gemini (Google)", text: "Very large context windows (up to ~1M tokens on long-context models). Deep Google Workspace integration. Best for: very long document analysis, organizations already using Google ecosystem. Note: Gemini 1.5 Pro was retired in 2025 — pick from Google's current model list." },
-      { title: "Smaller Models (Haiku, GPT-4o-mini)", text: "Smaller, faster, much cheaper versions of flagship models. 90% of capability at 10% of cost. Best for: high-volume tasks like summarizing many reports, classification, and data extraction." },
+      { title: "Smaller Models (e.g. Claude Haiku, OpenAI's efficient GPT tier)", text: "Smaller, faster, much cheaper versions of flagship models. 90% of capability at 10% of cost. Best for: high-volume tasks like summarizing many reports, classification, and data extraction." },
     ]},
     { type: "h3", text: "Open-Source and Local Models" },
     { type: "p", text: "These models run on your own hardware — no internet required once downloaded, and no API costs per query. Running locally takes the third-party cloud provider out of the data path, which reduces risk for sensitive data — but it does not eliminate it. Logs, plugins and extensions, cloud sync and backups, model provenance and who can access the machine still matter, and your organization's policy and ITAR/EAR/CUI rules decide what is allowed — not the deployment type alone." },
@@ -240,7 +240,7 @@ const AI_LESSONS = [
       { title: "How to Run Them", text: "Ollama (ollama.com) is the easiest Windows installer — one command downloads and runs any of these models locally. LM Studio provides a GUI if you prefer no command line." },
     ]},
     { type: "callout", variant: "warning", label: "The ITAR Decision Rule", text: "If data might be ITAR-controlled or CUI — get your export control officer's decision before using any AI tool. An approved local model is often the most defensible option, but local does not mean automatically compliant. If data is confidential but not legally controlled — consider a private enterprise cloud API with a Data Processing Agreement. If data is non-sensitive — any cloud API is acceptable. When in doubt, do not send it to any AI tool until it has been classified. We cover this in detail in Phase 4." },
-    { type: "callout", variant: "success", label: "Quick Decision Guide", text: "Sensitive/ITAR data  →  Approved local model (Ollama + Llama or Mistral), only after export-control sign-off\nLong document analysis (100+ pages)  →  Claude Sonnet or Gemini\nCode generation  →  GPT-4o or Claude Sonnet\nHigh-volume, cost-sensitive tasks  →  Claude Haiku or GPT-4o-mini\nMaximum reasoning capability  →  Claude Opus or GPT-4o\nOffline or air-gapped environment  →  Ollama + Llama 3.2" },
+    { type: "callout", variant: "success", label: "Quick Decision Guide", text: "Sensitive/ITAR data  →  Approved local model (Ollama + Llama or Mistral), only after export-control sign-off\nLong document analysis (100+ pages)  →  Claude Sonnet or Gemini\nCode generation  →  Claude Sonnet or OpenAI's current GPT model\nHigh-volume, cost-sensitive tasks  →  Claude Haiku or OpenAI's efficient GPT tier\nMaximum reasoning capability  →  The top tier from a frontier vendor (e.g. Claude Opus, or OpenAI's flagship GPT with reasoning enabled)\nOffline or air-gapped environment  →  Ollama + Llama 3.2" },
   ],
   quizzes: [
     { question: "Which statement best describes the current AI model landscape (2025-2026)?",
@@ -251,7 +251,7 @@ const AI_LESSONS = [
         "All frontier LLMs from major providers produce essentially equivalent outputs"
       ],
       correct: 0,
-      explanation: "The landscape has matured into specialization. Claude tends to excel at writing and reasoning, GPT models at general tasks and tool use, Gemini at multimodal work, and local models at privacy-sensitive tasks. Choosing the right model for the task — not just defaulting to one — is now an important skill." },
+      explanation: "The landscape has matured into specialization. Claude tends to excel at writing and reasoning, GPT models at general tasks, tool use, and image understanding, Gemini at very long documents, and local models at privacy-sensitive tasks. Choosing the right model for the task — not just defaulting to one — is now an important skill." },
     { question: "What's the main advantage of running an LLM locally (like via Ollama)?",
       options: [
         "Local models always produce higher quality outputs than cloud-based commercial models",
@@ -269,7 +269,7 @@ const AI_LESSONS = [
         "Smaller models are restricted to consumer use and cannot be deployed in enterprise environments"
       ],
       correct: 0,
-      explanation: "The largest models offer the best capability but cost more per token and respond more slowly. For many tasks (summarization, drafting, simple Q&A), smaller models like Claude Haiku or GPT-4o-mini are fully sufficient and far more economical at scale. Matching model size to task is a key cost-optimization skill." }
+      explanation: "The largest models offer the best capability but cost more per token and respond more slowly. For many tasks (summarization, drafting, simple Q&A), smaller models like Claude Haiku or OpenAI's efficient GPT tier are fully sufficient and far more economical at scale. Matching model size to task is a key cost-optimization skill." }
   ]
 },
 {
@@ -631,7 +631,7 @@ const AI_LESSONS = [
   time: "55 min", type: "Hands-On Coding",
   video: { id: "_HqK7GzrYMo", title: "Building with Claude API — Part 10: Tool Use, Function and Schema (Maria Panneer Rajan, 2026, ~13 min)" },
   content: [
-    { type: "p", text: "Claude and GPT-4 support function calling — a way to define tools the model can invoke as it reasons through a problem. You define what tools exist and what they do. The model decides when and how to call them. Your code actually executes them and returns results." },
+    { type: "p", text: "Current models from the major vendors (Claude, OpenAI's GPT models, Gemini) support tool use, also called function calling — a way to define tools the model can invoke as it reasons through a problem. You define what tools exist and what they do. The model decides when and how to call them. Your code actually executes them and returns results." },
     { type: "h3", text: "Defining Tools" },
     { type: "p", text: "Each tool is defined as a JSON schema describing its name, purpose, and required parameters. The model reads these descriptions to understand when to use each tool. Clear, specific descriptions are essential." },
     { type: "callout", variant: "info", label: "Tool definition format for Claude API:", text: "tools = [\n  {\n    'name': 'lookup_supplier',\n    'description': 'Look up a supplier in our approved supplier list and return their qualification status, approved commodities, and audit history.',\n    'input_schema': {\n      'type': 'object',\n      'properties': {\n        'supplier_name': {\n          'type': 'string',\n          'description': 'The full legal name of the supplier company'\n        },\n        'commodity': {\n          'type': 'string',\n          'description': 'The commodity or process type to check (e.g., machining, heat treat, NDT)'\n        }\n      },\n      'required': ['supplier_name']\n    }\n  }\n]" },
