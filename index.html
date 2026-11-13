@@ -195,7 +195,7 @@ const AI_LESSONS = [
         "Predicting the next most likely token based on statistical patterns learned during training"
       ],
       correct: 3,
-      explanation: "LLMs are next-token predictors. They generate one token at a time based on probability distributions learned from training data. Understanding this helps explain both their capabilities (fluent generation) and their limitations (hallucination, struggles with multi-step math)." },
+      explanation: "LLMs are next-token predictors. They generate one token at a time based on probability distributions learned from training data. Understanding this helps explain both their capabilities (fluent generation) and their limitations (hallucination, and unreliable results on long or precise calculations, because the model generates digits as text rather than running a calculator)." },
     { question: "Why do LLMs sometimes 'hallucinate' incorrect information?",
       options: [
         "They generate fluent-sounding text based on patterns, not factual lookup or verification",
@@ -779,13 +779,13 @@ const AI_LESSONS = [
     {
       question: "Where does AI tend to fail in aerospace applications, in ways that matter for the engineer deploying it?",
       options: [
-        "AI struggles with simple arithmetic and basic engineering calculations, requiring manual verification of every numeric output",
+        "AI cannot do arithmetic at all, so numeric work must never be given to it, even when it can call a calculator or code tool",
         "AI hallucinates plausible-sounding but incorrect technical details, especially for cited references, specific numbers, and edge cases",
         "AI works perfectly on training data but fails completely on any aerospace-specific terminology or content",
         "AI is reliable for technical content but generates poor-quality prose for executive summaries and proposals"
       ],
       correct: 1,
-      explanation: "The classic AI failure in aerospace is confident-sounding wrong technical details — fabricated standards numbers, invented paper citations, off-by-an-order-of-magnitude tolerances, made-up part numbers. These look right at a glance, which is exactly what makes them dangerous. AI does basic math acceptably (especially with tool use), handles aerospace terminology reasonably, and generates competent technical prose. Hallucinated specifics in confident voice — that's the trap."
+      explanation: "The classic AI failure in aerospace is confident-sounding wrong technical details — fabricated standards numbers, invented paper citations, off-by-an-order-of-magnitude tolerances, made-up part numbers. These look right at a glance, which is exactly what makes them dangerous. Numbers are a manageable risk, not a total failure: models can be unreliable on long or precise calculations because they generate text rather than run a calculator, so use a code or calculator tool for numbers that matter and still check the result. AI also handles aerospace terminology reasonably and generates competent technical prose. Hallucinated specifics in confident voice — that's the trap."
     }
   ]
 },
@@ -1540,9 +1540,9 @@ const AI_FINAL_EXAM = [
   },
   {
     "phase": 1,
-    "question": "Why do LLMs struggle with arithmetic and precise calculations?",
+    "question": "Why can LLMs be unreliable on long or precise calculations unless they use a calculator or code tool?",
     "options": [
-      "They predict tokens based on text patterns; they don't actually 'compute' numbers",
+      "They generate numbers as predicted text based on patterns; they don't run a calculator unless given one as a tool",
       "They lack access to floating-point math operations on the underlying hardware",
       "They are deliberately restricted from doing math to prevent automated trading abuses",
       "They convert numbers to text first, which corrupts precision below 5 significant digits"
