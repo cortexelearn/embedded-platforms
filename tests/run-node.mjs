@@ -1,0 +1,2 @@
+import {spawnSync} from 'node:child_process';import {fileURLToPath} from 'node:url';
+const files=['extract','schema.quiz-bounds','exam.seeded-equivalence','content.raw-marker-sweep','sw.unit','progress.unit','safari-compat'];let failed=0;for(const f of files){const r=spawnSync(process.execPath,[fileURLToPath(new URL(f+'.mjs',import.meta.url))],{stdio:'inherit'});if(r.status!==0)failed++;}console.log(`node suite: ${files.length-failed} scripts passed, ${failed} failed (individual skip counts above)`);if(failed)process.exitCode=1;
