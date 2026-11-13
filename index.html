@@ -509,20 +509,21 @@ const AI_LESSONS = [
   content: [
     { type: "p", text: "A Python script that only you can run from a terminal has limited value. A properly packaged application that a quality inspector or engineer can open and use immediately transforms how your team works. Three paths from script to deployable Windows tool." },
     { type: "h3", text: "Path 1: Streamlit — Browser App in Minutes" },
-    { type: "p", text: "Streamlit converts Python code into a web app with almost no additional code. Run it on your machine and share the URL with anyone on the same network — no installation required on their machines." },
-    { type: "code", variant: "info", label: "Install and run:", text: "pip install streamlit\nstreamlit run your_app.py\n\nAnyone on your local network can then open a browser and go to:\nhttp://your-ip-address:8501" },
+    { type: "p", text: "Streamlit converts Python code into a web app with almost no additional code. Run it on your machine and share the URL with colleagues on the same network — no installation required on their machines. Before you share it: Streamlit has no login by default, so anyone who can reach the URL can use the app, and every request runs on your API key and sends their input to the cloud provider. Put access control in front of a shared app (for example, host it on an internal server behind company sign-in) or keep it on localhost, and use a key and data path your team has approved." },
+    { type: "code", variant: "info", label: "Install and run:", text: "pip install streamlit\nstreamlit run your_app.py\n\nAnyone who can reach your machine on the network can then open a browser and go to:\nhttp://your-ip-address:8501\n\nThere is no login by default — add access control before sharing." },
     { type: "code", variant: "success", label: "Complete NCR Analysis App — save as ncr_app.py:", text: "import streamlit as st\nimport anthropic\nfrom dotenv import load_dotenv\n\nload_dotenv()\nclient = anthropic.Anthropic()\n\nst.set_page_config(page_title='NCR Analyzer', page_icon='airplane')\nst.title('NCR Analysis Assistant')\nst.caption('Paste inspection report text below for AI-assisted analysis')\n\nreport_text = st.text_area('Inspection Report Text', height=200,\n    placeholder='Paste your report here...')\n\nif st.button('Analyze Report', type='primary') and report_text:\n    with st.spinner('Analyzing...'):\n        response = client.messages.create(\n            model='claude-opus-4-5',\n            max_tokens=1000,\n            system='You are a quality engineering assistant. Analyze this inspection report and provide: STATUS, NON-CONFORMANCES found, SEVERITY classification, and RECOMMENDED ACTION. Flag for human review — do not make final disposition decisions.',\n            messages=[{'role': 'user', 'content': report_text}]\n        )\n    st.subheader('Analysis Results')\n    st.write(response.content[0].text)\n    st.download_button('Download Analysis', response.content[0].text, 'ncr_analysis.txt')" },
+    { type: "callout", variant: "warning", label: "Where the Report Text Goes", text: "This app sends whatever the user pastes to the cloud model provider through the API — the data leaves your machine. The .exe and Excel samples below do the same. Use them only with data your organization has approved for that service, following your data-classification rules (see Phase 4), or point the tool at an approved local model (for example, one served by Ollama) instead of a cloud API." },
     { type: "h3", text: "Path 2: Package as .exe with PyInstaller" },
-    { type: "p", text: "PyInstaller bundles your script and all its dependencies into a single .exe file that runs on any Windows machine — no Python installation required. Perfect for deploying to shop floor computers." },
+    { type: "p", text: "PyInstaller bundles your script and all its dependencies into a single .exe file that runs on any Windows machine — no Python installation required. Perfect for deploying to shop floor computers. Packaging does not change where the AI runs: an .exe built from these samples still calls the cloud API, so it needs network access and sends its input to the provider. It works offline only if the tool uses a local model (for example, Ollama running on that machine)." },
     { type: "code", variant: "info", label: "Package your app:", text: "pip install pyinstaller\npyinstaller --onefile --windowed your_app.py\n\nThe .exe appears in the dist/ folder.\n--onefile: creates a single self-contained file\n--windowed: hides the terminal window for GUI applications" },
     { type: "h3", text: "Path 3: Excel and Word Automation" },
     { type: "code", variant: "info", label: "Read from Excel, analyze with AI, write results back:", text: "pip install openpyxl python-docx\n\nimport openpyxl\nfrom anthropic import Anthropic\n\n# Read inspection data from existing Excel file\nwb = openpyxl.load_workbook('inspection_log.xlsx')\nws = wb.active\n\n# Process each row with AI\nclient = Anthropic()\nfor row in ws.iter_rows(min_row=2, values_only=True):\n    part_num, measurement, nominal, tolerance = row\n    # ... send to Claude, write result back to Excel column\n\nwb.save('inspection_log_with_ai_analysis.xlsx')" },
     { type: "h3", text: "Choosing the Right Approach" },
     { type: "grid", items: [
       { title: "Streamlit — Best For", text: "Internal tools for non-technical staff. Dashboard-style views with charts. File upload capability. Fastest to build and iterate on." },
-      { title: ".exe — Best For", text: "Shop floor computers without Python. Air-gapped environments. Tools that need to work fully offline. When you cannot run a local web server." },
+      { title: ".exe — Best For", text: "Shop floor computers without Python. When you cannot run a local web server. Air-gapped or fully offline use only if the tool calls a local model (e.g. Ollama) — a cloud API call will not work there." },
       { title: "Excel/Word — Best For", text: "Teams that live in Office and will not change workflows. Data already in spreadsheets. Reporting that feeds existing templates." },
-      { title: "Tkinter GUI — Best For", text: "Native Windows look and feel. Single-user tools. Simple data entry forms. Works fully offline without requiring any browser." },
+      { title: "Tkinter GUI — Best For", text: "Native Windows look and feel. Single-user tools. Simple data entry forms. No browser required. Works offline only if it calls a local model rather than a cloud API." },
     ]},
   ],
   quizzes: [
@@ -1644,7 +1645,7 @@ const AI_FINAL_EXAM = [
       "When non-technical users need a simple UI to interact with a Python AI workflow",
       "When the application must scale to millions of concurrent users across global regions",
       "When the tool needs deep integration with existing Windows desktop software",
-      "When the AI tool processes ITAR-controlled data that cannot leave the local network"
+      "When the app's cloud model call would send ITAR-controlled data off the local network"
     ],
     "correct": 0
   },
