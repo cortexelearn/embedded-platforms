@@ -6612,15 +6612,15 @@ const MOTOR_LESSONS = [
   ],
   quizzes: [
     {
-      question: "A motor draws normal current at startup but doesn't reach rated speed and runs hot. Likely cause?",
+      question: "After starting, a motor settles below rated speed, draws noticeably more than its rated current (balanced across all three phases), and runs hot. Likely cause?",
       options: [
         "Open winding — one phase isn't conducting, so the motor can't produce its rated torque-speed curve",
         "Bearing failure — the motor mechanically can't accelerate past its present speed due to friction",
         "Voltage too high — the motor is over-fluxed and saturating its magnetic circuit",
-        "Overload — load torque exceeds the motor's capability at rated speed, drawing rated current at reduced speed"
+        "Mechanical overload — the load needs more torque than the motor's continuous rating, so it slows and draws above-rated current, raising I²R heating"
       ],
       correct: 3,
-      explanation: "An overloaded motor draws rated current trying to deliver more torque than its rated capability — but stalls at lower-than-rated speed and overheats because heat generation exceeds cooling. Open windings cause much higher current draw at startup. Bearing failure typically produces noise and locked rotor symptoms. Voltage-too-high produces magnetic saturation symptoms that are distinct. This is the classic overload signature."
+      explanation: "An overloaded motor slows below rated speed and draws more than rated current to supply the extra torque. Copper loss rises with I², so heat generation exceeds what the motor can shed and it runs hot. The motor is slowed, not stalled. An open phase in a three-phase motor can also raise current and heat, but it typically shows strongly unbalanced phase currents, and from standstill the motor may hum without starting; the exact behavior depends on motor type and drive. Bearing failure usually announces itself with noise, vibration, and heat at the bearing housing (a dragging bearing is effectively part of the mechanical load). Voltage that is too high over-fluxes the iron and raises magnetizing current, but speed stays near rated. Balanced above-rated current, reduced speed, and overheating is the classic overload signature."
     },
     { question: "Excessive bearing wear after only 6 months of service. What's the likely root cause?",
       options: [
@@ -7254,15 +7254,15 @@ const MOTOR_FINAL_EXAM = [
   },
   {
     "phase": 4,
-    "question": "Motor draws normal current at startup but doesn't reach rated speed and runs hot. Likely cause?",
+    "question": "After starting, a motor settles below rated speed, draws noticeably more than rated current (balanced across phases), and runs hot. Likely cause?",
     "options": [
       "Open winding — one phase isn't conducting so motor can't produce rated torque-speed curve",
       "Bearing failure — motor mechanically can't accelerate past present speed due to friction",
-      "Overload — load torque exceeds motor's capability at rated speed, drawing rated current at reduced speed",
+      "Mechanical overload — load needs more torque than motor's continuous rating, so it slows and draws above-rated current (more I²R heat)",
       "Voltage too high — motor over-fluxed and saturating its magnetic circuit"
     ],
     "correct": 2,
-    "explanation": "Classic overload signature: rated current, reduced speed, overheating. Open winding produces higher startup current; bearing failure produces noise; over-voltage causes saturation symptoms."
+    "explanation": "Classic overload signature: speed below rated, balanced current above rated, overheating from I²R loss. The motor is slowed, not stalled. An open phase typically shows strongly unbalanced phase currents (behavior varies by motor type); a failing bearing adds noise, vibration, and local heat; over-voltage over-fluxes the iron but leaves speed near rated."
   },
   {
     "phase": 4,
