@@ -3906,15 +3906,15 @@ const AM_LESSONS = [
     { type: "p", text: "Additive manufacturing in aerospace is no longer experimental. Tens of thousands of certified production parts fly today — but only in a narrow band of applications where AM beats subtractive on cost, weight, or lead time. Knowing where that band is, and where it isn't, is the foundation of everything else in this track." },
 
     { type: "h3", text: "From Prototype to Production Part" },
-    { type: "p", text: "The watershed moment was the GE LEAP fuel nozzle. Originally an assembly of 20 brazed parts, it was redesigned as a single DMLS-printed Co-Cr component — 25 percent lighter, five times more durable, and one part instead of twenty. By 2020 GE had shipped over 100,000 of them. That part legitimized metal AM as a production technology in aerospace, not just a tooling shortcut." },
-    { type: "p", text: "The GE9X engine that powers the 777X carries 28 different printed components. Boeing's 787 has more than 30 printed parts. Airbus prints brackets, ducting, and cabin interior parts on every A350. Most of these parts share three traits: they're complex shapes that would otherwise require multi-piece assemblies, they're produced in low-to-mid volumes (hundreds to low thousands per year), and they're made from materials that machine slowly or wastefully (titanium, Inconel)." },
+    { type: "p", text: "The watershed moment was the GE LEAP fuel nozzle. Originally an assembly of 20 brazed parts, it was redesigned as a single DMLS-printed Co-Cr component — 25 percent lighter, five times more durable, and one part instead of twenty. Cumulative production has since passed 100,000 nozzles. That part legitimized metal AM as a production technology in aerospace, not just a tooling shortcut. GE backed it with years of sustained investment in machines, powder supply, and qualification know-how, which is why its path is the most-cited model for scaling metal AM." },
+    { type: "p", text: "The GE9X engine that powers the 777X uses printed parts throughout, including fuel-nozzle tips and consolidated multi-part assemblies. Boeing's 787 has more than 30 printed parts. Airbus prints brackets, ducting, and cabin interior parts on every A350. Most of these parts share three traits: they're complex shapes that would otherwise require multi-piece assemblies, they're produced in low-to-mid volumes (hundreds to low thousands per year), and they're made from materials that machine slowly or wastefully (titanium, Inconel)." },
 
     { type: "h3", text: "The AM Technology Family Tree" },
     { type: "p", text: "ASTM/ISO 52900 organizes AM into seven process categories. Three matter most for aerospace work:" },
     { type: "ul", items: [
       "**Material Extrusion (FDM/FFF)** — thermoplastic filament melted and deposited layer by layer. Cheap, ubiquitous, used heavily for tooling, jigs, fixtures, and increasingly for non-structural cabin parts in materials like ULTEM 9085.",
       "**Vat Photopolymerization (SLA/MSLA/DLP)** — liquid photopolymer cured by UV light. Excellent surface finish and detail, used for masters, soft tooling, fit-check models, and small functional parts.",
-      "**Powder Bed Fusion (DMLS/SLM/EBM)** — metal powder fused by laser or electron beam. The route to flight-critical metal parts in Ti-6Al-4V, Inconel 718, AlSi10Mg, 17-4PH."
+      "**Powder Bed Fusion (DMLS/SLM/EBM)** — metal powder fused by laser or electron beam. The route to flight-critical metal parts in Ti-6Al-4V and Inconel 718, and to secondary-structure, tooling, and non-critical parts in AlSi10Mg and 17-4PH."
     ]},
     { type: "p", text: "The other four process categories — material jetting, binder jetting, sheet lamination, directed energy deposition — have niches but are not where most aerospace technicians spend their day. We focus on the three above." },
 
@@ -3942,7 +3942,7 @@ const AM_LESSONS = [
       options: [
         "It was the first aerospace part ever produced using 3D printing on a flight-certified aircraft",
         "It eliminated the need for any post-processing or final inspection steps in the production workflow",
-        "It consolidated 20 brazed parts into a single DMLS-printed component — lighter, more durable, and far simpler to qualify",
+        "It consolidated 20 brazed parts into a single DMLS-printed component — lighter, more durable, and free of the brazed joints and inspections the old assembly needed",
         "It proved that low-cost FDM printing could replace expensive metal forgings in commercial engines"
       ],
       correct: 2,
@@ -4053,11 +4053,11 @@ const AM_LESSONS = [
     { type: "p", text: "A part designed for machining will print badly. A part designed for AM exploits everything AM is good at and avoids what it's bad at. The cost of bad DfAM is hidden — failed prints, brittle parts, hours of support removal, parts that warp on cooling." },
 
     { type: "h3", text: "Orientation Drives Everything" },
-    { type: "p", text: "Layer-by-layer construction makes every printed part anisotropic — strong in the X-Y plane, weaker in Z. Choose orientation to align the strongest axis with the highest expected load. A bracket loaded in tension along its long axis should be printed with that axis horizontal, not vertical." },
+    { type: "p", text: "Layer-by-layer construction makes most as-built printed parts anisotropic — strong in the X-Y plane, weaker in Z. Choose orientation to align the strongest axis with the highest expected load. A bracket loaded in tension along its long axis should be printed with that axis horizontal, not vertical." },
     { type: "p", text: "Orientation also determines support requirements, surface finish on each face, and print time. Tilting a part by 30° often eliminates supports entirely on overhangs that would otherwise need them." },
 
     { type: "h3", text: "The 45° Rule" },
-    { type: "p", text: "Most FDM and metal AM processes can self-support overhangs up to about 45° from vertical without needing scaffolding. SLA/MSLA varies more by resin and exposure but the same heuristic is a good starting point. Beyond 45°, you need either supports, a chamfer, or to redesign the feature." },
+    { type: "p", text: "Most FDM and metal AM processes can self-support overhangs up to about 45° from vertical without needing scaffolding. SLA/MSLA varies more by resin and exposure, and because each resin layer is also peeled off the vat film, resin is usually supported from a lower angle (around 30° from vertical; see the resin slicing lesson). Beyond 45°, you need either supports, a chamfer, or to redesign the feature." },
 
     { type: "h3", text: "Holes, Walls, and Channels" },
     { type: "ul", items: [
@@ -4206,10 +4206,10 @@ const AM_LESSONS = [
     { type: "p", text: "After e-steps are right, flow ratio fine-tunes how much plastic actually lands on the print. Print a hollow single-perimeter cube, measure the wall thickness with calipers, and adjust the flow ratio until measured wall thickness matches the slicer's commanded line width." },
 
     { type: "h3", text: "Enclosure & Chamber Temperature" },
-    { type: "p", text: "PLA and PETG print fine open-air. ABS, ASA, polycarbonate, and PA-CF need an enclosure to prevent warping and delamination. PEEK and ULTEM 9085 need an actively heated chamber (60–90 °C ambient or higher). If your enclosure can't reach those numbers, you can't reliably print those materials." },
+    { type: "p", text: "PLA and PETG print fine open-air. ABS, ASA, polycarbonate, and PA-CF need an enclosure to prevent warping and delamination. PEEK and ULTEM 9085 need an actively heated chamber (well above 100 °C for these materials; use the chamber temperature the machine and material vendors specify). If your enclosure can't reach those numbers, you can't reliably print those materials." },
 
     { type: "callout", style: "key",
-      text: "**Calibration and tuning order.** One sequence, used throughout this course: tram the bed mechanically → auto-mesh on top of that → set Z-offset against a single-layer test → calibrate e-steps → temperature tower → flow → pressure advance → retraction tower → cooling. The first four steps are machine calibration (this lesson); the rest are per-material slicer tuning, covered in the Slicer Fundamentals lesson. Change one variable per test and don't skip ahead — tuning a later step before the earlier ones are right means you're tuning a moving target." },
+      text: "**Calibration and tuning order.** One sequence, used throughout this course: tram the bed mechanically → auto-mesh on top of that → set Z-offset against a single-layer test → calibrate e-steps → temperature tower → flow → pressure advance → retraction tower → cooling. The first four steps are machine calibration (this lesson); the rest are per-material slicer tuning, covered in the Slicer Fundamentals lesson. The first of those, the temperature tower, prints stacked bands at stepped nozzle temperatures so you can pick the setting with the best layer adhesion, surface finish, and stringing for that spool. Change one variable per test and don't skip ahead — tuning a later step before the earlier ones are right means you're tuning a moving target." },
   ],
   quizzes: [
     {
@@ -4476,7 +4476,7 @@ const AM_LESSONS = [
     { type: "p", text: "Liquid photopolymer resin sits in a tray. UV light at a specific wavelength (usually 405 nm) cures the resin in the shape of a cross-section of the part. The build platform lifts a fraction of a millimeter, fresh resin flows in, the next layer cures. Repeat until the part is built." },
     { type: "ul", items: [
       "**SLA (Stereolithography)** — a UV laser traces each layer point by point. Best detail, slower for solid parts.",
-      "**MSLA (Masked SLA)** — a 4K/8K LCD masks a UV LED array; whole layer cures at once. Fastest for full-tray builds, dominant in shop floors today.",
+      "**MSLA (Masked SLA)** — a high-resolution monochrome LCD masks a UV LED array; whole layer cures at once. Fastest for full-tray builds, dominant in shop floors today.",
       "**DLP (Digital Light Processing)** — a UV projector flashes each layer using a DMD chip. Fast, expensive, often used in dental/medical."
     ]},
 
@@ -4501,7 +4501,7 @@ const AM_LESSONS = [
     ]},
 
     { type: "h3", text: "The Station Layout" },
-    { type: "p", text: "A working resin station has the printer, a wash station, a cure station, a paper-towel-lined tray for moving wet parts, an IPA squeeze bottle, gloves and glasses dispensers, and a sealed bin for contaminated waste. The whole station should be on a non-porous surface (not wood). Anker-style 'all-in-one' wash-and-cure machines streamline this for low-volume shops." },
+    { type: "p", text: "A working resin station has the printer, a wash station, a cure station, a paper-towel-lined tray for moving wet parts, an IPA squeeze bottle, gloves and glasses dispensers, and a sealed bin for contaminated waste. The whole station should be on a non-porous surface (not wood). Combined wash-and-cure stations, sold by most resin-printer makers, simplify this for low-volume shops." },
 
     { type: "callout", style: "warning",
       text: "**Sensitization is permanent.** A resin operator who develops contact dermatitis or respiratory sensitization can't work safely in resin again — ever. The PPE rules aren't optional and aren't a recommendation; they're how you stay employable in this work." },
@@ -4568,7 +4568,7 @@ const AM_LESSONS = [
     ]},
 
     { type: "h3", text: "Limits for Aerospace" },
-    { type: "p", text: "Photopolymer resins as a class are not currently a flight-part material. They creep under load, their mechanical properties drift in UV exposure, and the qualification path is far less mature than for FDM thermoplastics or metal AM. Resin's value in aerospace is upstream of flight: tooling, patterns, prototypes, soft tooling, fit checks. Don't try to print a flight part in resin." },
+    { type: "p", text: "Photopolymer resins are rarely used for flight hardware. A few flame-retardant grades are marketed for cabin-interior parts, but they still need full qualification like any other flight material. They creep under load, their mechanical properties drift in UV exposure, and the qualification path is far less mature than for FDM thermoplastics or metal AM. Resin's value in aerospace is upstream of flight: tooling, patterns, prototypes, soft tooling, fit checks. Treat resin as a tooling and prototyping material unless a qualified specification for your part says otherwise." },
 
     { type: "callout", style: "key",
       text: "**Pick by datasheet, not name.** 'Tough resin' from one vendor can be twice as stiff as 'tough resin' from another. Always read the actual mechanical datasheet — tensile, flex modulus, HDT, elongation — and match those numbers to your application. Manufacturer category names are marketing, not specs." },
@@ -4611,7 +4611,7 @@ const AM_LESSONS = [
 {
   phase: "Phase 3", phaseColor: "#1a6b3c",
   title: "Orientation, Supports & Slicing for Resin",
-  subtitle: "Angle of repose, support density, suction failures, hollowing, and exposure tuning.",
+  subtitle: "Overhang angles, support density, suction failures, hollowing, and exposure tuning.",
   time: "45 min", type: "Hands-On",
   video: { id: "BDMIjdp-hGc", title: "Get Better Prints with Smart Orientation (Lychee Tutorial)" },
   content: [
@@ -4621,11 +4621,11 @@ const AM_LESSONS = [
     { type: "p", text: "Every layer in resin is the entire 2D cross-section pulled away from a flexible film at the bottom of the vat. The forces involved in that peel can rip a part off its supports. Large flat layers parallel to the build plate generate huge peel forces; tilting the part reduces the peel area at any one layer." },
 
     { type: "h3", text: "The 30–45° Default" },
-    { type: "p", text: "Most parts print best tilted 30–45° on their longest axis. Reasons: smaller peel area per layer, better support placement on overhangs, fewer suction-cup geometries, and detail surfaces face down (away from supports). Print exactly perpendicular only for cylindrical or near-cylindrical parts that have natural symmetry." },
+    { type: "p", text: "Most parts print best tilted 30–45° on their longest axis. Reasons: smaller peel area per layer, better support placement on overhangs, fewer suction-cup geometries, and detail faces kept turned away from the build plate, which is the side that carries the supports. Print exactly perpendicular only for cylindrical or near-cylindrical parts that have natural symmetry." },
 
     { type: "h3", text: "Supports — Where, How Many, How Thick" },
     { type: "ul", items: [
-      "**Place supports on every overhang** more than ~30° from vertical. Resin auto-support is a starting point, not a final answer — always check manually.",
+      "**Place supports on every overhang** more than ~30° from vertical. That is stricter than the 45° starting point in the DfAM lesson because every resin layer must also survive being peeled off the vat film. Resin auto-support is a starting point, not a final answer — always check manually.",
       "**Heavier supports** at high-stress points: corners, the lowest island, transition points where the peel force is concentrated.",
       "**Light tip contact** to minimize support scars on visible surfaces, at the cost of more careful removal.",
       "**Avoid support-on-detail** — if the only place to put a support is on a critical face, reorient the part."
@@ -4641,7 +4641,7 @@ const AM_LESSONS = [
     { type: "p", text: "Each new resin needs an exposure test — typically a Cones of Calibration print or a stair-step exposure. Under-exposed: parts fall apart, supports break. Over-exposed: detail blurs, holes shrink, parts become brittle. Find the minimum exposure that holds the calibration cones, then add 0.2–0.5 s of margin." },
 
     { type: "callout", style: "key",
-      text: "**The four checks before every print.** (1) Tilted 30–45° on the longest axis. (2) Supports on every overhang and heavy at corners/islands. (3) No suction cups — drainage holes added if needed. (4) Hollowed with drain holes if large. Every print failure traces back to one of these four." },
+      text: "**The four checks before every print.** (1) Tilted 30–45° on the longest axis. (2) Supports on every overhang and heavy at corners/islands. (3) No suction cups — drainage holes added if needed. (4) Hollowed with drain holes if large. Most orientation- and support-related failures trace back to one of these four." },
   ],
   quizzes: [
     {
@@ -4688,7 +4688,7 @@ const AM_LESSONS = [
     { type: "p", text: "Resin failures look different from FDM failures and have different root causes. Most resin failures are diagnosable from the build plate alone — what's still attached, what's lying in the vat, and what's torn." },
 
     { type: "h3", text: "Print Detached Entirely from Build Plate" },
-    { type: "p", text: "Whole print is sitting in the vat. Causes: dirty/contaminated build plate → insufficient bottom-layer exposure → too few bottom layers → first layer peeled before forming. Clean the build plate with IPA, increase bottom-layer exposure 2–3× normal, ensure 4–8 bottom layers." },
+    { type: "p", text: "Whole print is sitting in the vat. Causes: dirty/contaminated build plate → insufficient bottom-layer exposure → too few bottom layers → first layer peeled before forming. Clean the build plate with IPA, raise bottom-layer exposure relative to your current profile (bottom layers typically need several times the normal layer exposure), ensure 4–8 bottom layers." },
 
     { type: "h3", text: "Layer Shifts / Misaligned Layers" },
     { type: "p", text: "Visible step in the side of the print where layers shifted. Causes: Z-axis stepper missed steps under load → loose Z-leadscrew or coupler → too-aggressive lift speed. Slow lift speed, check Z-axis mechanically, reduce print height." },
@@ -4728,11 +4728,11 @@ const AM_LESSONS = [
       options: [
         "Excessive post-cure — over-curing creates a tacky surface that wipes clean only after additional washing",
         "Wrong type of cleaning solvent — IPA always leaves a sticky residue regardless of cure status",
-        "Insufficient post-cure time or UV intensity — uncured monomer remains; needs longer/stronger post-cure to complete polymerization",
+        "Incomplete wash or insufficient post-cure — uncured resin is left on or near the surface; re-wash in clean solvent, let the part dry, then extend the post-cure",
         "Old resin — fresh resin always cures completely without need for post-cure under any circumstances"
       ],
       correct: 2,
-      explanation: "Tacky/sticky surface after cure indicates incomplete polymerization. Either post-cure was too short or the UV source was weak. Fix: longer post-cure time (often 10-60 minutes depending on part thickness), verify UV cure unit is functional, ensure the part is rotated during cure so all surfaces are exposed. Some resins also benefit from heated post-cure." },
+      explanation: "A tacky surface after cure means uncured material is still on or in the surface. Check the wash first: resin left on the part by a short wash or a saturated solvent bath will not cure properly. Then check the cure: post-cure may have been too short or the UV source weak. Fix: re-wash in clean solvent and let the part dry, then use a longer post-cure time (often 10-60 minutes depending on part thickness), verify UV cure unit is functional, ensure the part is rotated during cure so all surfaces are exposed. Some resins also benefit from heated post-cure." },
     { question: "Layer lines on a resin print are far more pronounced than expected. Why?",
       options: [
         "Layer height is set too small — increase layer height to reduce line visibility on the part surface",
@@ -4756,11 +4756,11 @@ const AM_LESSONS = [
   content: [
     { type: "p", text: "Metal AM is where AM crosses from tooling and prototyping into flight. It's also where the equipment, qualification, and post-processing costs explode. Most aerospace technicians won't operate a metal printer themselves — but they need to understand the process well enough to specify, inspect, and integrate metal AM parts into their work." },
 
-    { type: "h3", text: "The Three Powder-Bed Processes" },
+    { type: "h3", text: "Powder-Based Metal Processes" },
     { type: "ul", items: [
       "**DMLS (Direct Metal Laser Sintering) / SLM (Selective Laser Melting)** — laser fully melts metal powder, layer by layer, in an inert (argon) atmosphere. The dominant process for aerospace structural parts. Equipment cost: $500K–$2M+. Materials: Ti-6Al-4V, Inconel 718/625, AlSi10Mg, 17-4PH, Co-Cr.",
       "**EBM (Electron Beam Melting)** — electron beam fuses powder in a vacuum, at high temperature. Faster build rate, lower residual stress, better for titanium structural parts. More limited material set. Equipment cost similar to SLM.",
-      "**Binder Jetting (metal)** — inkjet binder onto powder, sinter post-build. Faster than SLM but produces ~95–99% dense parts (vs >99.9% for SLM/HIP). Used increasingly for tooling, less so for flight parts."
+      "**Binder Jetting (metal)** — inkjet binder onto powder, sinter post-build. It uses a powder bed but is a separate ISO/ASTM 52900 category from Powder Bed Fusion, since nothing is melted during the build. Faster than SLM but produces ~95–99% dense parts (vs >99.9% for SLM/HIP). Used increasingly for tooling, less so for flight parts."
     ]},
 
     { type: "h3", text: "The Post-Processing Pipeline" },
@@ -4783,12 +4783,16 @@ const AM_LESSONS = [
       "**17-4PH / 15-5PH** — precipitation-hardened stainless, used for tooling and corrosion-resistant non-flight parts."
     ]},
 
+    { type: "h3", text: "Powder Management & Feedstock Cost" },
+    { type: "p", text: "Powder is the raw material of every metal AM part, and its condition shows up directly in the finished part. Particle size distribution controls how evenly each layer spreads; oxygen and moisture pickup degrade density, ductility, and fatigue life. Shops sieve powder between builds, track each lot and how many times it has been reused, and retire it when test results drift. Feedstock is also a real cost line: aerospace-grade powders run from tens to hundreds of dollars per kilogram, with titanium and nickel alloys at the top of that range, so material cost per part matters." },
+
     { type: "h3", text: "In-House vs Outsource" },
-    { type: "p", text: "The economics of metal AM rarely justify in-house ownership for a small aerospace shop. A $1M+ machine, $50K+ in qualification per material, dedicated atmosphere/safety infrastructure, dedicated operators, dedicated CT inspection — total cost of ownership is enormous. Most aerospace work uses dedicated AM service bureaus (Sintavia, Morf3D, Stratasys Direct, Colibrium Additive (formerly GE Additive) AddWorks). In-house metal AM only makes sense at OEM scale or with very high volume of one alloy." },
+    { type: "p", text: "The economics of metal AM rarely justify in-house ownership for a small aerospace shop. A $1M+ machine, $50K+ per material just to qualify an in-house process for non-critical use (full flight-part design allowables cost far more; see the Materials & Aerospace Compliance lesson), dedicated atmosphere/safety infrastructure, dedicated operators, dedicated CT inspection — total cost of ownership is enormous. Most aerospace work uses dedicated AM service bureaus (Sintavia, Morf3D, Stratasys Direct, Colibrium Additive (formerly GE Additive) AddWorks). In-house metal AM only makes sense at OEM scale or with very high volume of one alloy." },
     { type: "p", text: "A technician's job is usually: write the build file, specify the post-processing, inspect the returned part, integrate it into the assembly. Knowing the process is what lets you write specs and inspect intelligently." },
+    { type: "p", text: "The range of parts where metal AM pays off keeps widening. Per-part economics are improving, shared allowables databases are growing, qualification processes are maturing, and the supplier base is getting deeper. None of that makes wrought material obsolete; it moves more low-volume, complex parts past the break-even point." },
 
     { type: "callout", style: "warning",
-      text: "**Metal AM safety is no joke.** Reactive metal powders (titanium, aluminum) are explosive in air. Powder-handling rooms have grounded equipment, ATEX-rated vacuums, and trained operators. Don't wing it." },
+      text: "**Metal AM safety is no joke.** Fine reactive metal powders (titanium, aluminum) are combustible and can explode when dispersed as a dust cloud. Powder-handling rooms have grounded equipment, ATEX-rated vacuums, and trained operators. Don't wing it." },
   ],
   quizzes: [
     { question: "Why is metal AM (DMLS/SLM) NOT a drop-in replacement for forged or machined parts in aerospace?",
@@ -4809,7 +4813,7 @@ const AM_LESSONS = [
         "Only painting and labeling — mechanical post-processing was eliminated by recent advances in DMLS technology"
       ],
       correct: 1,
-      explanation: "Metal AM has substantial post-processing: thermal stress relief or full HIP (hot isostatic press, ~1000-1200°C and high pressure to close internal porosity), removing the part from the build plate (typically wire-EDM), removing supports, machining critical features to tolerance, surface finishing (as-built surfaces are rough), NDI (CT scan or ultrasonic). Cumulatively often longer than the print itself."
+      explanation: "Metal AM has substantial post-processing: thermal stress relief or full HIP (hot isostatic press, at an alloy-specific temperature — roughly 900–1,200 °C for titanium and nickel alloys, lower for aluminum — and high pressure to close internal porosity), removing the part from the build plate (typically wire-EDM), removing supports, machining critical features to tolerance, surface finishing (as-built surfaces are rough), NDI (CT scan or ultrasonic). Cumulatively often longer than the print itself."
     },
     { question: "Which aerospace metal AM use case has the strongest economic and technical justification today?",
       options: [
@@ -4836,7 +4840,7 @@ const AM_LESSONS = [
     { type: "ul", items: [
       "**Jigs & fixtures** — hold parts during machining, assembly, drilling, inspection. Traditionally machined from aluminum or steel; printed equivalents in PA-CF, PC, or ULTEM are 80% lighter, 90% cheaper, and a day to make.",
       "**Drill guides** — precision-located bushings for hand-drilling assembly holes. Resin or PA-CF for accuracy.",
-      "**Layup mandrels** — composite layup tooling, often consumable. High-temp resin or PEEK/ULTEM for autoclave-compatible mandrels; PLA or wax-loaded resin for soluble/sacrificial mandrels.",
+      "**Layup mandrels** — composite layup tooling, often consumable. High-temp resin or PEEK/ULTEM for autoclave-compatible mandrels; dedicated soluble or breakaway tooling materials for sacrificial mandrels.",
       "**Checking gauges** — go/no-go gauges, profile checkers. PA-CF or engineering resin for dimensional stability.",
       "**Soft tooling** — flexible resin or printed silicone molds for short-run cast parts.",
       "**Production aids** — workstation organizers, line-side bins, label holders. PLA or PETG, infinite variety, $5 of plastic each."
@@ -4858,8 +4862,8 @@ const AM_LESSONS = [
     { type: "ul", items: [
       "**Internal tooling** — qualified to internal tolerances; no FAA involvement. Document the design, validate first article, monitor wear.",
       "**Non-flight production aids** — same as internal tooling; AS9100 internal traceability required.",
-      "**Flight parts** — full DER/PMA/STC path, NCAMP material qualification, full NDI, statistical allowables. Slow and expensive.",
-      "**Replacement parts (for legacy aircraft)** — often go through an STC with AM-specific qualification protocols. Increasingly common for low-rate-production legacy support."
+      "**Flight parts** — an FAA design-approval route that fits the part (type design, STC for a design change, or PMA), often with a DER making findings on the FAA's behalf; qualified material and process data (shared programs such as NCAMP can help but are not required); full NDI; statistical allowables. Slow and expensive.",
+      "**Replacement parts (for legacy aircraft)** — usually take a PMA route (an STC covers a design change, not a like-for-like replacement), with AM-specific qualification protocols. Increasingly common for low-rate-production legacy support."
     ]},
 
     { type: "h3", text: "Capstone — Pitch an AM Opportunity" },
@@ -4885,7 +4889,7 @@ const AM_LESSONS = [
         "Internal tooling, jigs, fixtures, drill guides — fast wins, no flight qualification needed, builds shop AM capability and credibility"
       ],
       correct: 3,
-      explanation: "Internal tooling is the canonical first AM use case for aerospace adopters. No flight qualification needed (tools never see flight), the engineers using them give immediate feedback, ROI is fast and tangible (jigs that cost $5K and 6 weeks externally print for $50 and 6 hours), and the shop builds AM capability before tackling certified parts. Don't lead with flight-critical primary structure; that's a years-long qualification effort." },
+      explanation: "Internal tooling is the canonical first AM use case for aerospace adopters. No flight qualification needed (tools never see flight), the engineers using them give immediate feedback, ROI is fast and tangible (in this lesson's worked example, a $4,500 machined mandrel with a 3-week lead time becomes a $400 print delivered in 2 days), and the shop builds AM capability before tackling certified parts. Don't lead with flight-critical primary structure; that's a years-long qualification effort." },
     {
       question: "What's the most common reason AM business cases fail to win aerospace facility funding?",
       options: [
@@ -4918,7 +4922,7 @@ const AM_FINAL_EXAM = [
     "phase": 1,
     "question": "What was the most important technical achievement of the GE LEAP fuel nozzle?",
     "options": [
-      "Consolidated 20 brazed parts into a single DMLS-printed component — lighter, more durable, simpler to qualify",
+      "Consolidated 20 brazed parts into a single DMLS-printed component — lighter, more durable, with no brazed joints left to inspect",
       "The first aerospace part ever produced using 3D printing on a flight-certified aircraft",
       "Eliminated the need for any post-processing or final inspection in the production workflow",
       "Proved that low-cost FDM printing could replace expensive metal forgings in commercial engines"
@@ -5341,10 +5345,10 @@ const AM_FINAL_EXAM = [
       "Old resin — fresh resin always cures completely without need for post-cure under any circumstances",
       "Excessive post-cure — over-curing creates a tacky surface that wipes clean only after additional washing",
       "Wrong type of cleaning solvent — IPA always leaves a sticky residue regardless of cure status",
-      "Insufficient post-cure time or UV intensity — uncured monomer remains; needs longer/stronger post-cure"
+      "Incomplete wash or insufficient post-cure — uncured resin remains; re-wash in clean solvent, let dry, then extend the post-cure"
     ],
     "correct": 3,
-    "explanation": "Tacky surface = incomplete polymerization. Longer post-cure time, verify UV unit, rotate part during cure."
+    "explanation": "Tacky surface = uncured material remains. Check the wash first (re-wash in clean solvent, let dry), then the cure: longer post-cure, verify UV unit, rotate part during cure."
   },
   {
     "phase": 3,
@@ -5452,7 +5456,7 @@ const AM_FINAL_EXAM = [
       "HIP is required by law for any commercial aerospace metal AM part regardless of application"
     ],
     "correct": 0,
-    "explanation": "HIP at ~1000-1200°C and high pressure closes voids and relieves stress. Often required for flight-critical applications to meet fatigue requirements."
+    "explanation": "HIP at an alloy-specific temperature (roughly 900–1,200 °C for titanium and nickel alloys) and high pressure closes voids and relieves stress. Often required for flight-critical applications to meet fatigue requirements."
   },
   {
     "phase": 4,
@@ -5507,7 +5511,7 @@ const AM_FINAL_EXAM = [
     "question": "Why is feedstock cost a significant economic factor for metal AM?",
     "options": [
       "Feedstock cost is negligible compared to machine and labor costs in metal AM operations",
-      "Aerospace-grade powders cost $100-$500+/kg depending on alloy — directly affects per-part economics",
+      "Aerospace-grade powders cost tens to hundreds of dollars per kg, with titanium and nickel alloys at the top — directly affects per-part economics",
       "Feedstock is provided free by machine manufacturers as part of standard service agreements",
       "Feedstock cost is fixed by regulation and doesn't vary between materials or quality grades"
     ],
