@@ -4270,13 +4270,13 @@ const AM_LESSONS = [
   quizzes: [
     { question: "What's the right material choice for a high-temperature aerospace tooling jig (continuous service 80-100°C)?",
       options: [
-        "PETG, ABS, or polycarbonate — engineering thermoplastics with glass transitions above the service temperature",
+        "Polycarbonate or a fibre-filled engineering polymer such as PA-CF — both rated around 110 °C, above the top of the 80-100 °C service range",
         "Standard PLA — easy to print, dimensionally stable, and adequate for most aerospace applications",
         "Nylon (PA6 or PA12) without any temperature consideration — nylons handle any aerospace shop floor temperature range",
-        "Any filament — temperature ratings on filament are marketing claims and don't reflect real material performance"
+        "PETG or ABS — tough, easy-to-source thermoplastics that comfortably cover continuous 80-100 °C service"
       ],
       correct: 0,
-      explanation: "Service temperature must be below the material's glass transition (Tg). PLA's Tg is ~60°C — softens around lukewarm coffee. PETG (Tg ~80°C), ABS (Tg ~105°C), polycarbonate (Tg ~150°C) all handle elevated tooling temperatures. For aerospace use 80-100°C, PETG is borderline; ABS or PC is safer. Nylon's Tg varies by grade but is generally moderate." },
+      explanation: "Pick a material whose rated temperature sits clearly above the highest service temperature. The rated limit in the lesson table sits below each polymer's glass transition, so it is the number to design to. From that table: PLA ~50 °C, PETG ~70 °C, Nylon ~90 °C, ABS/ASA ~95 °C — all at or below the top of an 80-100 °C range, so they will soften or creep at the hot end. PC and PA-CF (~110 °C) clear it; PEEK or ULTEM 9085 add more margin when the budget allows. Filament temperature ratings are real engineering limits, not marketing, and nylon's limit also depends on grade and moisture." },
     {
       question: "Why is moisture absorption a critical factor for nylon (PA6, PA12) filament storage?",
       options: [
@@ -5088,12 +5088,12 @@ const AM_FINAL_EXAM = [
     "question": "Right material for an aerospace tooling jig at 80-100°C continuous service?",
     "options": [
       "Standard PLA — easy to print, dimensionally stable, adequate for most aerospace applications",
-      "Any filament — temperature ratings on filament are marketing claims and don't reflect real performance",
+      "PETG or ABS — tough, easy-to-source thermoplastics that comfortably cover continuous 80-100 °C service",
       "Nylon (PA6 or PA12) without temperature consideration — nylons handle any shop floor temperature range",
-      "PETG, ABS, or polycarbonate — engineering thermoplastics with glass transitions above the service temperature"
+      "Polycarbonate or a fibre-filled engineering polymer such as PA-CF — rated around 110 °C, above the top of the service range"
     ],
     "correct": 3,
-    "explanation": "Service temp must be below Tg. PLA's Tg ~60°C is too low; PETG/ABS/PC handle elevated tooling temperatures."
+    "explanation": "Design to a rated temperature clearly above peak service. Per the lesson table, PLA (~50 °C), PETG (~70 °C) and ABS (~95 °C) sit at or below the 80-100 °C range; PC and PA-CF (~110 °C) clear it."
   },
   {
     "phase": 2,
