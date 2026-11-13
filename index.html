@@ -10761,7 +10761,7 @@ const AGENTIC_LESSONS = [
       { type: "p", text: "Before anything else, separate three categories that get lumped together:" },
 
       { type: "ul", items: [
-        "**Chatbot / assistant** — reactive. You send a prompt, it returns text. It has no ability to act on the world, remember across sessions by default, or decide to do anything you didn't explicitly ask. ChatGPT in a browser window is the canonical example.",
+        "**Chatbot / assistant** — reactive. You send a prompt, it returns text. It has no ability to act on the world, remember across sessions by default, or decide to do anything you didn't explicitly ask. A plain chat session with no tools turned on is the canonical example. (Commercial chat apps increasingly add memory, tools, and agent modes, which moves them along the spectrum toward agents.)",
         "**Automation / workflow** — deterministic. A fixed sequence of steps runs the same way every time: 'when an email arrives, extract the attachment, save it to this folder.' Powerful and reliable, but it can't handle anything the author didn't anticipate. Zapier and classic n8n flows are this.",
         "**Agent** — autonomous and goal-directed. You give it an objective, and it decides which steps to take, in what order, using which tools, adapting as it goes. It can call tools, observe the results, and re-plan. This is the qualitative shift."
       ]},
@@ -10826,7 +10826,7 @@ const AGENTIC_LESSONS = [
           "Agents consume too much compute to be cost-effective on aerospace budgets",
           "Language models cannot understand aerospace terminology accurately enough to be useful",
           "Aerospace networks are too slow to support real-time agent loops",
-          "An autonomous agent with the ability to act — read files, send emails, query systems — can also take harmful actions like leaking ITAR-controlled data or contacting the wrong party, so constraints matter as much as capabilities"
+          "An agent that can act on real systems can also leak ITAR-controlled data or contact the wrong party"
         ],
         correct: 3,
         explanation: "The same capability that makes agents useful — taking real actions on real systems — is the source of the risk. An agent that can email and read files can email the wrong supplier or expose controlled technical data. In regulated environments the engineering discipline is as much about bounding what the agent may do as enabling what it can do."
@@ -10908,12 +10908,12 @@ const AGENTIC_LESSONS = [
         question: "An engineer says 'I don't want this agent to ever be able to delete files.' Where is that constraint enforced?",
         options: [
           "In the language model's training data, which must be retrained to remove the capability",
-          "Only by disconnecting the agent from the internet entirely",
+          "In the system prompt — a clear 'never delete files' instruction is enough",
           "It cannot be enforced; any sufficiently capable agent can delete files",
-          "In the set of tools the agent is given — if no file-deletion tool is provided to the agent, the model has no way to delete files regardless of what it reasons"
+          "In the set of tools the agent is given — with no deletion tool, it cannot delete"
         ],
         correct: 3,
-        explanation: "The model can only request actions for which a tool exists. If you never give the agent a file-deletion tool, it physically cannot delete files — it can only emit text, and there's nothing to interpret a delete request. Controlling the tool set is the most fundamental guardrail in agent design."
+        explanation: "The model can only request actions for which a tool exists. If you never give the agent a file-deletion tool, it physically cannot delete files — it can only emit text, and there's nothing to interpret a delete request. Controlling the tool set is the most fundamental guardrail in agent design. A system-prompt instruction helps, but it is guidance the model may not follow; the tool set is enforcement."
       }
     ]
   },
@@ -10950,7 +10950,7 @@ const AGENTIC_LESSONS = [
       { type: "ul", items: [
         "**The process is fixed and well-understood.** If you can draw the flowchart, build the flowchart. Don't pay an LLM to rediscover it on every run.",
         "**Reliability is critical and errors are costly.** Agents are probabilistic — the same input can produce different paths. For a compliance gate where the answer must be identical every time, determinism wins.",
-        "**Latency or cost matters at scale.** Each agent step is an LLM call. A 6-step agent run is 6+ model calls; a deterministic workflow is zero. At thousands of executions a day, the difference is enormous.",
+        "**Latency or cost matters at scale.** Each agent step is an LLM call. A 6-step agent run is 6+ model calls; a deterministic workflow makes zero, or a small fixed number if it uses LLM steps. At thousands of executions a day, the difference is enormous.",
         "**The task is trivially scriptable.** If a regex or a database query does it, an agent is wild overkill."
       ]},
 
@@ -11003,8 +11003,8 @@ const AGENTIC_LESSONS = [
         options: [
           "Running two separate agents that vote on every decision",
           "Using an agent for everything but logging the steps as if it were a workflow",
-          "Alternating between agent and workflow modes at random to balance cost",
-          "A deterministic workflow handles the predictable scaffolding — triggers, data fetching, routing, logging — and hands off to an agent only for the genuinely open-ended sub-task, then resumes control to act on the result"
+          "A supervisor agent that delegates every step, including triggers and logging, to sub-agents",
+          "A workflow runs the predictable steps and hands only the open-ended sub-task to an agent"
         ],
         correct: 3,
         explanation: "The strongest production systems wrap an agent inside a workflow: determinism for the predictable parts (triggers, fetching, routing, logging) and autonomy only for the specific open-ended sub-task, then back to deterministic control to act on the agent's output. You get autonomy where needed and predictability everywhere else."
@@ -11118,7 +11118,7 @@ const AGENTIC_LESSONS = [
 
       { type: "h3", text: "Temperature and Determinism" },
 
-      { type: "p", text: "The Chat Model sub-node exposes a **temperature** parameter (typically 0.0–2.0). Lower temperature means more deterministic, focused output; higher means more varied and creative. For agents doing factual, tool-driven work — the aerospace norm — keep temperature low (0–0.3). You want the agent to reliably call the right tool, not to be creative about it. Save higher temperatures for genuinely generative tasks like drafting." },
+      { type: "p", text: "The Chat Model sub-node exposes a **temperature** parameter. Its range depends on the provider (for example 0–1 for Anthropic, 0–2 for OpenAI), and some reasoning models fix or ignore it. Lower temperature means more deterministic, focused output; higher means more varied and creative. For agents doing factual, tool-driven work — the aerospace norm — keep temperature low (0–0.3). You want the agent to reliably call the right tool, not to be creative about it. Save higher temperatures for genuinely generative tasks like drafting." },
 
       { type: "h3", text: "A Concrete First Build" },
 
@@ -11156,8 +11156,8 @@ const AGENTIC_LESSONS = [
         options: [
           "Re-training the underlying language model on company data",
           "Increasing the temperature until it picks the right tool",
-          "Deleting and rebuilding the entire workflow from scratch",
-          "The execution log, which shows the agent's reasoning, which tool it called, the arguments passed, and the result — revealing whether the fault is the system prompt, the tool, or the model's reasoning"
+          "Switching to a larger model, since tool choice depends on model size",
+          "The execution log, which traces each reasoning step, tool call, and result"
         ],
         correct: 3,
         explanation: "n8n's execution log shows each step the agent took — its reasoning, the tool call, the arguments, and the returned data. That trace tells you whether the problem is bad instructions (system prompt), bad data (the tool), or bad reasoning (the model). It's the core debugging surface and a major reason n8n is good for learning agents."
@@ -11197,13 +11197,14 @@ const AGENTIC_LESSONS = [
 
       { type: "h3", text: "Memory Sub-Nodes" },
 
-      { type: "p", text: "Attach a memory sub-node to the AI Agent node to give it continuity. n8n offers several types:" },
+      { type: "p", text: "Attach a memory sub-node to the AI Agent node to give it continuity. n8n's memory sub-nodes store chat history; the main options are:" },
 
       { type: "ul", items: [
-        "**Window buffer memory** — keeps the last N messages in context. Simple, good for short conversations. Note: this is per-session and does NOT persist between sessions by default.",
-        "**Database-backed memory** — persists conversation history to a database (Postgres, Redis), so the agent can recall context across sessions and over time. This is how you get true long-term memory.",
-        "**Vector store memory** — stores information as embeddings for semantic recall. Used when the agent needs to 'remember' a large body of documents and retrieve relevant pieces (the basis of RAG — retrieval-augmented generation)."
+        "**Simple Memory** (called Window Buffer Memory in older n8n versions) — keeps the last N messages of the current session in context. Easy to set up and good for short conversations. Note: it does NOT persist between sessions by default.",
+        "**Database-backed memory** — persists conversation history to a database (Postgres, Redis), so the agent can recall context across sessions and over time. This is how you get true long-term memory."
       ]},
+
+      { type: "p", text: "Recalling a large body of documents is a different job from remembering the conversation. For that, attach a **vector store as a tool** the agent can search: documents are stored as embeddings, and the agent retrieves the relevant pieces when it needs them (the basis of RAG — retrieval-augmented generation). Chat memory holds the conversation; the vector-store tool holds the knowledge." },
 
       { type: "p", text: "The design tension from Lesson 2 is real here: more memory means more context, which means higher cost and slower runs, and eventually the context window fills. Choose the lightest memory that meets the need." },
 
@@ -11230,7 +11231,7 @@ const AGENTIC_LESSONS = [
         options: [
           "The HTTP Request tool, the universal adapter that lets the agent call any REST API",
           "The Code tool, which is the only way to reach any external system",
-          "Window buffer memory",
+          "Simple Memory (the chat-history sub-node)",
           "It's impossible without a dedicated n8n integration node for that PLM"
         ],
         correct: 0,
@@ -11310,8 +11311,8 @@ const AGENTIC_LESSONS = [
         options: [
           "Convert an agent into a static deterministic workflow",
           "Limit an agent to exactly one tool",
-          "Run an agent without any language model",
-          "Let a root-level agent call other agents as tools — the supervisor sees each sub-agent as a tool, and calling it runs that sub-agent's own loop, with n8n handling context/variable management"
+          "Share one memory and system prompt across several agents",
+          "Let a root-level agent call other agents as if they were tools"
         ],
         correct: 3,
         explanation: "The AI Agent Tool node lets a root agent call other agents as if they were tools. The supervisor 'calls' a sub-agent, which runs its own loop (own model, tools, prompt) and returns a result. n8n notes this handles the context and variable management that raw sub-workflows would otherwise force you to manage manually, and can be nested into multiple tiers."
@@ -11321,8 +11322,8 @@ const AGENTIC_LESSONS = [
         options: [
           "Multi-agent systems cannot use memory",
           "They can only run on n8n Cloud, not self-hosted",
-          "They require abandoning n8n for a different platform",
-          "They multiply LLM calls — a supervisor consulting several sub-agents, each running a multi-step loop, can be a dozen-plus model calls per request, raising cost and latency"
+          "Sub-agents can't have their own tools, so every tool must sit on the supervisor",
+          "They multiply LLM calls per request, raising cost and latency"
         ],
         correct: 3,
         explanation: "Decomposition multiplies model calls: a supervisor plus several looping sub-agents can mean a dozen-plus LLM calls for one request — more expensive and slower. It's the Lesson 3 cost/reliability tradeoff at the architecture level. Decompose for reliability and clarity when warranted, while watching per-request cost."
@@ -11424,7 +11425,7 @@ const AGENTIC_LESSONS = [
     time: "40 min", type: "Ecosystem",
     video: { id: "BoC5MY_7aDk", title: "OpenClaw Full Tutorial for Beginners — Setup Your First AI Agent" },
     content: [
-      { type: "p", text: "n8n is a visual platform you build workflows in. OpenClaw is a different beast: a persistent, self-hosted agent process that runs continuously on your own hardware and bridges a language model to your real systems — files, terminal, browser, calendar, messaging apps. Where n8n waits to be triggered, OpenClaw can run on a schedule, triaging your inbox while you sleep. Understanding both gives you the two dominant shapes of agentic tooling in 2026." },
+      { type: "p", text: "n8n is a visual platform you build workflows in. OpenClaw is a different beast: a persistent, self-hosted agent process that runs continuously on your own hardware and bridges a language model to your real systems — files, terminal, browser, calendar, messaging apps. n8n runs a workflow each time a trigger fires (a schedule, a webhook, a message) and then stops. OpenClaw stays running as an always-on process with direct reach into files, the shell, and messaging, and it can wake itself on a heartbeat to act, triaging your inbox while you sleep. Understanding both gives you the two dominant shapes of agentic tooling in 2026." },
 
       { type: "h3", text: "What OpenClaw Is" },
 
@@ -11438,7 +11439,7 @@ const AGENTIC_LESSONS = [
 
       { type: "h3", text: "The Gateway" },
 
-      { type: "p", text: "At OpenClaw's center is the **Gateway** — the control plane. It manages model routing, authentication, prompt assembly, session management, and tool execution as one integrated runtime. From the Gateway's perspective, a cloud model (Anthropic, OpenAI) and a local model (Ollama) look identical — both are OpenAI-compatible endpoints. The tradeoff: cloud models offer stronger reasoning and larger context (the usual choice for the main orchestrator), while local models keep everything on your hardware at the cost of capability. For controlled-data environments, a local model removes even the model-API data flow — a meaningful option aerospace teams should weigh." },
+      { type: "p", text: "At OpenClaw's center is the **Gateway** — the control plane. It manages model routing, authentication, prompt assembly, session management, and tool execution as one integrated runtime. Through the Gateway's provider adapters, a cloud model (Anthropic, OpenAI) and a local model (Ollama) are configured and called the same way, even though their underlying APIs differ. The tradeoff: cloud models offer stronger reasoning and larger context (the usual choice for the main orchestrator), while local models keep everything on your hardware at the cost of capability. For controlled-data environments, a local model removes even the model-API data flow — a meaningful option aerospace teams should weigh." },
 
       { type: "h3", text: "Tools vs. Skills — the Critical Distinction" },
 
@@ -11457,7 +11458,7 @@ const AGENTIC_LESSONS = [
 
       { type: "ul", items: [
         "**Run it in isolation.** Use a dedicated device or VM, never your primary machine, so there's a kill switch you can physically reach.",
-        "**Audit skills before installing.** A Cisco analysis found that 26% of community skills contained at least one vulnerability. Treat third-party skills like any untrusted code: review or fork before use.",
+        "**Audit skills before installing.** Security scans of community agent skills have found that a meaningful share (roughly a quarter, in one widely cited vendor analysis) contained at least one vulnerability. Treat third-party skills like any untrusted code: a skill cannot grant new tools, but its instructions can still steer the agent into misusing the tools it is already allowed. Review or fork before use.",
         "**Set spending limits at the provider level** — an agent in a bad loop can burn API credits fast.",
         "**Scope the tool allowlist tightly** — grant only the tools a given agent genuinely needs, and keep destructive tools (write, exec) gated."
       ]},
@@ -11488,15 +11489,15 @@ const AGENTIC_LESSONS = [
         explanation: "OpenClaw runs on your own machine/server/VPS with memory persisted as Markdown files locally. Because it's model-agnostic, you can route to a local Ollama model, which removes even the external model-API data flow — letting controlled data stay entirely within your boundary. That's a meaningful option for ITAR/CUI-sensitive work."
       },
       {
-        question: "A Cisco analysis found that 26% of community OpenClaw skills contained at least one vulnerability. What is the correct response for an aerospace team?",
+        question: "Security scans have found vulnerabilities in a meaningful share of community agent skills. What is the correct response for an aerospace team?",
         options: [
           "Avoid OpenClaw entirely — it cannot be used safely under any configuration",
           "Only use skills that have more than 1,000 downloads",
-          "Install all skills but disable the language model",
-          "Treat third-party skills like any untrusted code: audit or fork before installing, run OpenClaw isolated on a dedicated VM, scope the tool allowlist tightly, and set provider spending limits"
+          "Install a skill only if it adds the tools it needs",
+          "Treat skills as untrusted code: audit or fork them, and run OpenClaw isolated with a tight tool allowlist"
         ],
         correct: 3,
-        explanation: "The vulnerability finding means third-party skills are untrusted code and must be reviewed before use. Combined with the other precautions — isolation on a dedicated device/VM with a reachable kill switch, a tightly-scoped tool allowlist, and provider-level spending limits — OpenClaw can be deployed responsibly. Carelessly, it's an incident waiting to happen; deliberately, it's a powerful local-first option."
+        explanation: "Scan findings mean third-party skills are untrusted code and must be reviewed before use. A skill never adds tools (the allowlist does), so installing a skill 'for its tools' misreads the architecture. Combined with the other precautions — isolation on a dedicated device/VM with a reachable kill switch, a tightly-scoped tool allowlist, and provider-level spending limits — OpenClaw can be deployed responsibly. Carelessly, it's an incident waiting to happen; deliberately, it's a powerful local-first option."
       }
     ]
   },
@@ -11561,8 +11562,8 @@ const AGENTIC_LESSONS = [
         question: "What is the recurring caution from experienced OpenClaw operators about messaging?",
         options: [
           "Never use messaging integrations at all",
-          "Only use messaging on weekends",
-          "Enable messaging for sending to yourself (notifications), but not for autonomously corresponding with others on your behalf — external communication is where a hallucinated action becomes a real incident",
+          "Allow external sends only for routine messages such as shipment acknowledgments",
+          "Enable it for notifications to yourself, but not for autonomous messages to others",
           "Messaging is safe to fully automate because it's reversible"
         ],
         correct: 2,
@@ -11574,7 +11575,7 @@ const AGENTIC_LESSONS = [
           "It uses the most powerful available model with all tools enabled for maximum capability",
           "It sends supplier correspondence automatically to save the most time",
           "It runs on the engineer's primary workstation for convenience",
-          "Its capabilities are scoped to read + post-to-own-channel, with write/exec/external-send denied, running isolated — so the worst-case failure is a wrong summary in an internal channel a human reads anyway: bounded and recoverable"
+          "Tools are limited to read and internal posting, so the worst case is a wrong internal summary"
         ],
         correct: 3,
         explanation: "The deployment is defensible because the failure mode is bounded and recoverable: tools limited to read + internal messaging, with write/exec/external-send denied, on an isolated VM. Even a completely misfiring model can only post an incorrect summary to an internal channel that a human reviews — exactly the 'worst case is recoverable' standard from Lesson 8."
@@ -11585,7 +11586,7 @@ const AGENTIC_LESSONS = [
   {
     phase: "Phase 3", phaseColor: "#1a6b3c",
     title: "The Agent Tooling Landscape",
-    subtitle: "n8n vs. OpenClaw vs. the rest, plus MCP — the emerging standard for connecting agents to tools. How to choose for a given use case.",
+    subtitle: "n8n vs. OpenClaw vs. the rest, plus MCP — the common standard for connecting agents to tools. How to choose for a given use case.",
     time: "35 min", type: "Ecosystem",
     video: { id: "CQywdSdi5iA", title: "The Model Context Protocol (MCP) — Anthropic" },
     content: [
@@ -11609,7 +11610,7 @@ const AGENTIC_LESSONS = [
       { type: "ul", items: [
         "**Why it matters:** build a connection to your PLM system once as an MCP server, and any MCP-compatible agent — across different frameworks — can use it. No more re-implementing the same integration per platform.",
         "**The ecosystem effect:** a growing library of MCP servers for common systems means less custom integration work over time.",
-        "**Practical note:** both major platforms in this track are moving toward MCP compatibility, and you'll increasingly see 'connect via MCP' as the standard way to give an agent a new capability."
+        "**Practical note:** n8n can already use MCP servers as agent tools (MCP Client Tool node) and expose its own workflows as an MCP server (MCP Server Trigger node), and 'connect via MCP' is now a common way to give an agent a new capability. MCP support changes quickly, so check each platform's current docs before planning an integration."
       ]},
 
       { type: "p", text: "Think of MCP as doing for agent-tool connections what a standard port did for hardware: it turns N-by-M custom integrations into a common plug." },
@@ -11677,7 +11678,7 @@ const AGENTIC_LESSONS = [
     time: "35 min", type: "Enterprise",
     video: { id: "b4bwRFaIzpg", title: "How Big Companies Are Actually Using AI Agents In 2025" },
     content: [
-      { type: "p", text: "Concepts and tools are means; this lesson is about ends. Here are four agentic use cases grounded in real aerospace operations — chosen because each sits squarely in the gap from Lesson 1 (too variable for rigid automation, too repetitive for senior engineers) and each can be bounded to a recoverable failure mode." },
+      { type: "p", text: "Concepts and tools are means; this lesson is about ends. (The video above dates from 2025. Some product names in it may have changed, but the enterprise patterns it shows still apply.) Here are four agentic use cases grounded in real aerospace operations — chosen because each sits squarely in the gap from Lesson 1 (too variable for rigid automation, too repetitive for senior engineers) and each can be bounded to a recoverable failure mode." },
 
       { type: "h3", text: "1. Document Processing & Extraction" },
 
@@ -11873,13 +11874,13 @@ const AGENTIC_LESSONS = [
       { type: "p", text: "**Task:** Weekly supplier-documentation completeness check — every Friday, verify that each of the week's incoming shipments has its required cert package, and chase what's missing." },
 
       { type: "ul", items: [
-        "**Agent or workflow:** Agent — the 'what's required' varies by part class and supplier, and chasing requires composing context-specific messages. The investigation can't be fully predetermined.",
-        "**Decomposition:** Supervisor + two sub-agents — a 'completeness-check agent' (reads shipment records and required-docs matrix, identifies gaps) and a 'drafting agent' (composes chase messages for the gaps).",
-        "**Anatomy:** Frontier model for the supervisor and completeness reasoning; cheaper model acceptable for drafting. Tools: read shipment records, read required-docs matrix, draft message. Memory: lightweight — just the current week's run. Prompt: 'Identify missing required documents per shipment using the matrix; never assume a doc exists without confirming it in the records.'",
+        "**Agent or workflow:** Hybrid. The first pass, matching each shipment against the required-docs matrix, is a lookup, so a deterministic workflow does it (if you can draw the flowchart, build the flowchart). The part that can't be predetermined comes next: many POs carry free-text clauses and supplier-specific approved deviations that change what a shipment actually owes, so the true gap list can't be computed from the table alone. Interpreting those clauses and composing context-specific chase messages is the agent's job.",
+        "**Decomposition:** Supervisor + two sub-agents — a 'completeness-check agent' (takes the deterministic matrix result plus the PO clauses and approved deviations, and confirms the real gaps) and a 'drafting agent' (composes chase messages for the gaps).",
+        "**Anatomy:** Frontier model for the supervisor and completeness reasoning; cheaper model acceptable for drafting. Tools: read shipment records, read the matrix-check results, read PO clauses and approved deviations, draft message. Memory: lightweight — just the current week's run. Prompt: 'Start from the matrix check, then apply any PO clauses or approved deviations to decide which documents are truly missing per shipment; never assume a doc exists without confirming it in the records.'",
         "**Tools:** all read-only except 'draft message,' which writes only to a review queue. No send tool.",
         "**Human gates:** the entire chase-message set goes to a buyer for review and sending. Nothing leaves automatically.",
         "**Worst case:** the agent produces a wrong gap list or a wrong draft — caught by the buyer in review. Recoverable. ✓",
-        "**Platform:** self-hosted n8n (visual, team-maintainable, scheduled trigger, read-only DB tools), inside the boundary.",
+        "**Platform:** self-hosted n8n (visual, team-maintainable, scheduled trigger, the matrix check as plain workflow nodes, read-only DB tools), inside the boundary.",
         "**Incorporation:** records access is read-only and in-boundary; drafts hold supplier data so the review queue is protected accordingly; named owner is the supplier-quality lead; every run logged. Passes the checklist."
       ]},
 
@@ -12758,12 +12759,12 @@ const AGENTIC_FINAL_EXAM = [
     "question": "n8n stores API keys as credentials referenced by name because:",
     "options": [
       "It speeds up execution",
-      "It is only a cosmetic convention",
+      "So the model can read the key and pass it to tools when needed",
       "The model requires a separate credentials file",
-      "They're encrypted at rest, never hard-coded into workflows, centrally rotatable, and on self-host stay in your own database"
+      "They're encrypted at rest and kept out of the workflow itself"
     ],
     "correct": 3,
-    "explanation": "Separating credentials gives encryption at rest, central rotation, no hard-coded secrets in workflow JSON, and on self-host keeps them in your database — a core security property."
+    "explanation": "Separating credentials gives encryption at rest, central rotation, no hard-coded secrets in workflow JSON, and on self-host keeps them in your database — a core security property. The model never sees the key; n8n supplies it to the node at run time."
   },
   {
     "phase": 2,
@@ -12781,7 +12782,7 @@ const AGENTIC_FINAL_EXAM = [
     "phase": 2,
     "question": "For factual, tool-driven aerospace agent work, temperature should generally be:",
     "options": [
-      "High (1.5–2.0) for creativity",
+      "High (near the top of the provider's range) for creativity",
       "Low (0–0.3) for deterministic, focused tool selection",
       "Exactly 1.0 always",
       "Irrelevant — temperature only affects images"
@@ -12818,7 +12819,7 @@ const AGENTIC_FINAL_EXAM = [
     "question": "To let an agent call your PLM system that exposes a REST API but has no pre-built node, use:",
     "options": [
       "The HTTP Request tool, the universal adapter for any REST API",
-      "Window buffer memory",
+      "Simple Memory",
       "A second language model",
       "n8n Cloud only"
     ],
@@ -12827,7 +12828,7 @@ const AGENTIC_FINAL_EXAM = [
   },
   {
     "phase": 2,
-    "question": "Window buffer memory in n8n, by default:",
+    "question": "n8n's Simple Memory sub-node (formerly Window Buffer Memory), by default:",
     "options": [
       "Persists across sessions in a database",
       "Keeps the last N messages in context for the current session and does not persist between sessions",
@@ -12835,15 +12836,15 @@ const AGENTIC_FINAL_EXAM = [
       "Is the same as long-term memory"
     ],
     "correct": 1,
-    "explanation": "Window buffer memory holds recent messages for the current session only. Persistent recall across sessions requires database-backed memory; semantic recall uses vector store memory."
+    "explanation": "Simple Memory holds recent messages for the current session only. Persistent recall across sessions requires a database-backed memory sub-node; semantic recall over documents comes from a vector-store tool, not a memory sub-node."
   },
   {
     "phase": 2,
     "question": "n8n's AI Agent Tool node enables:",
     "options": [
       "Converting an agent into a deterministic workflow",
-      "Running an agent without a model",
-      "A root agent to call other agents as tools, with n8n handling context/variable management, supporting nested multi-tier orchestration",
+      "Several agents sharing one system prompt and memory",
+      "A root agent to call other agents as tools",
       "Restricting an agent to one tool"
     ],
     "correct": 2,
@@ -12855,8 +12856,8 @@ const AGENTIC_FINAL_EXAM = [
     "options": [
       "It cannot use memory",
       "It only runs on cloud",
-      "It requires leaving n8n",
-      "It multiplies LLM calls — a supervisor plus several looping sub-agents can be a dozen-plus calls per request, raising cost and latency"
+      "Sub-agents can't have their own tools",
+      "It multiplies LLM calls per request, raising cost and latency"
     ],
     "correct": 3,
     "explanation": "Decomposition multiplies model calls and thus cost and latency. Decompose for reliability and clarity when warranted, while watching per-request cost — the Lesson 3 tradeoff at the architecture level."
@@ -12902,36 +12903,36 @@ const AGENTIC_FINAL_EXAM = [
     "question": "What makes OpenClaw 'local-first'?",
     "options": [
       "It only works offline",
-      "It requires Microsoft 365",
+      "It ships with a built-in model, so no model API is used",
       "It stores data in n8n Cloud",
-      "It runs as a persistent process on your own hardware with memory stored as Markdown files locally; with a local model even the model-API flow can be eliminated"
+      "It runs on your own hardware and keeps its memory as local files"
     ],
     "correct": 3,
     "explanation": "OpenClaw runs on your own machine/server, persisting memory as local Markdown files. Routing to a local model removes even the external model-API data flow — keeping controlled data in-boundary."
   },
   {
     "phase": 3,
-    "question": "A Cisco analysis found roughly what fraction of community OpenClaw skills had at least one vulnerability?",
+    "question": "A community OpenClaw skill looks useful for your team. What should happen before it is installed?",
     "options": [
-      "About 26%",
-      "About 2%",
-      "About 50%",
-      "About 80%"
+      "Review or fork it like any untrusted code",
+      "Nothing — a skill is only Markdown, so it carries no risk",
+      "Install it only if it adds the tools the agent needs",
+      "Install it if its download count is high"
     ],
     "correct": 0,
-    "explanation": "About 26% of analyzed community skills contained at least one vulnerability — so third-party skills are untrusted code and must be audited or forked before use."
+    "explanation": "A skill grants no capability (the tool allowlist does), so 'install it for its tools' misreads the architecture. But a skill's instructions can still steer the agent into misusing the tools it is allowed, and scans have found vulnerabilities in a meaningful share of community skills. Treat every third-party skill as untrusted code: review or fork it before use."
   },
   {
     "phase": 3,
     "question": "The recommended way to run OpenClaw safely is:",
     "options": [
       "On your primary workstation for convenience",
-      "Isolated on a dedicated device or VM with a reachable kill switch, audited skills, a tightly-scoped tool allowlist, and provider spending limits",
+      "Isolated on a dedicated device or VM, with audited skills and a tight tool allowlist",
       "With every available tool enabled for flexibility",
-      "Only with cloud models"
+      "With safety enforced by installing only well-reviewed skills"
     ],
     "correct": 1,
-    "explanation": "Isolation (dedicated VM/device), skill auditing, a tight tool allowlist, and provider spending limits together make OpenClaw deployable responsibly. Carelessly it's an incident waiting to happen."
+    "explanation": "Isolation (dedicated VM/device), skill auditing, a tight tool allowlist, and provider spending limits together make OpenClaw deployable responsibly. Carelessly it's an incident waiting to happen. Skills alone enforce nothing; the tool allowlist does."
   },
   {
     "phase": 3,
@@ -12964,7 +12965,7 @@ const AGENTIC_FINAL_EXAM = [
       "For self-notifications, but not for autonomously corresponding with others on the user's behalf",
       "Fully automated for all external correspondence",
       "Never, under any circumstances",
-      "Only on weekends"
+      "For routine external messages, such as shipment acknowledgments"
     ],
     "correct": 0,
     "explanation": "Self-notifications are low-risk; autonomous external correspondence is where a hallucinated action becomes a real incident, so it stays human-gated."
@@ -12986,7 +12987,7 @@ const AGENTIC_FINAL_EXAM = [
     "question": "Most agent tools differ along which two axes?",
     "options": [
       "Free vs. paid, and fast vs. slow",
-      "American vs. European, and old vs. new",
+      "Open-source vs. proprietary, and agent vs. workflow",
       "Visual/no-code ↔ code-first, and hosted/cloud ↔ self-hosted/local",
       "Text-only vs. multimodal, and single vs. multi-agent"
     ],
@@ -13033,13 +13034,13 @@ const AGENTIC_FINAL_EXAM = [
     "phase": 3,
     "question": "OpenClaw differs from a browser chat session chiefly in persistence, tools, and:",
     "options": [
-      "Color scheme",
+      "Privacy — it never sends data to a model provider",
       "Model size",
-      "Execution — it actually performs actions (with the right tools enabled) rather than only suggesting them",
+      "Execution — it performs actions rather than only suggesting them",
       "Language support"
     ],
     "correct": 2,
-    "explanation": "The leap from assistant to agent is execution: OpenClaw doesn't just suggest renaming files, it renames them when the tool is enabled — which is exactly why bounding discipline matters at the OS level."
+    "explanation": "The leap from assistant to agent is execution: OpenClaw doesn't just suggest renaming files, it renames them when the tool is enabled — which is exactly why bounding discipline matters at the OS level. (With a cloud model configured, prompts still go to that provider.)"
   },
   {
     "phase": 4,
@@ -13144,10 +13145,10 @@ const AGENTIC_FINAL_EXAM = [
       "Optional once development is done",
       "Disabled in production for performance",
       "Only for measuring token cost",
-      "A condition of being allowed to run the agent — it must answer 'what did it do, why, on what input, who approved it' months later, retained and protected per the data's classification"
+      "A condition of running the agent, retained and protected at the data's classification"
     ],
     "correct": 3,
-    "explanation": "The audit trail is non-optional infrastructure in regulated settings — reconstructable, retained, and protected at the data's classification. You can't run what you can't audit."
+    "explanation": "The audit trail is non-optional infrastructure in regulated settings: it must answer 'what did it do, why, on what input, who approved it' months later — reconstructable, retained, and protected at the data's classification. You can't run what you can't audit."
   },
   {
     "phase": 4,
