@@ -20,15 +20,14 @@ const RUNTIME_CACHE_HOSTS = [
   'cdnjs.cloudflare.com',
 ];
 
+const matchesHost = (hostname, host) => hostname === host || hostname.endsWith('.' + host);
+
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(PRECACHE_URLS).catch((err) => {
-        console.warn('Precache partially failed:', err);
-      });
-    })
+    caches.open(CACHE_NAME)
+      .then((cache) => cache.addAll(PRECACHE_URLS))
+      .then(() => self.skipWaiting())
   );
-  self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
@@ -53,13 +52,13 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
 
   // Skip YouTube requests — always go to network, never cache
-  if (url.hostname.includes('youtube.com') || url.hostname.includes('youtube-nocookie.com') ||
-      url.hostname.includes('ytimg.com') || url.hostname.includes('googlevideo.com')) {
+  if (matchesHost(url.hostname, 'youtube.com') || matchesHost(url.hostname, 'youtube-nocookie.com') ||
+      matchesHost(url.hostname, 'ytimg.com') || matchesHost(url.hostname, 'googlevideo.com')) {
     return;
   }
 
   const isAppShell = url.origin === self.location.origin;
-  const isCdnAsset = RUNTIME_CACHE_HOSTS.some((host) => url.hostname.includes(host));
+  const isCdnAsset = RUNTIME_CACHE_HOSTS.some((host) => matchesHost(url.hostname, host));
   if (!isAppShell && !isCdnAsset) return;
 
   // The HTML shell (navigations and index.html) uses NETWORK-FIRST so that a new
@@ -83,7 +82,7 @@ self.addEventListener('fetch', (event) => {
           return response;
         })
         .catch(() =>
-          caches.match(request).then((cached) => cached || caches.match('./index.html'))
+          caches.match(request, { cacheName: CACHE_NAME }).then((cached) => cached || caches.match('./index.html', { cacheName: CACHE_NAME }))
         )
     );
     return;
@@ -91,7 +90,7 @@ self.addEventListener('fetch', (event) => {
 
   // Static assets + CDN: cache-first
   event.respondWith(
-    caches.match(request).then((cached) => {
+    caches.match(request, { cacheName: CACHE_NAME }).then((cached) => {
       if (cached) return cached;
       return fetch(request).then((response) => {
         if (response && response.status === 200) {

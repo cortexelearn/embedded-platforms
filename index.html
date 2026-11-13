@@ -42,7 +42,7 @@
     .boot-loader {
       display: flex; align-items: center; justify-content: center;
       min-height: 100dvh; flex-direction: column; gap: 16px;
-      font-family: Georgia, serif; color: #7a6e5f;
+      font-family: Georgia, serif; color: #716556;
       padding-top: var(--sai-top); padding-bottom: var(--sai-bottom);
     }
     .boot-loader .plane { font-size: 48px; animation: pulse 1.6s ease-in-out infinite; }
@@ -962,7 +962,7 @@ function ConceptGrid({ items, isComfortable }) {
   const gap       = isComfortable ? 16 : 12;
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap, margin: "16px 0" }}>
-      {items.map((item, i) => (
+      {(items || []).map((item, i) => (
         <div key={i} style={{ background: "#ede7d6", border: "1px solid #c8bfaa", borderRadius: 8, padding: pad }}>
           <div style={{ fontSize: titleFont, fontWeight: 700, marginBottom: 6, color: "#1a1208" }}>{renderInline(item.title)}</div>
           <div style={{ fontSize: bodyFont, lineHeight: 1.65, color: "#5a4e3f" }}>{renderInline(item.text)}</div>
@@ -1167,7 +1167,7 @@ function VideoEmbed({ video }) {
 function QuizSet({ quizzes }) {
   // Shuffle options at mount so the correct answer's position is randomized per session
   // Stable across renders within this lesson view; re-shuffles when user navigates away and back
-  const [shuffled] = useState(() => quizzes.map(q => {
+  const [shuffled] = useState(() => (quizzes || []).map(q => {
     // Pass q.correct so the shuffle correctly tracks where the right answer ended up
     const { shuffled, correctIdx } = shuffleOptions(q.options, q.correct);
     // Build a new quiz object with shuffled options and updated correct index
@@ -1183,7 +1183,7 @@ function QuizSet({ quizzes }) {
       <div style={{ fontFamily: "monospace", fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "#c84b11", marginBottom: 16, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
         <span>Knowledge Check</span>
         <span style={{ color: "#c8bfaa" }}>—</span>
-        <span style={{ color: "#7a6e5f" }}>{shuffled.length} questions</span>
+        <span style={{ color: "#716556" }}>{shuffled.length} questions</span>
         {allAnswered && (
           <span style={{ marginLeft: "auto", fontWeight: 700, color: score === shuffled.length ? "#1a6b3c" : score >= Math.ceil(shuffled.length * 0.7) ? "#7a6000" : "#8b2020" }}>
             Score: {score}/{shuffled.length}
@@ -1197,8 +1197,8 @@ function QuizSet({ quizzes }) {
         return (
           <div key={qi} style={{ background: "#ede7d6", border: "1px solid #c8bfaa", borderRadius: 12, padding: 20, marginBottom: 16 }}>
             <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 14, lineHeight: 1.5, color: "#1a1208" }}>
-              <span style={{ fontFamily: "monospace", fontSize: 11, color: "#7a6e5f", marginRight: 8 }}>Q{qi + 1}.</span>
-              {quiz.question}
+              <span style={{ fontFamily: "monospace", fontSize: 11, color: "#716556", marginRight: 8 }}>Q{qi + 1}.</span>
+              {renderInline(quiz.question)}
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               {quiz.options.map((opt, oi) => {
@@ -1213,7 +1213,7 @@ function QuizSet({ quizzes }) {
                   <button key={oi} disabled={isAnswered} onClick={() => setAnswers(a => ({ ...a, [qi]: oi }))}
                     style={{ padding: "11px 15px", border: `1px solid ${border}`, borderRadius: 8, cursor: isAnswered ? "default" : "pointer", fontSize: 13, lineHeight: 1.45, textAlign: "left", background: bg, color, fontFamily: "inherit", display: "flex", alignItems: "flex-start", gap: 10, transition: "background 0.15s, border-color 0.15s" }}>
                     <span style={{ fontFamily: "monospace", fontSize: 11, flexShrink: 0, marginTop: 1, fontWeight: 700, opacity: 0.7 }}>{icon}</span>
-                    <span>{opt}</span>
+                    <span>{renderInline(opt)}</span>
                   </button>
                 );
               })}
@@ -1224,7 +1224,7 @@ function QuizSet({ quizzes }) {
                 color: chosen === quiz.correct ? "#14522e" : "#6b1f12",
                 border: `1px solid ${chosen === quiz.correct ? "rgba(26,107,60,0.3)" : "rgba(192,57,43,0.2)"}` }}>
                 <span style={{ fontWeight: 700 }}>{chosen === quiz.correct ? "Correct — " : "Not quite — "}</span>
-                {quiz.explanation}
+                {renderInline(quiz.explanation)}
               </div>
             )}
           </div>
@@ -3424,11 +3424,11 @@ function FinalExamView({ onExit, isComfortable, pool, certificateTitle, certific
   <rect x="30" y="30" width="1040" height="790" fill="none" stroke="#1a1208" stroke-width="3"/>
   <rect x="45" y="45" width="1010" height="760" fill="none" stroke="#c84b11" stroke-width="1"/>
 
-  <text x="550" y="150" font-family="Georgia, serif" font-size="22" fill="#7a6e5f" text-anchor="middle" letter-spacing="6">CERTIFICATE OF COMPLETION</text>
+  <text x="550" y="150" font-family="Georgia, serif" font-size="22" fill="#716556" text-anchor="middle" letter-spacing="6">CERTIFICATE OF COMPLETION</text>
   <line x1="350" y1="180" x2="750" y2="180" stroke="#c84b11" stroke-width="1"/>
 
   <text x="550" y="260" font-family="Georgia, serif" font-size="48" font-weight="bold" fill="#1a1208" text-anchor="middle">${escapeXml(certificateTitle)}</text>
-  <text x="550" y="305" font-family="Georgia, serif" font-size="20" font-style="italic" fill="#7a6e5f" text-anchor="middle">${escapeXml(certificateSubtitle)}</text>
+  <text x="550" y="305" font-family="Georgia, serif" font-size="20" font-style="italic" fill="#716556" text-anchor="middle">${escapeXml(certificateSubtitle)}</text>
 
   <text x="550" y="395" font-family="Georgia, serif" font-size="18" fill="#2a2018" text-anchor="middle">This certifies that</text>
 
@@ -3515,11 +3515,11 @@ function FinalExamView({ onExit, isComfortable, pool, certificateTitle, certific
 
   <line x1="200" y1="745" x2="450" y2="745" stroke="#1a1208" stroke-width="1"/>
   <text x="325" y="765" font-family="Georgia, serif" font-size="13" fill="#1a1208" text-anchor="middle">${escapeXml(date)}</text>
-  <text x="325" y="782" font-family="monospace" font-size="9" fill="#7a6e5f" text-anchor="middle" letter-spacing="2">DATE OF COMPLETION</text>
+  <text x="325" y="782" font-family="monospace" font-size="9" fill="#716556" text-anchor="middle" letter-spacing="2">DATE OF COMPLETION</text>
 
   <line x1="650" y1="745" x2="900" y2="745" stroke="#1a1208" stroke-width="1"/>
   <text x="775" y="765" font-family="Georgia, serif" font-size="13" fill="#1a1208" text-anchor="middle">Cortex Edge Learning</text>
-  <text x="775" y="782" font-family="monospace" font-size="9" fill="#7a6e5f" text-anchor="middle" letter-spacing="2">ISSUING ORGANIZATION</text>
+  <text x="775" y="782" font-family="monospace" font-size="9" fill="#716556" text-anchor="middle" letter-spacing="2">ISSUING ORGANIZATION</text>
 </svg>`;
     const blob = new Blob([svg], { type: "image/svg+xml" });
     const url = URL.createObjectURL(blob);
@@ -3531,20 +3531,20 @@ function FinalExamView({ onExit, isComfortable, pool, certificateTitle, certific
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
 
   return (
     <div className="course-content" style={{ maxWidth: maxW, margin: "0 auto", padding: pad, width: "100%", boxSizing: "border-box", overflowWrap: "anywhere" }}>
       {/* Header */}
-      <div style={{ fontFamily: "monospace", fontSize: 10, letterSpacing: "0.18em", color: "#7a6e5f", textTransform: "uppercase", marginBottom: 10, display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+      <div style={{ fontFamily: "monospace", fontSize: 10, letterSpacing: "0.18em", color: "#716556", textTransform: "uppercase", marginBottom: 10, display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
         <span style={{ background: "#1a1208", color: "#e8a87c", padding: "2px 10px", borderRadius: 3, fontSize: 9, letterSpacing: "0.2em" }}>FINAL EXAM</span>
         <span>{totalQuestions} questions · 85% to pass</span>
       </div>
       <h1 style={{ fontSize: isComfortable ? "clamp(32px,3.5vw,48px)" : "clamp(26px,3.5vw,40px)", fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", marginBottom: 8, color: "#1a1208" }}>
         {certificateTitle}
       </h1>
-      <p style={{ fontSize: isComfortable ? 18 : 16, fontWeight: 300, fontStyle: "italic", color: "#7a6e5f", marginBottom: 20, lineHeight: 1.55 }}>
+      <p style={{ fontSize: isComfortable ? 18 : 16, fontWeight: 300, fontStyle: "italic", color: "#716556", marginBottom: 20, lineHeight: 1.55 }}>
         A comprehensive test across all four phases. No feedback is shown until you submit. Answer all {totalQuestions} questions, then click Submit.
       </p>
 
@@ -3643,7 +3643,7 @@ function FinalExamView({ onExit, isComfortable, pool, certificateTitle, certific
       {!submitted && (
         <div style={{ padding: "14px 18px", marginBottom: 24, background: "#ede7d6", border: "1px solid #c8bfaa", borderRadius: 8, display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
           <div style={{ flex: 1, minWidth: 200 }}>
-            <div style={{ fontFamily: "monospace", fontSize: 10, letterSpacing: "0.12em", color: "#7a6e5f", textTransform: "uppercase", marginBottom: 4 }}>
+            <div style={{ fontFamily: "monospace", fontSize: 10, letterSpacing: "0.12em", color: "#716556", textTransform: "uppercase", marginBottom: 4 }}>
               Progress
             </div>
             <div style={{ fontSize: 14, color: "#1a1208", fontWeight: 600 }}>
@@ -3675,8 +3675,8 @@ function FinalExamView({ onExit, isComfortable, pool, certificateTitle, certific
               marginBottom: 14,
             }}>
             <div style={{ fontSize: qFont, fontWeight: 600, marginBottom: 12, lineHeight: 1.5, color: "#1a1208", display: "flex", alignItems: "flex-start", gap: 10 }}>
-              <span style={{ fontFamily: "monospace", fontSize: qFont - 2, color: "#7a6e5f", flexShrink: 0 }}>Q{qi + 1}.</span>
-              <span style={{ flex: 1 }}>{q.q}</span>
+              <span style={{ fontFamily: "monospace", fontSize: qFont - 2, color: "#716556", flexShrink: 0 }}>Q{qi + 1}.</span>
+              <span style={{ flex: 1 }}>{renderInline(q.q)}</span>
               {submitted && (
                 <span style={{ fontFamily: "monospace", fontSize: 11, fontWeight: 700, color: isCorrect ? "#14522e" : "#8b2020", flexShrink: 0, letterSpacing: "0.08em" }}>
                   {isCorrect ? "✓ CORRECT" : "✗ WRONG"}
@@ -3698,7 +3698,6 @@ function FinalExamView({ onExit, isComfortable, pool, certificateTitle, certific
                     key={oi}
                     disabled={submitted}
                     onClick={() => setAnswers(a => ({ ...a, [q.id]: oi }))}
-                    aria-label={`Option ${letter}: ${opt}`}
                     aria-pressed={oi === chosen}
                     style={{
                       padding: isComfortable ? "13px 18px" : "11px 15px",
@@ -3717,7 +3716,7 @@ function FinalExamView({ onExit, isComfortable, pool, certificateTitle, certific
                         ? (oi === q.correctIdx ? "✓" : oi === chosen ? "✗" : letter)
                         : letter}
                     </span>
-                    <span>{opt}</span>
+                    <span>{renderInline(opt)}</span>
                   </button>
                 );
               })}
@@ -3725,10 +3724,10 @@ function FinalExamView({ onExit, isComfortable, pool, certificateTitle, certific
             {submitted && isWrong && chosen !== undefined && (
               <div style={{ marginTop: 12, padding: "10px 14px", borderRadius: 6, fontSize: 12, lineHeight: 1.55, background: "rgba(26,107,60,0.08)", color: "#14522e", border: "1px solid rgba(26,107,60,0.2)" }}>
                 <span style={{ fontWeight: 700 }}>Correct answer: </span>
-                {q.options[q.correctIdx]}
+                {renderInline(q.options[q.correctIdx])}
               </div>
             )}
-            {submitted && q.explanation && <p className="exam-explanation" style={{ marginTop: 12, lineHeight: 1.6 }}>{q.explanation}</p>}
+            {submitted && q.explanation && <p className="exam-explanation" style={{ marginTop: 12, lineHeight: 1.6 }}>{renderInline(q.explanation)}</p>}
           </div>
         );
       })}
@@ -3738,7 +3737,7 @@ function FinalExamView({ onExit, isComfortable, pool, certificateTitle, certific
         <button
           onClick={onExit}
           aria-label="Return to course home"
-          style={{ fontFamily: "monospace", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", padding: "11px 22px", borderRadius: 6, border: "1px solid #c8bfaa", background: "transparent", cursor: "pointer", color: "#7a6e5f" }}>
+          style={{ fontFamily: "monospace", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", padding: "11px 22px", borderRadius: 6, border: "1px solid #c8bfaa", background: "transparent", cursor: "pointer", color: "#716556" }}>
           ← Exit to Course
         </button>
 
@@ -3773,6 +3772,8 @@ function FinalExamView({ onExit, isComfortable, pool, certificateTitle, certific
 // Helper: escape text for safe SVG embedding
 function escapeXml(s) {
   return String(s)
+    // XML 1.0 excludes controls, lone surrogates, and U+FFFE/U+FFFF.
+    .replace(/[^\u0009\u000A\u000D\u0020-\uD7FF\uE000-\uFFFD\u{10000}-\u{10FFFF}]/gu, "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
@@ -3840,7 +3841,7 @@ function LessonView({ lesson, lessonIdx, totalLessons, onPrev, onNext, isComplet
 
   return (
     <div className="course-content" style={{ maxWidth: maxW, margin: "0 auto", padding: pad, width: "100%", boxSizing: "border-box", overflowWrap: "anywhere" }}>
-      <div style={{ fontFamily: "monospace", fontSize: 10, letterSpacing: "0.18em", color: "#7a6e5f", textTransform: "uppercase", marginBottom: 10, display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+      <div style={{ fontFamily: "monospace", fontSize: 10, letterSpacing: "0.18em", color: "#716556", textTransform: "uppercase", marginBottom: 10, display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
         <span style={{ background: lesson.phaseColor, color: "#fff", padding: "2px 8px", borderRadius: 3, fontSize: 9 }}>{lesson.phase}</span>
         <span>Lesson {lessonIdx + 1} of {totalLessons}</span>
         <span style={{ color: "#c8bfaa" }}>·</span>
@@ -3849,20 +3850,20 @@ function LessonView({ lesson, lessonIdx, totalLessons, onPrev, onNext, isComplet
       </div>
 
       <h1 style={{ fontSize: isComfortable ? "clamp(32px,3.5vw,48px)" : "clamp(26px,3.5vw,40px)", fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", marginBottom: 8, color: "#1a1208" }}>{lesson.title}</h1>
-      <p style={{ fontSize: subFont, fontWeight: 300, fontStyle: "italic", color: "#7a6e5f", marginBottom: 20, lineHeight: 1.55 }}>{lesson.subtitle}</p>
+      <p style={{ fontSize: subFont, fontWeight: 300, fontStyle: "italic", color: "#716556", marginBottom: 20, lineHeight: 1.55 }}>{lesson.subtitle}</p>
 
       <div style={{ display: "flex", gap: 16, marginBottom: 20, paddingBottom: 20, borderBottom: "1px solid #c8bfaa" }}>
-        <span style={{ fontFamily: "monospace", fontSize: 11, color: "#7a6e5f" }}>⏱ {lesson.time}</span>
+        <span style={{ fontFamily: "monospace", fontSize: 11, color: "#716556" }}>⏱ {lesson.time}</span>
       </div>
 
       <VideoEmbed video={lesson.video} />
 
-      {lesson.content.map((block, i) => renderBlock(block, i))}
+      {(lesson.content || []).map((block, i) => renderBlock(block, i))}
 
       <QuizSet key={lessonIdx} quizzes={lesson.quizzes} />
 
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 32, paddingTop: 24, borderTop: "1px solid #c8bfaa" }}>
-        <button onClick={onPrev} style={{ fontFamily: "monospace", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", padding: "11px 22px", borderRadius: 6, border: "1px solid #c8bfaa", background: "transparent", cursor: "pointer", color: "#7a6e5f" }}>
+        <button onClick={onPrev} style={{ fontFamily: "monospace", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", padding: "11px 22px", borderRadius: 6, border: "1px solid #c8bfaa", background: "transparent", cursor: "pointer", color: "#716556" }}>
           {lessonIdx > 0 ? "← Prev Lesson" : "← Home"}
         </button>
         {isCompleted && <span style={{ fontFamily: "monospace", fontSize: 10, color: "#1a6b3c" }}>✓ Completed</span>}
@@ -13359,7 +13360,7 @@ function CourseApp() {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
 
   // Import progress from a JSON file selected by the user
@@ -13430,8 +13431,6 @@ function CourseApp() {
     try { localStorage.removeItem(storageKey); } catch(e) {}
     setCompleted(new Set());
     setCurrentLesson(-1);
-    setSidebarCollapsed(false);
-    setDisplayModePref("auto");
     setResetToken(t => t + 1);
     setShowResetConfirm(false);
     window.scrollTo(0, 0);
@@ -13478,6 +13477,7 @@ function CourseApp() {
     const groups = [];
     // Track-aware phase labels — each track has phase names that reflect its actual content arc
     const phaseLabels = {
+      agentic: { "Phase 1": "Phase 1 · Foundations",      "Phase 2": "Phase 2 · n8n",                 "Phase 3": "Phase 3 · OpenClaw & Ecosystem", "Phase 4": "Phase 4 · Enterprise & Capstone" },
       ai:      { "Phase 1": "Phase 1 · Foundation",      "Phase 2": "Phase 2 · Build",                "Phase 3": "Phase 3 · Agentic",              "Phase 4": "Phase 4 · Industry" },
       mba:     { "Phase 1": "Phase 1 · Foundation",      "Phase 2": "Phase 2 · Finance & Operations", "Phase 3": "Phase 3 · Strategy & Leadership","Phase 4": "Phase 4 · Industry & Regulation" },
       am:      { "Phase 1": "Phase 1 · Landscape",       "Phase 2": "Phase 2 · FDM",                  "Phase 3": "Phase 3 · Resin",                "Phase 4": "Phase 4 · Metal & Adoption" },
@@ -13928,7 +13928,7 @@ function CourseApp() {
               </span>{" "}
               Course
             </h1>
-            <p style={{ fontSize: 15, fontWeight: 300, color: "#7a6e5f", lineHeight: 1.78, marginBottom: 28 }}>
+            <p style={{ fontSize: 15, fontWeight: 300, color: "#716556", lineHeight: 1.78, marginBottom: 28 }}>
               {currentTrack === "mba"
                 ? "An interactive learning experience built for aerospace professionals pursuing executive-level business fluency. Each lesson combines curated videos, written content with aerospace industry examples, and knowledge-check quizzes with immediate feedback."
                 : currentTrack === "am"
@@ -13947,12 +13947,12 @@ function CourseApp() {
               {[[String(LESSONS.length), "Lessons"], ["4", "Phases"], ["~6", "Months"], ["3+", "Quizzes/Lesson"]].map(([val, label]) => (
                 <div key={label} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3, minWidth: 70 }}>
                   <span style={{ fontSize: 24, fontWeight: 700 }}>{val}</span>
-                  <span style={{ fontFamily: "monospace", fontSize: 9, color: "#7a6e5f", letterSpacing: "0.12em", textTransform: "uppercase" }}>{label}</span>
+                  <span style={{ fontFamily: "monospace", fontSize: 9, color: "#716556", letterSpacing: "0.12em", textTransform: "uppercase" }}>{label}</span>
                 </div>
               ))}
             </div>
             <div style={{ background: "#ede7d6", border: "1px solid #c8bfaa", borderRadius: 10, padding: "14px 20px", marginBottom: 28, textAlign: "left", fontSize: 13, lineHeight: 1.8, color: "#2a2018" }}>
-              <div style={{ fontFamily: "monospace", fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", color: "#7a6e5f", marginBottom: 8 }}>Each lesson includes</div>
+              <div style={{ fontFamily: "monospace", fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", color: "#716556", marginBottom: 8 }}>Each lesson includes</div>
               {currentTrack === "mba"
                 ? "📹 Curated video from leading business educators · 📖 Written content with aerospace industry examples · 🧩 Multiple-choice quizzes with full explanations · 💡 Practical callouts grounded in real aerospace business situations"
                 : currentTrack === "am"
@@ -13968,7 +13968,7 @@ function CourseApp() {
                 : "📹 Curated video from a top AI educator · 📖 Written content with aerospace examples · 🧩 Multiple-choice quizzes with full explanations · 💡 Practical callouts for manufacturing applications"}
             </div>
             {completed.size > 0 && (
-              <div style={{ fontFamily: "monospace", fontSize: 11, color: "#7a6e5f", marginBottom: 14 }}>
+              <div style={{ fontFamily: "monospace", fontSize: 11, color: "#716556", marginBottom: 14 }}>
                 You have completed {completed.size} of {LESSONS.length} lessons — pick up where you left off.
               </div>
             )}
@@ -14001,7 +14001,7 @@ function CourseApp() {
           <div style={{ maxWidth: isComfortable ? 760 : 600, margin: "0 auto", padding: isComfortable ? "80px 40px" : "64px 32px", textAlign: "center" }}>
             <div style={{ fontSize: 70, marginBottom: 18 }}>🎓</div>
             <h1 style={{ fontSize: 40, fontWeight: 700, letterSpacing: "-0.03em", marginBottom: 10 }}>Course Complete!</h1>
-            <p style={{ fontSize: 15, fontWeight: 300, color: "#7a6e5f", lineHeight: 1.78, marginBottom: 28 }}>
+            <p style={{ fontSize: 15, fontWeight: 300, color: "#716556", lineHeight: 1.78, marginBottom: 28 }}>
               {currentTrack === "mba"
                 ? `You have completed all ${LESSONS.length} lessons across 4 phases. You now have the vocabulary, frameworks, and confidence to engage business discussions as a peer — from financial statements to capital budgeting to executive business cases.`
                 : currentTrack === "am"
@@ -14017,7 +14017,7 @@ function CourseApp() {
                 : `You have completed all ${LESSONS.length} lessons across 4 phases. You now have the knowledge to build real AI applications for aerospace manufacturing and the business acumen to deploy them responsibly.`}
             </p>
             <div style={{ background: "#ede7d6", border: "1px solid #c8bfaa", borderRadius: 12, padding: 24, textAlign: "left", marginBottom: 24 }}>
-              <div style={{ fontFamily: "monospace", fontSize: 10, letterSpacing: "0.14em", color: "#7a6e5f", textTransform: "uppercase", marginBottom: 12 }}>Your next steps</div>
+              <div style={{ fontFamily: "monospace", fontSize: 10, letterSpacing: "0.14em", color: "#716556", textTransform: "uppercase", marginBottom: 12 }}>Your next steps</div>
               <div style={{ fontSize: 14, lineHeight: 2.0, color: "#2a2018" }}>
                 {currentTrack === "mba" ? (
                   <>
@@ -14080,7 +14080,7 @@ function CourseApp() {
             </div>
             <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
               <button onClick={() => goTo(-3)} style={{ fontFamily: "monospace", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", padding: "12px 28px", background: "#1a1208", color: "#f5f0e8", border: "none", borderRadius: 6, cursor: "pointer", fontWeight: 700 }}>Take Final Exam →</button>
-              <button onClick={goHome} style={{ fontFamily: "monospace", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", padding: "12px 28px", background: "transparent", color: "#7a6e5f", border: "1px solid #c8bfaa", borderRadius: 6, cursor: "pointer" }}>← Course Home</button>
+              <button onClick={goHome} style={{ fontFamily: "monospace", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", padding: "12px 28px", background: "transparent", color: "#716556", border: "1px solid #c8bfaa", borderRadius: 6, cursor: "pointer" }}>← Course Home</button>
             </div>
           </div>
         )}
@@ -14128,7 +14128,7 @@ function CourseApp() {
               Reset all progress?
             </h2>
             <p style={{ fontSize: 14, lineHeight: 1.6, color: "#5a4e3f", margin: "0 0 22px" }}>
-              This will clear your completed lessons, quiz answers, any final exam attempt in progress, and your display preferences. This cannot be undone.
+              This will clear your completed lessons, quiz answers, and any final exam attempt in progress. This cannot be undone.
             </p>
             <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", flexWrap: "wrap" }}>
               <button
@@ -14139,7 +14139,7 @@ function CourseApp() {
                   fontFamily: "monospace", fontSize: 11,
                   letterSpacing: "0.08em", textTransform: "uppercase",
                   padding: "10px 20px",
-                  background: "transparent", color: "#7a6e5f",
+                  background: "transparent", color: "#716556",
                   border: "1px solid #c8bfaa", borderRadius: 6,
                   cursor: "pointer",
                 }}>
@@ -14204,7 +14204,7 @@ class ErrorBoundary extends Component {
           <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 10, color: "#1a1208" }}>
             Something went wrong
           </h1>
-          <p style={{ fontSize: 14, color: "#7a6e5f", lineHeight: 1.6, marginBottom: 20 }}>
+          <p style={{ fontSize: 14, color: "#716556", lineHeight: 1.6, marginBottom: 20 }}>
             The course hit an unexpected error. Your saved progress is probably fine — try reloading first. If that doesn't help, resetting will clear saved data and start you fresh.
           </p>
           <div style={{ fontFamily: "monospace", fontSize: 11, color: "#8b2020", background: "#fef3e2", border: "1px solid #c84b11", borderRadius: 6, padding: "10px 14px", marginBottom: 20, textAlign: "left", wordBreak: "break-word" }}>
@@ -14216,7 +14216,7 @@ class ErrorBoundary extends Component {
               Reload Page
             </button>
             <button onClick={this.handleReset}
-              style={{ fontFamily: "monospace", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", padding: "11px 22px", background: "transparent", color: "#7a6e5f", border: "1px solid #c8bfaa", borderRadius: 6, cursor: "pointer" }}>
+              style={{ fontFamily: "monospace", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", padding: "11px 22px", background: "transparent", color: "#716556", border: "1px solid #c8bfaa", borderRadius: 6, cursor: "pointer" }}>
               Reset Progress & Reload
             </button>
           </div>
