@@ -11001,7 +11001,7 @@ const AGENTIC_LESSONS = [
       { type: "p", text: "An n8n workflow is a visual graph. You drag **nodes** onto a canvas and wire them together with connections. Data flows left to right along the wires. The three node categories you must understand:" },
 
       { type: "ul", items: [
-        "**Trigger nodes** — start a workflow. A schedule ('every morning at 6am'), a webhook (an external system calls a URL), a chat message, an email arriving, a file appearing. Every workflow begins with exactly one trigger.",
+        "**Trigger nodes** — start a workflow. A schedule ('every morning at 6am'), a webhook (an external system calls a URL), a chat message, an email arriving, a file appearing. A workflow needs at least one trigger and can hold more than one (for example, a Schedule trigger and a Webhook trigger), but each execution starts from exactly one of them.",
         "**Action / regular nodes** — do something: call an API, query a database, transform data, send a message. The bulk of a workflow.",
         "**Cluster nodes (AI)** — the special category for agents. A root node (like the AI Agent node) coordinates attached sub-nodes (a chat-model node, a memory node, tool nodes). This is how the agent anatomy from Lesson 2 gets wired visually."
       ]},
@@ -11031,15 +11031,15 @@ const AGENTIC_LESSONS = [
         explanation: "Self-hosting keeps n8n and every byte flowing through it inside your own boundary (your server/VPS/on-prem, typically via Docker). n8n Cloud routes workflow data through n8n's servers, which is usually a non-starter for controlled technical data regardless of encryption. Self-hosted is also required for some features like the LangChain Code node."
       },
       {
-        question: "What starts every n8n workflow?",
+        question: "What starts each n8n workflow execution?",
         options: [
           "An AI Agent node, which is mandatory in all workflows",
-          "Exactly one trigger node — a schedule, webhook, incoming message, email, or file event",
+          "A trigger node — a schedule, webhook, incoming message, email, or file event (a workflow may contain several, but each run starts from one)",
           "A credential node that authenticates the user",
           "A manual button click by an administrator"
         ],
         correct: 1,
-        explanation: "Every workflow begins with exactly one trigger node, which defines what starts it: a schedule, a webhook call, an incoming chat message, an email arriving, a file appearing, etc. Action nodes and AI cluster nodes come after the trigger. Not every workflow needs an AI Agent node — only agentic ones."
+        explanation: "Every execution starts at a trigger node, which defines what starts it: a schedule, a webhook call, an incoming chat message, an email arriving, a file appearing, etc. A workflow can contain more than one trigger, say a schedule plus a webhook, but each run begins at exactly one of them. Action nodes and AI cluster nodes come after the trigger. Not every workflow needs an AI Agent node — only agentic ones."
       },
       {
         question: "Why does n8n separate credentials from the workflow definition?",
@@ -12708,15 +12708,15 @@ const AGENTIC_FINAL_EXAM = [
   },
   {
     "phase": 2,
-    "question": "Every n8n workflow begins with:",
+    "question": "Each n8n workflow execution begins with:",
     "options": [
       "An AI Agent node",
       "A credential node",
-      "Exactly one trigger node (schedule, webhook, message, email, or file event)",
+      "A trigger node (schedule, webhook, message, email, or file event); a workflow can hold several, but each run starts from one",
       "A manual admin click"
     ],
     "correct": 2,
-    "explanation": "A single trigger node starts every workflow. AI cluster nodes and action nodes follow; not every workflow needs an agent."
+    "explanation": "Each execution starts at one trigger node; a workflow may contain several triggers (e.g. schedule plus webhook). AI cluster nodes and action nodes follow; not every workflow needs an agent."
   },
   {
     "phase": 2,
