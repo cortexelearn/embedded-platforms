@@ -643,7 +643,7 @@ const AI_LESSONS = [
     { type: "grid", items: [
       { title: "read_pdf(filepath)", text: "Extract text from inspection reports, certifications, qualification packages. Use pypdf2 or pdfplumber library." },
       { title: "query_erp(part_number)", text: "Pull production history, open orders, revision level from your ERP system via its API or a database connection." },
-      { title: "search_standards(query)", text: "Search your local RAG database of AS9100, NADCAP, AMS specs that you built in the previous lesson." },
+      { title: "search_standards(query)", text: "Search your local RAG database of AS9100, NADCAP, AMS specs that you built in Lesson 7 (RAG & Document Q&A)." },
       { title: "write_report(content)", text: "Generate formatted Word documents using python-docx. Returns the file path of the generated document." },
     ]},
     { type: "callout", variant: "success", label: "LangGraph — Framework for Complex Agents", text: "For production agents, LangGraph (pip install langgraph) handles the loop boilerplate and adds:\n- Built-in state management across all steps\n- Human-in-the-loop pause and resume capability\n- Retry logic for failed tool calls\n- Visual graph debugging interface\n\nDocumentation: langchain-ai.github.io/langgraph/" },
@@ -743,7 +743,7 @@ const AI_LESSONS = [
   time: "40 min", type: "Strategic",
   video: { id: "eggdmbRh7c0", title: "How AI is Changing Manufacturing" },
   content: [
-    { type: "p", text: "You now have the technical skills. This lesson is about knowing where to aim them for maximum impact. The highest-ROI AI applications in aerospace component manufacturing cluster around five domains — and the right starting point is almost always document processing, not computer vision or complex machine learning." },
+    { type: "p", text: "You now have the technical skills. This lesson is about knowing where to aim them for maximum impact. The highest-ROI AI applications in aerospace component manufacturing cluster around three domains — and the right starting point is almost always document processing, not computer vision or complex machine learning." },
     { type: "h3", text: "Domain 1: Quality and Inspection" },
     { type: "grid", items: [
       { title: "NCR Processing", text: "AI reads inspection reports, classifies non-conformances, and drafts corrective action documentation. Reduces NCR cycle time from hours to minutes. Most accessible first project for most teams." },
@@ -1349,7 +1349,7 @@ const AI_FINAL_EXAM = [
     "correct": 0
   },
   {
-    "phase": 2,
+    "phase": 1,
     "question": "Why is storing API keys in environment variables (not in code) considered standard practice?",
     "options": [
       "Code is frequently shared, committed to git, or sent to colleagues — keys in source files inevitably leak",
@@ -1591,7 +1591,7 @@ const AI_FINAL_EXAM = [
     "correct": 0
   },
   {
-    "phase": 2,
+    "phase": 1,
     "question": "What's the impact of 'temperature = 0' on LLM output?",
     "options": [
       "Makes output more consistent — less variation between runs, though identical responses are not guaranteed",
@@ -1613,7 +1613,7 @@ const AI_FINAL_EXAM = [
     "correct": 0
   },
   {
-    "phase": 2,
+    "phase": 1,
     "question": "What's the difference between an LLM API and a chatbot UI like ChatGPT?",
     "options": [
       "The API is the programmatic interface you call from your code; the chatbot is a consumer-facing app",
@@ -1624,7 +1624,7 @@ const AI_FINAL_EXAM = [
     "correct": 0
   },
   {
-    "phase": 2,
+    "phase": 1,
     "question": "What does 'context window' constrain in practical use?",
     "options": [
       "How much input plus output the model can handle in a single conversation turn",
@@ -1972,7 +1972,7 @@ const MBA_LESSONS = [
       { title: "Indirect Costs (Overhead)", text: "Everything else: facility rent, utilities, quality engineering salaries, supervisors, depreciation on shared equipment." },
     ]},
     { type: "h3", text: "How Overhead Gets Allocated" },
-    { type: "p", text: "Indirect costs can't be directly tied to a single part, so they're allocated across all production. Traditional cost accounting uses a rate like 'overhead = 200% of direct labor hours'. This is simple but often wildly inaccurate — a heavily automated part gets under-allocated, while a labor-intensive part gets over-allocated." },
+    { type: "p", text: "Indirect costs can't be directly tied to a single part, so they're allocated across all production. Traditional cost accounting uses a rate like 'overhead applied at 200% of direct labor cost (or $X per direct labor hour)'. This is simple but often wildly inaccurate — a heavily automated part gets under-allocated, while a labor-intensive part gets over-allocated." },
     { type: "callout", variant: "info", label: "Activity-Based Costing (ABC)", text: "Modern alternative: identify activities (machine setup, QC inspection, material handling), measure what drives their cost, and allocate based on actual usage. An aerospace machine shop running ABC might learn that a complex NCR investigation costs 4x more than overhead rate suggested." },
     { type: "h3", text: "Why This Matters for Decisions" },
     { type: "p", text: "If your overhead allocation is wrong, your unit costs are wrong, and your pricing and make-vs-buy decisions are wrong. Companies have exited profitable product lines because bad cost accounting made them look unprofitable — and kept losers because bad allocation hid their true cost." },
@@ -2424,7 +2424,7 @@ const MBA_LESSONS = [
         "Past stock price performance of the bidding company relative to industry benchmarks"
       ],
       correct: 2,
-      explanation: "Past performance in defense proposals refers to relevant contract history: similar scope, similar customer, on schedule, on budget, with acceptable quality. Customer PPIRS (Past Performance Information Retrieval System) records are pulled. Weak past performance is hard to overcome with strong technical proposals — making capture and contract execution discipline mutually reinforcing." }
+      explanation: "Past performance in defense proposals refers to relevant contract history: similar scope, similar customer, on schedule, on budget, with acceptable quality. Evaluators review the bidder's CPARS (Contractor Performance Assessment Reporting System) evaluations on relevant prior contracts. Weak past performance is hard to overcome with strong technical proposals — making capture and contract execution discipline mutually reinforcing." }
   ]
 },
 {
@@ -2626,7 +2626,7 @@ const MBA_LESSONS = [
       { title: "Financial Summary", text: "The numbers. Investment required, expected annual benefit, payback period, NPV at company WACC." },
       { title: "Risks & Mitigations", text: "Top 3 risks, each with a specific mitigation. Credibility comes from showing you thought about what could go wrong." },
       { title: "Timeline & Milestones", text: "What gets done when. Clear decision points and off-ramps if things go wrong." },
-      { title: "The Ask", text: "Specific — how much money, over what timeframe, for what. 'Approve $450K capital investment for FY25Q2 deployment' beats 'we should look into this.'" },
+      { title: "The Ask", text: "Specific — how much money, over what timeframe, for what. 'Approve $450K capital investment for deployment next fiscal quarter' beats 'we should look into this.'" },
     ]},
     { type: "h3", text: "The Numbers Must Be Defensible" },
     { type: "p", text: "Every number in your case will be questioned. Where does the $2.3M scrap cost come from? Is it annual or one-time? Does it include rework labor? How did you estimate the 70% reduction? Have an answer for every question — ideally with the back-up on a follow-up slide, not on page one." },
@@ -2823,7 +2823,7 @@ const MBA_FINAL_EXAM = [
     "correct": 0
   },
   {
-    "phase": 2,
+    "phase": 1,
     "question": "Where in a 10-K would you find management's narrative explanation of the year's results?",
     "options": [
       "Item 7 — Management's Discussion and Analysis (MD&A) — contains the narrative on results, trends, risks, and outlook",
@@ -2834,7 +2834,7 @@ const MBA_FINAL_EXAM = [
     "correct": 0
   },
   {
-    "phase": 2,
+    "phase": 1,
     "question": "What's the value of reading risk factors (Item 1A) in a 10-K?",
     "options": [
       "Risk factors reveal what management worries about and what the SEC required disclosure on — often signal real issues",
@@ -2845,7 +2845,7 @@ const MBA_FINAL_EXAM = [
     "correct": 0
   },
   {
-    "phase": 2,
+    "phase": 1,
     "question": "What's the difference between GAAP and non-GAAP earnings?",
     "options": [
       "GAAP follows accounting standards; non-GAAP excludes items management considers non-recurring or non-operational — useful but easy to manipulate",
@@ -2944,7 +2944,7 @@ const MBA_FINAL_EXAM = [
     "correct": 0
   },
   {
-    "phase": 2,
+    "phase": 1,
     "question": "What's the practical danger of bad cost accounting in aerospace manufacturing?",
     "options": [
       "Wrong product mix decisions, wrong pricing, and wrong make-vs-buy choices compound over years",
@@ -2966,7 +2966,7 @@ const MBA_FINAL_EXAM = [
     "correct": 0
   },
   {
-    "phase": 3,
+    "phase": 2,
     "question": "Why does aerospace manufacturing have high barriers to entry?",
     "options": [
       "Capital intensity, certification timelines, customer qualification cycles, and decades-deep IP create entry costs few firms can sustain",
@@ -2977,7 +2977,7 @@ const MBA_FINAL_EXAM = [
     "correct": 0
   },
   {
-    "phase": 3,
+    "phase": 2,
     "question": "What does Porter's 'Five Forces' framework analyze?",
     "options": [
       "Industry attractiveness based on supplier power, buyer power, threat of new entrants, substitutes, and competitive rivalry",
@@ -3087,7 +3087,7 @@ const MBA_FINAL_EXAM = [
     "correct": 0
   },
   {
-    "phase": 3,
+    "phase": 2,
     "question": "What's a 'value chain' in strategy analysis?",
     "options": [
       "The sequence of activities that add value as a product moves from raw materials to final customer — analyzed for cost and differentiation",
@@ -4564,7 +4564,7 @@ const AM_LESSONS = [
   ],
   quizzes: [
     {
-      question: "When is 'tough resin' (engineering grade) the right choice over standard resin?",
+      question: "When is 'tough resin' the right choice over standard resin?",
       options: [
         "Always — tough resin is universally superior to standard for any aerospace application without exception",
         "When the part needs impact resistance or flexibility — standard resin is brittle and shatters; tough resin tolerates load and impact",
@@ -4572,7 +4572,7 @@ const AM_LESSONS = [
         "Only for medical applications — tough resin is biocompatibility-certified and unsuitable for industrial use"
       ],
       correct: 1,
-      explanation: "Standard resin (the cheapest, often colored for clear/grey visual prints) is hard but brittle — shatters when dropped or stressed. Tough/engineering resins (formulated with elastomer additives or specific monomer chemistries) trade some hardness for impact resistance and elongation. Right for functional parts and prototypes that need to survive handling."
+      explanation: "Standard resin (the cheapest, often colored for clear/grey visual prints) is hard but brittle — shatters when dropped or stressed. Tough/durable resins (formulated with elastomer additives or specific monomer chemistries) trade some hardness for impact resistance and elongation. Right for functional parts and prototypes that need to survive handling."
     },
     {
       question: "Why are casting resins relevant to some aerospace AM workflows?",
@@ -4773,7 +4773,7 @@ const AM_LESSONS = [
     ]},
 
     { type: "h3", text: "In-House vs Outsource" },
-    { type: "p", text: "The economics of metal AM rarely justify in-house ownership for a small aerospace shop. A $1M+ machine, $50K+ in qualification per material, dedicated atmosphere/safety infrastructure, dedicated operators, dedicated CT inspection — total cost of ownership is enormous. Most aerospace work uses dedicated AM service bureaus (Sintavia, Morf3D, Stratasys Direct, GE Additive AddWorks). In-house metal AM only makes sense at OEM scale or with very high volume of one alloy." },
+    { type: "p", text: "The economics of metal AM rarely justify in-house ownership for a small aerospace shop. A $1M+ machine, $50K+ in qualification per material, dedicated atmosphere/safety infrastructure, dedicated operators, dedicated CT inspection — total cost of ownership is enormous. Most aerospace work uses dedicated AM service bureaus (Sintavia, Morf3D, Stratasys Direct, Colibrium Additive (formerly GE Additive) AddWorks). In-house metal AM only makes sense at OEM scale or with very high volume of one alloy." },
     { type: "p", text: "A technician's job is usually: write the build file, specify the post-processing, inspect the returned part, integrate it into the assembly. Knowing the process is what lets you write specs and inspect intelligently." },
 
     { type: "callout", style: "warning",
@@ -4894,7 +4894,7 @@ const AM_LESSONS = [
         "Strategic statements about AM's importance to the company's competitive future positioning"
       ],
       correct: 0,
-      explanation: "Vendor benchmarks are too abstract. Adoption rates are leading indicators. Strategic framing sounds aspirational. What gets funded: specific parts × frequency × current cost - AM cost (machine amortization + material + labor + qualification when needed) = quantified ROI. With a bounded pilot proposal showing how the math will be validated, leadership funds. Same pattern as the AI track L14 — universal capital investment evaluation discipline." }
+      explanation: "Vendor benchmarks are too abstract. Adoption rates are leading indicators. Strategic framing sounds aspirational. What gets funded: specific parts × frequency × current cost - AM cost (machine amortization + material + labor + qualification when needed) = quantified ROI. With a bounded pilot proposal showing how the math will be validated, leadership funds. This is the standard test for any capital request." }
   ]
 },
 
@@ -5249,7 +5249,7 @@ const AM_FINAL_EXAM = [
       "Only for medical applications — tough resin is biocompatibility-certified and unsuitable for industrial use"
     ],
     "correct": 0,
-    "explanation": "Standard resin is hard but brittle. Tough/engineering resins trade hardness for impact resistance and elongation."
+    "explanation": "Standard resin is hard but brittle. Tough/durable resins trade hardness for impact resistance and elongation."
   },
   {
     "phase": 3,
@@ -5513,11 +5513,11 @@ const AM_FINAL_EXAM = [
       "Technical demonstrations of AM capability without business case quantification of the value"
     ],
     "correct": 2,
-    "explanation": "Same fundable pattern across AI/Copilot/AM tracks: quantified specifics + bounded experiment + addressed risks. Universal capital investment evaluation discipline."
+    "explanation": "This is the standard test for any capital request. Quantified specifics + bounded experiment + addressed risks. Universal capital investment evaluation discipline."
   },
   {
     "phase": 4,
-    "question": "Why is GE Aviation's AM journey often cited as the aerospace AM model?",
+    "question": "Why is GE Aerospace's (formerly GE Aviation) AM journey often cited as the aerospace AM model?",
     "options": [
       "GE invented additive manufacturing technology and holds exclusive patents on most AM processes used in aerospace",
       "GE was the first aerospace company to use AM — their early adoption gives them advantages others can't replicate",
@@ -6411,10 +6411,10 @@ const MOTOR_LESSONS = [
 
     { type: "h3", text: "Runout & Concentricity" },
     { type: "p", text: "Beyond mass balance, the rotor must also be geometrically concentric. **Runout** is the geometric deviation of a feature (shaft surface, magnet outer diameter) from perfect rotational symmetry. Even a perfectly balanced rotor with high runout will produce torque ripple (varying air gap → varying flux), audible noise, and bearing wear." },
-    { type: "p", text: "Typical aerospace motor runout specs are 5-25 µm at the shaft and 25-50 µm at the magnet outer diameter. Higher precision applications (motor-driven optical scanners, gimbals) can require sub-micron runout. The GD&T track later in this curriculum goes deep on runout — for motors, the takeaway is: balance and runout are independent specifications, both required, both measurable." },
+    { type: "p", text: "Typical aerospace motor runout specs are 5-25 µm at the shaft and 25-50 µm at the magnet outer diameter. Higher precision applications (motor-driven optical scanners, gimbals) can require sub-micron runout. For motors, the takeaway is: balance and runout are independent specifications, both required, both measurable." },
 
     { type: "h3", text: "ITAR & Rare-Earth Magnets" },
-    { type: "p", text: "Two policy realities affect motor sourcing:" },
+    { type: "p", text: "Three policy realities affect motor sourcing:" },
     { type: "ul", items: [
       "**Rare-earth supply chain** — China dominates Nd, Sm, and Dy mining and refining. For aerospace and defense customers, US-source or allied-source magnets are increasingly required.",
       "**ITAR/EAR controls** — high-performance NdFeB and especially SmCo magnets above certain energy products may be export-controlled. Specific high-temp aerospace grades have been added to USML categories.",
@@ -6744,7 +6744,7 @@ const MOTOR_LESSONS = [
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
-// MOTOR FINAL EXAM POOL — 53 questions stratified across 4 phases (12/15/14/12)
+// MOTOR FINAL EXAM POOL — 53 questions stratified across 4 phases (12/12/15/14)
 // ─────────────────────────────────────────────────────────────────────────────
 
 const MOTOR_FINAL_EXAM = [
@@ -7037,7 +7037,7 @@ const MOTOR_FINAL_EXAM = [
     "explanation": "Match motor type to motion profile. LAT/galvo for high-bandwidth limited-angle. Standard servo for continuous rotation."
   },
   {
-    "phase": 2,
+    "phase": 3,
     "question": "Why is NdFeB the dominant magnet material in modern motors?",
     "options": [
       "Highest energy product available — strongest field per volume, enables compact high-power motors",
@@ -7597,7 +7597,7 @@ const EMBED_LESSONS = [
         "Strength: full TCP/IP stack, GUI, file systems, package management, mature toolchain. Weakness: scheduling unpredictability rules out hard real-time control"
       ],
       correct: 3,
-      explanation: "Linux gives Pi enormous capability: networking, file systems, multitasking, GUI, package management — all the things a real OS provides. The downside: Linux is preemptively scheduled, with non-deterministic timing variation typically in milliseconds. Fine for many applications (logging, networking, vision processing); ruling for hard real-time control loops." },
+      explanation: "Linux gives Pi enormous capability: networking, file systems, multitasking, GUI, package management — all the things a real OS provides. The downside: Linux is preemptively scheduled, with non-deterministic timing variation typically in milliseconds. Fine for many applications (logging, networking, vision processing); but disqualifying for hard real-time control loops." },
     {
       question: "When does Pi's HDMI output add real value?",
       options: [
@@ -7732,7 +7732,7 @@ const EMBED_LESSONS = [
     { type: "h3", text: "Why This Architecture Wins for Industry" },
     { type: "ul", items: [
       "**Predictable timing** — engineers can calculate a worst-case response bound (about two scan times plus I/O filter and update delays) and rely on it. Safety analyses, regulatory submissions, and process control rely on this.",
-      "**Atomic I/O** — all inputs sampled together, all outputs updated together. No race conditions where one output sees an old value of another input.",
+      "**Atomic I/O** — all inputs sampled together, all outputs updated together. Logic within a scan always sees one consistent snapshot of the inputs.",
       "**Supervised scan time** — the PLC monitors its own cycle time. If logic overruns the configured maximum (a runaway FOR/WHILE loop, for example), the cycle watchdog faults the CPU to STOP and outputs go to their configured safe state instead of hanging silently. Bad code still stops the machine, but in a defined, diagnosable way.",
       "**Hot-swappable I/O** — most PLC modules can be removed and replaced without taking the system down. Maintenance happens with the line running.",
       "**Decades of lifecycle** — Siemens, Rockwell, Mitsubishi commit to 15-20+ year hardware availability and parts support. A PLC installed in 2005 can still get spare modules today.",
@@ -7995,7 +7995,7 @@ const EMBED_LESSONS = [
         ["Safety certifications", "Not required", "SIL/IEC 61511 needed"],
         ["Lifecycle", "Years acceptable", "Decades required"],
         ["Maintenance staff", "Software engineers", "Plant electricians and technicians"],
-        ["Cost sensitivity", "$ matters more than $", "Total cost of ownership > unit cost"]
+        ["Cost sensitivity", "Unit price outweighs lifecycle cost", "Total cost of ownership > unit cost"]
       ]
     },
 
@@ -8195,7 +8195,7 @@ const EMBED_LESSONS = [
     { type: "ul", items: [
       "**Mean Time Between Failures (MTBF)** — statistical measure. A 1,000,000 hour MTBF doesn't mean one unit lasts 1,000,000 hours — it means in a population of 1,000 units, you expect ~1 failure per 1,000 hours of operation.",
       "**Bath-tub curve** — high failure rate at burn-in, low constant rate during life, rising rate at wear-out. Industrial products are typically pre-burn-in tested at the factory.",
-      "**Series vs parallel reliability** — components in series have failure rates that add up; components in parallel (with proper redundancy) have failure rates that multiply (much smaller). Critical paths benefit hugely from redundancy."
+      "**Series vs parallel reliability** — components in series have failure rates that add up; in parallel (true redundancy), the probabilities of failure multiply, so the combined chance of losing the function is much smaller. Critical paths benefit hugely from redundancy."
     ]},
 
     { type: "callout", style: "key",
@@ -8490,7 +8490,7 @@ const EMBED_LESSONS = [
         "DFM is required only for high-volume products — low-volume embedded designs don't need DFM consideration"
       ],
       correct: 2,
-      explanation: "DFM for electronic assemblies: test points accessible for ICT, optical AOI clearance, panelization for SMT assembly, programming connectors, calibration interfaces. A prototype hand-assembled in 30 minutes might take 30 minutes per board in production without DFM — at scale, that's the difference between profitable and not. DFM matters at any volume but is especially critical at scale." },
+      explanation: "DFM for electronic assemblies: test points accessible for ICT, optical AOI clearance, panelization for SMT assembly, programming connectors, calibration interfaces. Without DFM, production keeps paying that 30 minutes of manual labour per board, where an automated line would take a few seconds — at scale, that's the difference between profitable and not. DFM matters at any volume but is especially critical at scale." },
     { question: "What's typically required for FCC Part 15 certification of a connected embedded product?",
       options: [
         "Emissions testing in an EMC chamber, declaration documentation, sometimes intentional radiator certification (depends on transmitter type) — expect $5-30K and weeks of testing",
@@ -8567,7 +8567,7 @@ const EMBED_LESSONS = [
     ]},
 
     { type: "h3", text: "The Pitch" },
-    { type: "p", text: "If you were proposing this project to your management, the one-page pitch would cover: business problem, two-version architecture comparison, recommendation (likely hobby first to validate, then re-architect to production for rollout), budget for both versions, timeline, risks. Use the same template as the motor and AM track capstones." },
+    { type: "p", text: "If you were proposing this project to your management, the one-page pitch would cover: business problem, two-version architecture comparison, recommendation (likely hobby first to validate, then re-architect to production for rollout), budget for both versions, timeline, risks." },
 
     { type: "callout", style: "key",
       text: "**The key insight.** Hobby and production aren't 'cheap and expensive.' They're different design points serving different requirements. The hobby build is right when learning is the goal; the production build is right when the goal is shipping. Most successful embedded projects do both, in sequence — but make the architectural transition explicit, not accidental." },
@@ -8601,14 +8601,14 @@ const EMBED_LESSONS = [
         "Technical demonstrations of capability without business case quantification of the actual value"
       ],
       correct: 0,
-      explanation: "Same fundable pattern as the AI/Copilot/MBA/AM/Motor capstones: quantified specifics on identified workflow + bounded experiment + addressed risks. Universal capital investment evaluation. The discipline transfers directly: 'we currently spend X hours/quarter on this manual task; the automated system costs $Y; ROI = Z; pilot proposal for validation: A months on B production line.' Strategic statements and demos lose to specific ROI math every time." }
+      explanation: "Quantified specifics on identified workflow + bounded experiment + addressed risks. Universal capital investment evaluation. The discipline transfers directly: 'we currently spend X hours/quarter on this manual task; the automated system costs $Y; ROI = Z; pilot proposal for validation: A months on B production line.' Strategic statements and demos lose to specific ROI math every time." }
   ]
 },
 
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
-// EMBED FINAL EXAM POOL — 53 questions stratified across 4 phases (12/15/14/12)
+// EMBED FINAL EXAM POOL — 53 questions stratified across 4 phases (13/12/9/19)
 // ─────────────────────────────────────────────────────────────────────────────
 
 const EMBED_FINAL_EXAM = [
@@ -8913,7 +8913,7 @@ const EMBED_FINAL_EXAM = [
     "explanation": "PLC strengths align with industrial automation realities: long life, distributed I/O, multi-vendor workforce, hot-swap, spare parts availability."
   },
   {
-    "phase": 2,
+    "phase": 4,
     "question": "What are 'industrial hybrid' platforms?",
     "options": [
       "Hybridize hobby and industrial features — combining worst of both into poorly-fitting compromise",
@@ -9033,7 +9033,7 @@ const EMBED_FINAL_EXAM = [
     "explanation": "CAN: robust differential serial, bit-level arbitration, error detection with retransmission, robust against noise. Standard in automotive, common industrial."
   },
   {
-    "phase": 3,
+    "phase": 4,
     "question": "Why are fanless industrial PCs often used in modern embedded?",
     "options": [
       "Cost optimization — eliminating fans reduces unit cost across high-volume production",
@@ -9045,7 +9045,7 @@ const EMBED_FINAL_EXAM = [
     "explanation": "Fans have finite life (bearing wear), pull contamination, produce vibration. Fanless eliminates this failure mode; higher upfront cost, lower lifecycle cost."
   },
   {
-    "phase": 3,
+    "phase": 4,
     "question": "Typical challenge moving embedded prototype to production?",
     "options": [
       "EMC compliance, environmental rating, certifications, supply chain qualification, manufacturability — production work often exceeds prototype development effort",
@@ -9057,7 +9057,7 @@ const EMBED_FINAL_EXAM = [
     "explanation": "Gap between 'works on bench' and 'ships reliably' is large. EMC, environmental, regulatory, supply chain, DFM. Often exceeds prototype effort."
   },
   {
-    "phase": 3,
+    "phase": 4,
     "question": "Why is design for manufacturability critical in embedded production?",
     "options": [
       "Marketing concept — engineering doesn't actually change between prototype and production designs",
@@ -9069,7 +9069,7 @@ const EMBED_FINAL_EXAM = [
     "explanation": "DFM at scale: test points accessible, AOI clearance, panelization, programming connectors. Difference between profitable and not at scale."
   },
   {
-    "phase": 3,
+    "phase": 4,
     "question": "What's typically required for FCC Part 15 certification of a connected embedded product?",
     "options": [
       "Connected products are exempt from FCC certification — only standalone radios need it",
@@ -9114,7 +9114,7 @@ const EMBED_FINAL_EXAM = [
       "Technical demonstrations of capability without business case quantification of value"
     ],
     "correct": 1,
-    "explanation": "Same pattern as AI/Copilot/MBA/AM/Motor capstones: quantified specifics + bounded experiment + addressed risks. Universal capital investment evaluation discipline."
+    "explanation": "Quantified specifics + bounded experiment + addressed risks. Universal capital investment evaluation discipline."
   },
   {
     "phase": 4,
@@ -9246,7 +9246,7 @@ const EMBED_FINAL_EXAM = [
       "What does the latest engineering trend recommend? Following trends ensures the best modern design"
     ],
     "correct": 0,
-    "explanation": "Operating environment + lifecycle + failure consequence + maintenance reality = the right design choices. Same as motor track L14 question: load characterization is universal starting point for engineering decisions."
+    "explanation": "Environment, lifecycle, failure consequence and who maintains it are the inputs that every later platform decision depends on."
   }
 ];
 
@@ -11694,7 +11694,7 @@ const AGENTIC_LESSONS = [
           "Agents store the documents permanently and parsers do not"
         ],
         correct: 0,
-        explanation: "The variability is the reason. A fixed parser is brittle against the next unseen supplier layout; an agent reasons about content rather than relying on a rigid template. This is the Lesson 1 'agent fits when the input space is huge and varied' criterion. Bounding stays tight: extracted data goes to a review queue, not straight into the system of record."
+        explanation: "The variability is the reason. A fixed parser is brittle against the next unseen supplier layout; an agent reasons about content rather than relying on a rigid template. This is the Lesson 3 'agent fits when the input space is huge and varied' criterion. Bounding stays tight: extracted data goes to a review queue, not straight into the system of record."
       },
       {
         question: "For a hard compliance gate that must return an identical pass/fail every time, what does the track recommend?",
@@ -12892,7 +12892,7 @@ const AGENTIC_FINAL_EXAM = [
     "options": [
       "On your primary workstation for convenience",
       "Isolated on a dedicated device or VM with a reachable kill switch, audited skills, a tightly-scoped tool allowlist, and provider spending limits",
-      "With all 26 tools enabled for flexibility",
+      "With every available tool enabled for flexibility",
       "Only with cloud models"
     ],
     "correct": 1,
@@ -13163,7 +13163,7 @@ const AGENTIC_FINAL_EXAM = [
     "explanation": "Success is appropriate autonomy, not maximal autonomy: bounded for recoverable failure and governed for trust and auditability. That discipline turns a hazardous capability into a valuable tool."
   },
   {
-    "phase": 4,
+    "phase": 3,
     "question": "A defensible OpenClaw supplier-document deployment limits tools to read + post-to-internal-channel and denies write/exec/external-send so that:",
     "options": [
       "Even a completely misfiring model can only post a wrong summary to an internal channel a human reads — a bounded, recoverable failure",
