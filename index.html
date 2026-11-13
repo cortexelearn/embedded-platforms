@@ -8354,7 +8354,7 @@ const EMBED_LESSONS = [
       "**Revolution Pi** — Raspberry Pi Compute Module-based industrial controller. DIN-rail, isolated I/O, IEC 61131-3 via Codesys runtime. The standard Pi-based industrial product.",
       "**Codesys-on-Pi** — install Codesys runtime on a Raspberry Pi, get a soft-PLC programmable in IEC 61131-3. Fine for prototypes; industrial-grade hardware (Revolution Pi, Strato Pi) recommended for deployment.",
       "**Industrial Shields** — both Arduino-based and Pi-based industrial controllers. Spanish company, broad product range.",
-      "**Beckhoff CX series** — high-end industrial PCs running TwinCAT, an x86-based industrial controller line. Different category but worth knowing.",
+      "**Beckhoff CX series** — high-end industrial PCs running TwinCAT, an x86-based industrial controller line. A different category, PC-based control rather than a hybrid, but worth knowing.",
       "**Edge controllers (Edge101, Norvi, etc.)** — ESP32-based industrial boards with proper isolation, Modbus/Ethernet, DIN-rail. The wireless-capable industrial bridge."
     ]},
 
@@ -8380,24 +8380,24 @@ const EMBED_LESSONS = [
       text: "**The growing middle.** Five years ago this category barely existed. Today there are dozens of products. In another five years, hybrids will likely dominate the small-to-medium industrial automation market while traditional PLCs hold the high-end and safety-critical segments. The right answer for your project depends on which side of that line you're on." },
   ],
   quizzes: [
-    { question: "What are 'industrial hybrid' platforms (e.g., Beckhoff TwinCAT, B&R Automation Studio, Raspberry Pi-based industrial)?",
+    { question: "What are 'industrial hybrid' platforms (e.g., Arduino Opta, Revolution Pi, ESP32-based edge controllers)?",
       options: [
         "Platforms that hybridize hobby and industrial features — combining the worst of both into a poorly-fitting compromise",
         "Standard PLCs renamed to sound more modern — no actual technical difference from traditional PLCs",
         "Experimental platforms that haven't proven themselves in production — not used in any real industrial applications",
-        "Platforms that combine PC-class hardware with PLC-style real-time control — bridging IT/OT divide for modern industrial applications"
+        "Industrial-grade controllers (isolated I/O, 24V input, DIN-rail mounting, certifications) that you program with hobby-platform languages and tools such as Arduino C++ or a Raspberry Pi toolchain, often alongside IEC 61131-3"
       ],
       correct: 3,
-      explanation: "Industrial hybrid platforms run real-time control alongside standard OS features. Examples: Beckhoff TwinCAT runs PLC logic on an x86 PC alongside Windows, achieving microsecond real-time. CODESYS-based controllers similar. These bridge the historical IT/OT divide, enabling vision systems, AI, database integration, and OT real-time control on one platform. Increasingly common in modern industrial automation." },
+      explanation: "A hybrid is industrial-grade hardware that you program in hobby-platform languages and tools. Arduino Opta (an STM32H7 MCU, programmed in Arduino C++ or IEC 61131-3 via PLC IDE), Revolution Pi (a Raspberry Pi Compute Module with a Codesys runtime), and ESP32-based edge controllers keep familiar tooling but add isolated I/O, 24V power, DIN-rail mounting, certifications, and longer lifecycle commitments. They are not PC-class platforms: industrial PCs such as Beckhoff CX running TwinCAT are a separate category (PC-based control). Hybrids are real production products, but they still trail traditional PLCs on lifecycle, CPU redundancy, and functional-safety ratings." },
     { question: "When is an industrial hybrid platform the right answer?",
       options: [
         "Always — hybrid platforms are universally superior to traditional PLCs in every application",
         "Never — hybrid platforms are unproven and shouldn't be used in production environments",
-        "When you need both real-time control AND PC-class capabilities (vision, AI, database) — bridges IT/OT requirements in one platform",
+        "Small or medium-scale automation — a single machine, test cell, or small line where a full traditional PLC's cost is hard to justify and decades of lifecycle aren't the deciding factor",
         "Only for prototyping — production applications should always use traditional PLCs for reliability"
       ],
       correct: 2,
-      explanation: "Hybrid platforms shine when an application needs both: real-time deterministic I/O control (PLC strength) AND PC capabilities like machine vision, AI inference, large data processing, database access, network connectivity. Implementing this with traditional PLC + separate PC + gateway is complex. Hybrid platforms simplify the architecture. Mature ecosystem (Beckhoff, B&R, others); not at all experimental at this point." },
+      explanation: "The lesson's use cases for hybrids: small or medium-scale automation, OEM machine builds, connected products that need wireless, web HMIs, or cloud links, prototypes moving to production (Arduino Uno to Arduino Opta, same language), and buyers who value cost over lifecycle. Not always: traditional PLCs still win for decades-of-life infrastructure, hot-redundant CPUs, and SIL-rated safety functions. Not never or prototype-only either: Opta, Revolution Pi, and similar products run real production loads." },
     { question: "Why are 'fanless industrial PCs' often used in modern embedded designs?",
       options: [
         "Cost optimization — eliminating fans reduces unit cost across high-volume production",
@@ -8917,12 +8917,12 @@ const EMBED_FINAL_EXAM = [
     "question": "What are 'industrial hybrid' platforms?",
     "options": [
       "Hybridize hobby and industrial features — combining worst of both into poorly-fitting compromise",
-      "Platforms combining PC-class hardware with PLC-style real-time control — bridging IT/OT divide",
+      "Industrial-grade controllers (e.g., Arduino Opta, Revolution Pi) programmable with hobby-platform languages and tools",
       "Standard PLCs renamed to sound more modern",
       "Experimental platforms unproven in production"
     ],
     "correct": 1,
-    "explanation": "Run real-time control alongside standard OS. Examples: Beckhoff TwinCAT, B&R Automation Studio. Bridge historical IT/OT divide."
+    "explanation": "Industrial-grade hardware (isolated I/O, 24V, DIN-rail, certifications) programmable with hobby-platform tools, e.g. Arduino Opta, Revolution Pi. PC-based control (Beckhoff CX / TwinCAT) is a separate category."
   },
   {
     "phase": 3,
