@@ -7727,11 +7727,11 @@ const EMBED_LESSONS = [
       "**3. Update all outputs** — the output image is written to physical outputs simultaneously.",
       "**4. Housekeeping** — diagnostics, communications, watchdog updates."
     ]},
-    { type: "p", text: "This cycle repeats every few milliseconds (typical 5-50 ms scan time). Determinism is the killer feature: when input X happens, output Y will respond within one scan cycle, every time, forever. No interrupt latency variations, no garbage collection pauses, no OS jitter." },
+    { type: "p", text: "This cycle repeats every few milliseconds (typical 5-50 ms scan time). Determinism is the killer feature: the worst-case time from an input change to the output response is roughly two scan times (an input that changes just after the read phase isn't seen until the next scan) plus input-filter and output-update delays. That bound is known and repeatable — no garbage collection pauses, no OS jitter. For events too fast for the cyclic scan, modern PLCs offer hardware-interrupt or event tasks that run outside the normal cycle." },
 
     { type: "h3", text: "Why This Architecture Wins for Industry" },
     { type: "ul", items: [
-      "**Predictable timing** — engineers can guarantee response times within scan cycle bounds. Safety analyses, regulatory submissions, and process control rely on this.",
+      "**Predictable timing** — engineers can calculate a worst-case response bound (about two scan times plus I/O filter and update delays) and rely on it. Safety analyses, regulatory submissions, and process control rely on this.",
       "**Atomic I/O** — all inputs sampled together, all outputs updated together. No race conditions where one output sees an old value of another input.",
       "**Robust to bad code** — even if your logic has bugs, the PLC keeps scanning. It won't get 'stuck in a loop' the way a microcontroller can.",
       "**Hot-swappable I/O** — most PLC modules can be removed and replaced without taking the system down. Maintenance happens with the line running.",
@@ -8251,7 +8251,7 @@ const EMBED_LESSONS = [
     ]},
 
     { type: "h3", text: "Interrupt Latency" },
-    { type: "p", text: "When a hardware event triggers an interrupt, how long until your ISR runs? On a bare-metal MCU: microseconds, deterministic. On a stock Linux Pi: typically tens of microseconds, but with worst-case spikes to hundreds of microseconds or more under load. On a PLC: bounded by scan cycle (5-50 ms typically) — slow but absolutely guaranteed." },
+    { type: "p", text: "When a hardware event triggers an interrupt, how long until your ISR runs? On a bare-metal MCU: microseconds, deterministic. On a stock Linux Pi: typically tens of microseconds, but with worst-case spikes to hundreds of microseconds or more under load. On a PLC: the cyclic program responds within roughly two scan times plus I/O filter and update delays (often tens of milliseconds with typical 5-50 ms scans) — slower, but bounded and repeatable. For faster events, PLC hardware-interrupt or event tasks run outside the cyclic scan and can respond in well under a millisecond." },
 
     { type: "h3", text: "RTOS Basics" },
     { type: "ul", items: [
