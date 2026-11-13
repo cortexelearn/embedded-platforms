@@ -6676,20 +6676,20 @@ const MOTOR_LESSONS = [
       "**Peak speed**: 47 RPM (well below typical motor capability)",
       "**Continuous duty**: required",
       "**Position control**: ±0.5° peak position error at extremes (encoder feedback required)",
-      "**Inertia ratio**: target ≤ 5:1 reflected load to rotor (high-precision motion). With 0.020 kg·m² load directly on the shaft, motor rotor inertia should be ≥ 0.004 kg·m². Or use a gearbox to multiply the apparent rotor inertia."
+      "**Inertia ratio**: the ≤10:1 load-to-rotor guideline from earlier lessons assumes a coupling, belt, or gearbox between motor and load — that compliance is what makes high ratios hard to tune. The plan here is direct drive: a frameless motor's rotor mounts straight onto the fixture shaft, so the connection is very stiff and much higher ratios are workable. Don't oversize the motor just to hit a ratio; record it and confirm it during drive tuning. (With a geared motor instead, a gearbox of ratio N divides the reflected load inertia by N².)"
     ]},
 
     { type: "h3", text: "Step 4 — Pick a Candidate" },
-    { type: "p", text: "Browse motor catalogs (e.g. Maxon, Kollmorgen, Tecnotion frameless servo motors). A reasonable candidate: a frameless BLDC servo motor with continuous torque ~1.5 Nm, rotor inertia 0.004 kg·m², integrated absolute encoder. Drive: matched servo amplifier with EtherCAT interface. Frame size that fits your fixture envelope." },
+    { type: "p", text: "Browse motor catalogs (e.g. Maxon, Kollmorgen, Tecnotion frameless servo motors). A reasonable candidate: a frameless BLDC torque motor kit (rotor and stator only) with continuous torque ~1.5 Nm, mounted directly on the fixture shaft, plus a separate absolute ring encoder on the same shaft. Because the motor is frameless, the fixture supplies the housing and bearings. Drive: matched servo amplifier with EtherCAT interface. Rotor/stator diameter that fits your fixture envelope." },
 
     { type: "h3", text: "Step 5 — Validate" },
     { type: "ul", items: [
       "**Torque margin**: 1.5 / 0.62 = 2.4×. Safe.",
       "**Speed**: motor rated to 3000+ RPM, our peak is 47 RPM. Easily.",
-      "**Inertia ratio**: 0.020 / 0.004 = 5:1. Right at the target — good for tight motion control.",
-      "**Continuous duty**: motor + drive both rated continuous at this load. Confirm thermal class F or H, ambient 30 °C.",
+      "**Inertia ratio**: a frameless rotor in this torque range is typically on the order of 10⁻⁴ kg·m² (use the datasheet value), so the load-to-rotor ratio is high — on the order of 100:1. Acceptable here: the rotor is rigidly mounted to the load with no gearbox backlash or coupling wind-up, and a 0.5 Hz motion needs little control bandwidth. Confirm during drive tuning.",
+      "**Continuous duty**: motor + drive both rated continuous at this load. Frameless continuous ratings assume a stated heat-sink mounting, so confirm the fixture provides it. Confirm thermal class F or H, ambient 30 °C.",
       "**Position control**: encoder resolution and drive bandwidth give arc-second position control — well within 0.5° requirement.",
-      "**Mechanical**: confirm shaft, mount, and dimensional fit with the fixture mechanical design.",
+      "**Mechanical**: because the motor is frameless, confirm the fixture design provides the housing, bearings, rotor-to-stator air-gap alignment, and encoder mounting, and that rotor and stator fit the envelope.",
       "**Electrical**: confirm DC bus voltage compatible with available power supply, drive interfaces compatible with control system."
     ]},
 
@@ -6697,12 +6697,12 @@ const MOTOR_LESSONS = [
     { type: "p", text: "A one-page summary for your manager or design review:" },
     { type: "ul", items: [
       "**Application**: aerospace component vibration test fixture, ±90° oscillation at 0.5 Hz, 5 kg payload.",
-      "**Selected motor**: [Manufacturer Model #X] — frameless BLDC servo, 1.5 Nm continuous, integrated absolute encoder.",
+      "**Selected motor**: [Manufacturer Model #X] — frameless BLDC torque motor, 1.5 Nm continuous, direct drive, with a separate absolute ring encoder [Manufacturer Model #E].",
       "**Selected drive**: [Manufacturer Model #Y] — matched servo amplifier, EtherCAT, integrated safety functions.",
-      "**Justification**: required peak torque 0.31 Nm × 2× safety factor = 0.62 Nm; selected continuous rating 1.5 Nm gives 2.4× margin. 5:1 inertia ratio is in the target range for precise control. Continuous duty rated. Fits mechanical envelope.",
+      "**Justification**: required peak torque 0.31 Nm × 2× safety factor = 0.62 Nm; selected continuous rating 1.5 Nm gives 2.4× margin. Direct drive avoids gearbox backlash; the high load-to-rotor inertia ratio is acceptable with a rigid rotor-to-shaft mount at 0.5 Hz. Continuous duty rated. Fits mechanical envelope.",
       "**Cost**: $X for motor + $Y for drive + cabling = $Z total system cost.",
-      "**Alternatives considered and rejected**: brushed DC (brush wear over 8-hour runs), stepper (inertia ratio too high, resonance risk).",
-      "**Risks**: thermal headroom adequate but not generous in worst-case ambient; verify cooling on first build."
+      "**Alternatives considered and rejected**: brushed DC (brush wear over 8-hour runs), open-loop stepper (high-inertia load, resonance and missed-step risk with no position feedback), geared housed servo (meets the inertia guideline but adds backlash at every reversal and another wear part).",
+      "**Risks**: thermal headroom adequate but not generous in worst-case ambient; verify cooling on first build. Frameless integration (bearings, air gap, encoder mounting) is our responsibility; review the fixture drawings with the motor vendor."
     ]},
 
     { type: "callout", style: "key",
