@@ -7733,7 +7733,7 @@ const EMBED_LESSONS = [
     { type: "ul", items: [
       "**Predictable timing** — engineers can calculate a worst-case response bound (about two scan times plus I/O filter and update delays) and rely on it. Safety analyses, regulatory submissions, and process control rely on this.",
       "**Atomic I/O** — all inputs sampled together, all outputs updated together. No race conditions where one output sees an old value of another input.",
-      "**Robust to bad code** — even if your logic has bugs, the PLC keeps scanning. It won't get 'stuck in a loop' the way a microcontroller can.",
+      "**Supervised scan time** — the PLC monitors its own cycle time. If logic overruns the configured maximum (a runaway FOR/WHILE loop, for example), the cycle watchdog faults the CPU to STOP and outputs go to their configured safe state instead of hanging silently. Bad code still stops the machine, but in a defined, diagnosable way.",
       "**Hot-swappable I/O** — most PLC modules can be removed and replaced without taking the system down. Maintenance happens with the line running.",
       "**Decades of lifecycle** — Siemens, Rockwell, Mitsubishi commit to 15-20+ year hardware availability and parts support. A PLC installed in 2005 can still get spare modules today.",
       "**Field-proven safety** — IEC 61508 / IEC 61511 / SIL-rated PLCs run nuclear plants, refineries, and other safety-critical applications."
