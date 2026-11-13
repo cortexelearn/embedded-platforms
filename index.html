@@ -7509,7 +7509,7 @@ const EMBED_LESSONS = [
 
     { type: "h3", text: "Real-Time Properties" },
     { type: "p", text: "Bare Arduino is real-time-capable but not real-time-by-default. The standard Arduino programming model (loop() function) is cooperative — your code voluntarily yields by returning from loop(). If your code blocks, everything blocks. Interrupt service routines can give you real real-time response, but most Arduino libraries are not interrupt-safe." },
-    { type: "p", text: "For serious real-time work on Arduino, options are: keep loop() short and use interrupts for time-critical paths; use the Arduino-Mbed core (Portenta, Nano 33 BLE) which has Mbed RTOS built in; or use FreeRTOS via the FreeRTOS-for-Arduino library. The Phase 3 lesson on real-time goes deeper." },
+    { type: "p", text: "For serious real-time work on Arduino, options are: keep loop() short and use interrupts for time-critical paths; use FreeRTOS via the FreeRTOS-for-Arduino library; or use Arduino's Zephyr-based core (Portenta, Nano 33 BLE, GIGA, Opta, and others), which runs the Arduino API on top of the Zephyr RTOS. The older Arduino-Mbed cores are being deprecated — Mbed OS reached end of life in July 2026 — so use them only to maintain existing code. The Phase 3 lesson on real-time goes deeper." },
 
     { type: "callout", style: "key",
       text: "**The right framing.** Arduino isn't 'training wheels for embedded' — it's a deliberate design tradeoff that makes the easy 80% of embedded development trivial at the cost of some control over the hard 20%. For prototypes, test fixtures, and data loggers it's superb. For industrial production, use Industrial Arduinos or move to bare-metal STM32." },
@@ -8257,9 +8257,9 @@ const EMBED_LESSONS = [
     { type: "ul", items: [
       "**FreeRTOS** — the dominant embedded RTOS. Open-source, Amazon-maintained, runs on virtually every MCU. Tasks, queues, semaphores, mutexes, software timers. The first RTOS most people learn.",
       "**Zephyr** — Linux Foundation project, more comprehensive than FreeRTOS. Built-in networking stack, device tree, modern build system. Standard for new IoT designs.",
-      "**Mbed OS** — ARM's RTOS, integrated with Mbed Studio. Common on Cortex-M boards.",
+      "**Mbed OS** — Arm's former Cortex-M RTOS. It reached end of life in July 2026; treat it as legacy, suitable only for maintaining existing Mbed-based code. Choose FreeRTOS or Zephyr for new designs.",
       "**ThreadX** — commercial RTOS, used in production. Microsoft acquired it; now Azure RTOS, recently re-open-sourced.",
-      "**RTOS on a hobby Arduino** — FreeRTOS-for-Arduino library, or use boards (Nano 33 BLE, Portenta) with Mbed OS built in. Arduino's loop() pattern doesn't preclude using an RTOS underneath."
+      "**RTOS on a hobby Arduino** — FreeRTOS-for-Arduino library, or Arduino's Zephyr-based core on boards like Portenta, Nano 33 BLE, and GIGA (it replaces the legacy Mbed cores, which are being deprecated). Arduino's loop() pattern doesn't preclude using an RTOS underneath."
     ]},
 
     { type: "h3", text: "Real-Time Linux" },
