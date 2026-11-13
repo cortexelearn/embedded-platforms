@@ -4630,10 +4630,10 @@ const AM_LESSONS = [
         "Supports are decorative additions some users prefer — they're never functionally required for resin printing",
         "Supports are required only for parts larger than a specific build volume threshold size",
         "Supports are required by the FDA for medical resin printing but optional for aerospace applications",
-        "Resin printers build downward into liquid resin — any overhang needs support to bridge from the build plate up to where the geometry begins"
+        "Most desktop resin printers cure each layer against the film at the bottom of the vat and then lift the platform — any region with no earlier layers linking it to the platform needs supports to anchor it and survive the peel force"
       ],
       correct: 3,
-      explanation: "Resin printers build downward — the build plate descends into the vat layer by layer. Any geometry not directly connected to existing layers below needs supports to bridge from the build plate. Even small overhangs typically need supports. Support generation and orientation together are 80% of getting a resin print right." },
+      explanation: "On the bottom-up (inverted) printers this track covers, each layer cures against the FEP film at the bottom of the vat and the build platform then lifts away, so the part grows hanging upside down from the platform. Any island or overhang that would first appear with no earlier cured layers connecting it to the platform has nothing to cure onto, and every layer must also survive being peeled off the film — supports anchor those regions back to the platform. Even small overhangs typically need supports. Support generation and orientation together are 80% of getting a resin print right." },
     {
       question: "What's 'layer exposure time' in resin printing, and why does it matter?",
       options: [
@@ -5272,13 +5272,13 @@ const AM_FINAL_EXAM = [
     "phase": 3,
     "question": "Why are supports required for most resin prints?",
     "options": [
-      "Resin printers build downward into liquid resin — any overhang needs support to bridge to where geometry begins",
+      "Layers cure against the film at the bottom of the vat as the platform lifts — any region with no earlier layers linking it to the platform needs supports to anchor it and resist peel forces",
       "Supports are decorative additions some users prefer — never functionally required for resin printing",
       "Supports are required only for parts larger than a specific build volume threshold size",
       "Supports are required by the FDA for medical resin printing but optional for aerospace applications"
     ],
     "correct": 0,
-    "explanation": "Resin printers build downward. Any geometry not connected to existing layers below needs supports."
+    "explanation": "In bottom-up resin printing the part hangs from the lifting platform. Any island or overhang not connected to earlier cured layers has nothing to cure onto and must also survive the peel off the vat film, so it needs supports."
   },
   {
     "phase": 3,
