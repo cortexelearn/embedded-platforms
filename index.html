@@ -7507,9 +7507,11 @@ const EMBED_LESSONS = [
     { type: "ul", items: [
       "**AVR-based (Uno, Nano, Mega)** — the original 8-bit Arduinos. ATmega328P or ATmega2560. Slow (16-20 MHz), tiny RAM (2-8 KB), but extremely well-understood and stable. Still the workhorse for simple control tasks.",
       "**SAMD-based (Zero, MKR series)** — ARM Cortex-M0+ at 48 MHz, more memory, USB-native. The natural step up from AVR for projects that outgrow it.",
-      "**RP2040-based (Pico, Nano RP2040 Connect)** — Dual-core ARM Cortex-M0+ at 133 MHz, very capable, very cheap. Modern alternative to AVR.",
+      "**Renesas-based (UNO R4 Minima, UNO R4 WiFi)** — Arm Cortex-M4 (Renesas RA4M1) at 48 MHz with 32 KB RAM. The current Uno: same shape and shield compatibility as the classic board; the WiFi version adds an ESP32-S3 module for wireless.",
+      "**RP2040-based (Nano RP2040 Connect)** — Dual-core ARM Cortex-M0+ at 133 MHz, very capable, very cheap. The Raspberry Pi Pico (a Raspberry Pi board, not an Arduino) uses the same chip and also runs Arduino code through community-maintained cores.",
       "**ESP32-based variants (Nano ESP32)** — Arduino-IDE-compatible ESP32 boards. WiFi/BLE built-in. Covered separately in Lesson 4.",
-      "**Industrial Arduinos (Portenta, Opta, Edge Control)** — Pro-grade boards with industrial-grade microcontrollers (STM32H7), proper certifications, ruggedized. Covered in Phase 4."
+      "**Industrial Arduinos (Portenta, Opta, Edge Control)** — Pro-grade boards with industrial-grade microcontrollers (Portenta and Opta use the STM32H7; Edge Control uses a Nordic nRF52840), proper certifications, ruggedized. Covered in Phase 4.",
+      "**Linux + MCU boards (UNO Q)** — after Qualcomm acquired Arduino in 2025, Arduino released the UNO Q, which puts a Linux-capable Qualcomm processor and an STM32 microcontroller on one board. It is the Lesson 1 MCU-plus-SBC split on a single PCB."
     ]},
 
     { type: "h3", text: "The IDE & Library System" },
@@ -7576,9 +7578,9 @@ const EMBED_LESSONS = [
 
     { type: "h3", text: "The SBC Family" },
     { type: "ul", items: [
-      "**Raspberry Pi (5, 4, 3, Zero series)** — the dominant consumer SBC. Pi 5 has quad-core ARM Cortex-A76, up to 8 GB RAM, USB 3, dual 4K displays. Pi Zero 2 W is the tiny low-cost variant. Solid software support, massive community.",
+      "**Raspberry Pi (5, 4, 3, Zero series)** — the dominant consumer SBC. Pi 5 has quad-core ARM Cortex-A76, 1–16 GB RAM, PCIe, USB 3, dual 4K displays. Pi Zero 2 W is the tiny low-cost variant. Solid software support, massive community.",
       "**BeagleBone (Black, AI-64)** — historically stronger on real-time GPIO via the PRU (Programmable Real-time Unit) coprocessor. Useful when you need both Linux and microsecond-precise GPIO timing.",
-      "**NVIDIA Jetson (Nano, Orin Nano, Orin AGX)** — SBCs with serious GPUs for AI and computer vision. Used heavily in robotics, edge AI, autonomous vehicles.",
+      "**NVIDIA Jetson (Orin Nano, Orin NX, AGX Orin; the original Jetson Nano is end-of-life)** — SBCs with serious GPUs for AI and computer vision. Used heavily in robotics, edge AI, autonomous vehicles.",
       "**Industrial SBCs (Compute Modules, Revolution Pi, Strato Pi)** — Raspberry Pi Compute Module-based products designed for industrial use. Phase 4 covers these.",
       "**RISC-V SBCs (StarFive VisionFive, others)** — emerging, open-architecture alternatives. Software ecosystem still maturing."
     ]},
@@ -7617,7 +7619,7 @@ const EMBED_LESSONS = [
         "Strength: full TCP/IP stack, GUI, file systems, package management, mature toolchain. Weakness: scheduling unpredictability rules out hard real-time control"
       ],
       correct: 3,
-      explanation: "Linux gives Pi enormous capability: networking, file systems, multitasking, GUI, package management — all the things a real OS provides. The downside: Linux is preemptively scheduled, with non-deterministic timing variation typically in milliseconds. Fine for many applications (logging, networking, vision processing); but disqualifying for hard real-time control loops." },
+      explanation: "Linux gives Pi enormous capability: networking, file systems, multitasking, GUI, package management — all the things a real OS provides. The downside: Linux is preemptively scheduled, with worst-case timing variation from hundreds of microseconds to several milliseconds under load. Fine for many applications (logging, networking, vision processing); but disqualifying for hard real-time control loops." },
     {
       question: "When does Pi's HDMI output add real value?",
       options: [
@@ -7652,9 +7654,9 @@ const EMBED_LESSONS = [
   content: [
     { type: "p", text: "The ESP32 is the most successful embedded chip of the last decade. Dual-core processor, integrated WiFi and Bluetooth, generous RAM and flash, all for $3-8 a board. It's eaten the IoT market and a substantial chunk of the broader embedded space. If you're building anything that needs wireless connectivity, the ESP32 is probably the right starting point." },
 
-    { type: "h3", text: "What's Inside an ESP32" },
+    { type: "h3", text: "What's Inside the Original ESP32 (Variants Differ)" },
     { type: "ul", items: [
-      "**Dual-core Xtensa LX6 (or LX7) at 240 MHz** — both cores accessible to your application. One typically runs WiFi/BLE stack, the other your code, but you can use both.",
+      "**Dual-core Xtensa LX6 at 240 MHz (the S3 uses LX7)** — both cores accessible to your application. One typically runs WiFi/BLE stack, the other your code, but you can use both.",
       "**WiFi (802.11 b/g/n) + Bluetooth (Classic + BLE)** — integrated antenna or external antenna variants.",
       "**RAM (520 KB internal, plus optional PSRAM up to 8 MB)** — generous for a microcontroller. PSRAM makes camera and image processing applications viable.",
       "**Flash (4-16 MB typical)** — plenty for firmware plus filesystem (SPIFFS, LittleFS).",
@@ -7664,11 +7666,13 @@ const EMBED_LESSONS = [
 
     { type: "h3", text: "ESP32 Variants" },
     { type: "ul", items: [
-      "**ESP32 (original)** — dual-core, WiFi+BT. Still common, mature.",
+      "**ESP32 (original)** — dual-core, WiFi + Bluetooth Classic + BLE. Still common, mature. Bluetooth Classic and the hall sensor exist only on this original part; later variants are BLE-only or have no Bluetooth.",
       "**ESP32-S2** — single-core, USB-OTG, no Bluetooth. Cost-down for specific use cases.",
-      "**ESP32-S3** — dual-core LX7, USB-OTG, AI acceleration instructions. The current flagship.",
+      "**ESP32-S3** — dual-core LX7, USB-OTG, AI acceleration instructions. The usual pick for higher-performance designs that need a radio.",
       "**ESP32-C3** — single-core RISC-V, WiFi+BLE. Cheap, simple, RISC-V architecture.",
-      "**ESP32-C6** — RISC-V with WiFi 6, BLE 5, Zigbee/Thread. Latest connectivity standards."
+      "**ESP32-C6** — RISC-V with WiFi 6, BLE 5, Zigbee/Thread (802.15.4). Single-core.",
+      "**ESP32-C5** — RISC-V with dual-band (2.4 + 5 GHz) WiFi 6, BLE 5, Zigbee/Thread.",
+      "**ESP32-P4** — high-performance dual-core RISC-V with no built-in radio, aimed at HMI, camera, and multimedia work; usually paired with a separate wireless chip."
     ]},
 
     { type: "h3", text: "ESP-IDF vs Arduino-on-ESP32" },
@@ -7747,14 +7751,14 @@ const EMBED_LESSONS = [
       "**3. Update all outputs** — the output image is written to physical outputs simultaneously.",
       "**4. Housekeeping** — diagnostics, communications, watchdog updates."
     ]},
-    { type: "p", text: "This cycle repeats every few milliseconds (typical 5-50 ms scan time). Determinism is the killer feature: the worst-case time from an input change to the output response is roughly two scan times (an input that changes just after the read phase isn't seen until the next scan) plus input-filter and output-update delays. That bound is known and repeatable — no garbage collection pauses, no OS jitter. For events too fast for the cyclic scan, modern PLCs offer hardware-interrupt or event tasks that run outside the normal cycle." },
+    { type: "p", text: "This cycle repeats every few milliseconds (commonly 5-50 ms; about 1-100 ms across the full range of programs and hardware). Determinism is the killer feature: the worst-case time from an input change to the output response is roughly two scan times (an input that changes just after the read phase isn't seen until the next scan) plus input-filter and output-update delays. That bound is known and repeatable — no garbage collection pauses, no OS jitter. For events too fast for the cyclic scan, modern PLCs offer hardware-interrupt or event tasks that run outside the normal cycle." },
 
     { type: "h3", text: "Why This Architecture Wins for Industry" },
     { type: "ul", items: [
       "**Predictable timing** — engineers can calculate a worst-case response bound (about two scan times plus I/O filter and update delays) and rely on it. Safety analyses, regulatory submissions, and process control rely on this.",
       "**Atomic I/O** — all inputs sampled together, all outputs updated together. Logic within a scan always sees one consistent snapshot of the inputs.",
       "**Supervised scan time** — the PLC monitors its own cycle time. If logic overruns the configured maximum (a runaway FOR/WHILE loop, for example), the cycle watchdog faults the CPU to STOP and outputs go to their configured safe state instead of hanging silently. Bad code still stops the machine, but in a defined, diagnosable way.",
-      "**Hot-swappable I/O** — most PLC modules can be removed and replaced without taking the system down. Maintenance happens with the line running.",
+      "**Hot-swappable I/O** — many modular and distributed-I/O PLC systems let you pull and replace an I/O module without stopping the controller, so maintenance can happen with the line running. Compact and fixed-I/O PLCs usually can't, so check the specific family.",
       "**Decades of lifecycle** — Siemens, Rockwell, Mitsubishi commit to 15-20+ year hardware availability and parts support. A PLC installed in 2005 can still get spare modules today.",
       "**Field-proven safety** — IEC 61508 / IEC 61511 / SIL-rated PLCs run nuclear plants, refineries, and other safety-critical applications."
     ]},
@@ -7792,12 +7796,12 @@ const EMBED_LESSONS = [
         "An obsolete technology — PLCs have been replaced by microcontrollers in all modern industrial applications"
       ],
       correct: 1,
-      explanation: "Modern PLCs are industrial computers: real-time deterministic execution, hot-pluggable I/O modules (so a single module can be replaced without shutting down the line), wide temperature range, EMI-hardened, fan-less, 20+ year service life. They run scan-based execution cycles, typically at 1-100 ms intervals depending on configuration. Different from MCUs in both hardware and software paradigm." },
+      explanation: "Modern PLCs are industrial computers: real-time deterministic execution, hot-pluggable I/O modules (so a single module can be replaced without shutting down the line), wide temperature range, EMI-hardened, fan-less, 20+ year service life. They run scan-based execution cycles, commonly every 5-50 ms (about 1-100 ms across the full range, depending on program size and hardware). Different from MCUs in both hardware and software paradigm." },
     {
       question: "What's the 'scan cycle' in a PLC?",
       options: [
         "The PLC scans incoming network packets at a fixed rate to detect changes in system state",
-        "Read all inputs → execute program → write all outputs, repeated continuously at a fixed cycle time (typically 1-100ms)",
+        "Read all inputs → execute program → write all outputs, repeated continuously at a fixed cycle time (commonly 5-50 ms)",
         "The PLC scans its memory for errors on a fixed schedule and reports any inconsistencies it finds",
         "The PLC sequentially scans through ladder logic rungs — each scan handles only one rung per cycle"
       ],
@@ -7825,13 +7829,13 @@ const EMBED_LESSONS = [
   content: [
     { type: "p", text: "PLC programming languages look strange at first. Ladder logic looks like an electrical schematic. Structured Text looks like Pascal. Function Block Diagram looks like signal-flow graphics. They're all there for good historical and practical reasons, and they're all standardized under IEC 61131-3." },
 
-    { type: "h3", text: "The Five Languages" },
+    { type: "h3", text: "The Five Languages (Four in the Current Edition)" },
     { type: "ul", items: [
       "**Ladder Diagram (LD)** — graphical, looks like an electrical relay schematic. Inputs on the left, outputs on the right, 'rungs' read top-to-bottom. The dominant language (~80% of industrial PLC code is ladder).",
       "**Structured Text (ST)** — high-level textual, similar to Pascal. Best for math, complex logic, algorithms. Increasingly the modern choice for new code.",
       "**Function Block Diagram (FBD)** — graphical, signal flow through interconnected function blocks. Excellent for process control, PID loops, analog scaling.",
       "**Sequential Function Chart (SFC)** — graphical state-machine notation. Steps and transitions. Good for batch processes and sequencing.",
-      "**Instruction List (IL)** — assembly-like, deprecated in IEC 61131-3:2013 but still in legacy code."
+      "**Instruction List (IL)** — assembly-like. Deprecated in the 2013 (third) edition of IEC 61131-3 and dropped from the 2025 (fourth) edition, but you will still meet it in legacy projects."
     ]},
 
     { type: "h3", text: "Reading Ladder Logic" },
@@ -7888,7 +7892,7 @@ const EMBED_LESSONS = [
       question: "What is IEC 61131-3?",
       options: [
         "A regulation specifying safety requirements for industrial control system hardware deployment",
-        "An international standard defining PLC programming languages (ladder, structured text, function block, instruction list, sequential function chart) — enables portability across vendors",
+        "An international standard defining PLC programming languages (ladder, structured text, function block diagram, sequential function chart; instruction list in older editions) — enables portability across vendors",
         "A communication protocol used by PLCs to talk to other industrial automation equipment",
         "A certification PLCs must hold before they can be used in safety-critical industrial applications"
       ],
@@ -7943,14 +7947,14 @@ const EMBED_LESSONS = [
       "**Profinet** — Siemens-led, dominant in Europe. Real-time Ethernet, can hit sub-millisecond cycles in IRT (Isochronous Real-Time) mode. Standard in Siemens systems.",
       "**EtherNet/IP** — Rockwell-led, dominant in North America. Real-time Ethernet using CIP (Common Industrial Protocol). Standard in Allen-Bradley systems.",
       "**EtherCAT** — Beckhoff-led, fastest deterministic Ethernet (sub-100 µs cycles possible). Standard for high-speed motion and machine control.",
-      "**IO-Link** — for the last 10 meters between sensor and field. Single twisted pair, simple protocol, configurable smart sensors. Replacing simple discrete sensors in modern designs.",
+      "**IO-Link (IEC 61131-9)** — a point-to-point link of up to 20 m between one master port and one smart sensor or actuator, over ordinary unshielded 3-wire cable (5-wire for Class B ports), usually with M8/M12 connectors. Adds parameter setting and diagnostics on top of plain switching signals; increasingly replaces simple discrete sensors in new designs.",
       "**OPC UA** — not really a fieldbus, but the lingua franca for higher-level integration. Maps PLC data to a standardized object model for HMI, SCADA, MES integration."
     ]},
 
     { type: "h3", text: "HMI and SCADA" },
     { type: "ul", items: [
       "**HMI (Human-Machine Interface)** — local touchscreen at the equipment. Operators run the line through it. Vendor-specific (Siemens TP, Allen-Bradley PanelView, etc.) or third-party panels.",
-      "**SCADA (Supervisory Control And Data Acquisition)** — plant-level system aggregating data from many PLCs. Trend logging, alarm management, recipe management, batch reporting. Wonderware, Ignition, FactoryTalk View, WinCC are common platforms.",
+      "**SCADA (Supervisory Control And Data Acquisition)** — plant-level system aggregating data from many PLCs. Trend logging, alarm management, recipe management, batch reporting. AVEVA (formerly Wonderware), Ignition, FactoryTalk View, WinCC are common platforms.",
       "**Web HMI** — increasingly common: HMI runs as a web app served from the PLC or a gateway, accessed from any device with a browser. The modern direction."
     ]},
 
@@ -7984,7 +7988,7 @@ const EMBED_LESSONS = [
         "HMIs are obsolete — modern industrial systems use smartphone apps for all operator interaction needs"
       ],
       correct: 2,
-      explanation: "HMIs (touchscreens, panel meters, computer displays) sit between operators and PLCs. They visualize plant state, accept operator commands, display alarms, log data. The PLC is the deterministic real-time controller; the HMI is the operator's window into and command of the process. Modern HMIs often use Ethernet/IP, EtherCAT, or other industrial protocols to communicate with PLCs." },
+      explanation: "HMIs (touchscreens, panel meters, computer displays) sit between operators and PLCs. They visualize plant state, accept operator commands, display alarms, log data. The PLC is the deterministic real-time controller; the HMI is the operator's window into and command of the process. Modern HMIs usually talk to PLCs over EtherNet/IP, PROFINET, Modbus TCP, or OPC UA." },
     { question: "Why are industrial Ethernet protocols (EtherNet/IP, PROFINET, EtherCAT) different from standard office Ethernet?",
       options: [
         "Industrial Ethernet uses different cables and connectors that are completely incompatible with standard office network equipment",
@@ -7993,7 +7997,7 @@ const EMBED_LESSONS = [
         "Real-time deterministic delivery, deterministic message timing, ruggedized physical layer, industrial protocol structure — guarantees needed for real-time control"
       ],
       correct: 3,
-      explanation: "Industrial Ethernet adds real-time and deterministic capabilities on top of standard Ethernet hardware. EtherCAT achieves sub-microsecond determinism. PROFINET supports both real-time and standard traffic. EtherNet/IP carries CIP messages. Hardware is often standard Ethernet (CAT5/6 with M12 connectors for ruggedization) but timing guarantees and protocol structures differ significantly from office networking." }
+      explanation: "Industrial Ethernet adds real-time and deterministic capabilities on top of standard Ethernet hardware. EtherCAT reaches cycle times under 100 µs with sub-microsecond clock jitter (distributed clocks). PROFINET supports both real-time and standard traffic. EtherNet/IP carries CIP messages. Hardware is often standard Ethernet (CAT5/6 with M12 connectors for ruggedization) but timing guarantees and protocol structures differ significantly from office networking." }
   ]
 },
 
@@ -8025,7 +8029,7 @@ const EMBED_LESSONS = [
       "**Brown-out lockup** — power dip at startup leaves the MCU in an undefined state. No watchdog by default. The line is down until someone power-cycles the box.",
       "**EMI-induced state corruption** — induction motors switching nearby flip a bit in RAM. Variables go to nonsense values. No ECC, no detection, no recovery.",
       "**SD card wear** — logging to SD card eventually wears out the flash. Card fails silently, all logs gone, no alert.",
-      "**Single-point-of-failure with no redundancy** — when the Arduino dies, there's no hot-spare to take over. PLCs support hot-redundant CPUs out of the box.",
+      "**Single-point-of-failure with no redundancy** — when the Arduino dies, there's no hot-spare to take over. High-end PLC families offer hot-standby redundant CPUs using dedicated redundancy hardware; a plain Arduino has no comparable path.",
       "**Maintainability gap** — when the engineer who built it leaves, no one understands the C++ code. Plant electricians can read ladder logic; they can't debug pointer arithmetic."
     ]},
 
@@ -8215,7 +8219,8 @@ const EMBED_LESSONS = [
     { type: "ul", items: [
       "**Mean Time Between Failures (MTBF)** — statistical measure. A 1,000,000 hour MTBF doesn't mean one unit lasts 1,000,000 hours — it means in a population of 1,000 units, you expect ~1 failure per 1,000 hours of operation.",
       "**Bath-tub curve** — high failure rate at burn-in, low constant rate during life, rising rate at wear-out. Industrial products are typically pre-burn-in tested at the factory.",
-      "**Series vs parallel reliability** — components in series have failure rates that add up; in parallel (true redundancy), the probabilities of failure multiply, so the combined chance of losing the function is much smaller. Critical paths benefit hugely from redundancy."
+      "**Series vs parallel reliability** — components in series have failure rates that add up; in parallel (true redundancy), the probabilities of failure multiply, so the combined chance of losing the function is much smaller. Critical paths benefit hugely from redundancy.",
+      "**Component derating** — run parts well inside their ratings instead of at the datasheet maximum. A common industrial rule of thumb keeps voltage, current, and power stress at about 50-70% of the rated maximum and checks each part against its temperature derating curve. Failure rates climb steeply with temperature and electrical stress, so margin spent here comes back as service life."
     ]},
 
     { type: "callout", style: "key",
@@ -8225,13 +8230,13 @@ const EMBED_LESSONS = [
     {
       question: "What's the right way to design a watchdog timer for an embedded industrial system?",
       options: [
-        "Independent hardware watchdog (separate from the main MCU) that requires periodic 'kick' from properly-functioning code — resets the system if code hangs or executes incorrectly",
+        "A hardware watchdog with its own clock (on-chip, or an external IC for critical systems), fed only by a supervisor that has confirmed every subsystem is healthy — resets the system if code hangs or executes incorrectly",
         "Software-only watchdog implemented within the main program loop — sufficient because software always knows its own state correctly",
         "Watchdog timers are obsolete — modern MCUs never hang or execute incorrectly, making the protection unnecessary",
         "Watchdog timers should be disabled — they cause unwanted resets that interrupt production operation"
       ],
       correct: 0,
-      explanation: "A proper watchdog is independent hardware that resets the system if not kicked periodically. The kick must come from properly-executing code (typically deep in the main loop, after critical paths). Software-only watchdogs miss the case where software hangs — the very condition you're trying to detect. Watchdog protection is foundational to embedded reliability and is universal in industrial-grade designs."
+      explanation: "A proper watchdog is hardware with its own clock that resets the system if it isn't fed in time: the MCU's on-chip independent watchdog for most designs, plus an external watchdog IC when the system is critical. Feed it from a supervisor task that has checked every subsystem's heartbeat, never from a timer interrupt that keeps running even after the real work has stalled. Software-only watchdogs miss the case where software hangs — the very condition you're trying to detect. Watchdog protection is foundational to embedded reliability and is universal in industrial-grade designs."
     },
     { question: "Why is component derating important for industrial embedded reliability?",
       options: [
@@ -8271,23 +8276,23 @@ const EMBED_LESSONS = [
     ]},
 
     { type: "h3", text: "Interrupt Latency" },
-    { type: "p", text: "When a hardware event triggers an interrupt, how long until your ISR runs? On a bare-metal MCU: microseconds, deterministic. On a stock Linux Pi: typically tens of microseconds, but with worst-case spikes to hundreds of microseconds or more under load. On a PLC: the cyclic program responds within roughly two scan times plus I/O filter and update delays (often tens of milliseconds with typical 5-50 ms scans) — slower, but bounded and repeatable. For faster events, PLC hardware-interrupt or event tasks run outside the cyclic scan and can respond in well under a millisecond." },
+    { type: "p", text: "When a hardware event triggers an interrupt, how long until your ISR runs? On a bare-metal MCU: microseconds, deterministic. On a stock Linux Pi: typically tens of microseconds, but with worst-case spikes from hundreds of microseconds to several milliseconds under load (tens of microseconds with PREEMPT_RT). On a PLC: the cyclic program responds within roughly two scan times plus I/O filter and update delays (often tens of milliseconds with typical 5-50 ms scans) — slower, but bounded and repeatable. For faster events, PLC hardware-interrupt or event tasks run outside the cyclic scan and can respond in well under a millisecond." },
 
     { type: "h3", text: "RTOS Basics" },
     { type: "ul", items: [
       "**FreeRTOS** — the dominant embedded RTOS. Open-source, Amazon-maintained, runs on virtually every MCU. Tasks, queues, semaphores, mutexes, software timers. The first RTOS most people learn.",
       "**Zephyr** — Linux Foundation project, more comprehensive than FreeRTOS. Built-in networking stack, device tree, modern build system. Standard for new IoT designs.",
       "**Mbed OS** — Arm's former Cortex-M RTOS. It reached end of life in July 2026; treat it as legacy, suitable only for maintaining existing Mbed-based code. Choose FreeRTOS or Zephyr for new designs.",
-      "**ThreadX** — commercial RTOS, used in production. Microsoft acquired it; now Azure RTOS, recently re-open-sourced.",
+      "**ThreadX** — a mature production RTOS with a long safety-certification record. It started at Express Logic, became Microsoft's Azure RTOS, and is now the open-source Eclipse ThreadX project under the MIT license.",
       "**RTOS on a hobby Arduino** — FreeRTOS-for-Arduino library, or Arduino's Zephyr-based core on boards like Portenta, Nano 33 BLE, and GIGA (it replaces the legacy Mbed cores, which are being deprecated). Arduino's loop() pattern doesn't preclude using an RTOS underneath."
     ]},
 
     { type: "h3", text: "Real-Time Linux" },
     { type: "p", text: "Stock Linux is not real-time — kernel can defer interrupts, scheduler can preempt at unpredictable points. Two paths to real-time on Linux:" },
     { type: "ul", items: [
-      "**PREEMPT_RT patch** — makes the kernel fully preemptible. Worst-case latency drops from milliseconds to tens of microseconds. Mainlined into stock kernel as of 6.12. Available for Raspberry Pi.",
+      "**PREEMPT_RT patch** — makes the kernel fully preemptible. Worst-case latency drops from hundreds of microseconds to several milliseconds (stock kernel under load) to tens of microseconds. Mainlined into stock kernel as of 6.12. Available for Raspberry Pi.",
       "**Xenomai** — dual-kernel approach. A real-time microkernel runs alongside Linux, providing hard real-time tasks while Linux handles non-real-time work.",
-      "**Hardware coprocessor** — BeagleBone PRUs, ESP32 ULP, Jetson real-time cores. Run hard-real-time code on a dedicated processor, communicate with the Linux system via shared memory."
+      "**Hardware coprocessor** — BeagleBone PRUs, Jetson real-time cores, and the Cortex-M cores on mixed-core SoCs such as NXP i.MX 8M. Run hard-real-time code on a dedicated processor, communicate with the Linux system via shared memory."
     ]},
 
     { type: "h3", text: "Industrial Communication Protocols" },
@@ -8327,11 +8332,11 @@ const EMBED_LESSONS = [
       options: [
         "RTOSes are simpler versions of Linux — same scheduling philosophy with less feature surface",
         "RTOSes are obsolete — modern Linux is fully real-time and replaces RTOS in all current designs",
-        "RTOSes use priority-based preemptive scheduling with bounded worst-case latency — Linux uses fair scheduling that doesn't guarantee bounded latency",
+        "RTOSes are designed and analyzed for bounded worst-case latency (priority-based preemptive scheduling) — general-purpose Linux is tuned for throughput and fairness and needs PREEMPT_RT plus careful configuration to approach bounded latency",
         "RTOSes are restricted to military applications — commercial embedded systems use standard Linux instead"
       ],
       correct: 2,
-      explanation: "RTOSes (FreeRTOS, Zephyr, VxWorks, QNX) use strict priority-based preemptive scheduling with bounded worst-case latency for tasks. Linux uses Completely Fair Scheduler optimized for throughput, with non-deterministic latencies typically in milliseconds. PREEMPT_RT patches Linux toward real-time but with limitations. For hard real-time, RTOS or bare-metal beats Linux." },
+      explanation: "RTOSes (FreeRTOS, Zephyr, VxWorks, QNX) use strict priority-based preemptive scheduling with bounded worst-case latency for tasks. General-purpose Linux is tuned for throughput and fairness. It does offer fixed-priority SCHED_FIFO/SCHED_RR classes, but on a stock kernel worst-case latency can reach hundreds of microseconds to several milliseconds under load. PREEMPT_RT (in the mainline kernel since 6.12) brings that down to tens of microseconds on a carefully configured system, though the bound comes from measurement rather than design analysis. For hard real-time, RTOS or bare-metal beats Linux." },
     { question: "What does 'CAN bus' provide for embedded systems?",
       options: [
         "Highest-bandwidth network protocol available — replaces Ethernet in modern industrial embedded systems",
@@ -8364,13 +8369,14 @@ const EMBED_LESSONS = [
       "**Compliance certifications** — UL, CE, IEC 61131-2, often more.",
       "**Real-time capable** — supports IEC 61131-3 PLC programming alongside or instead of hobby languages.",
       "**Long lifecycle commitment** — 7-10 years typical, vs consumer 2-3 years.",
-      "**Documentation and support quality** — datasheets, application notes, technical support comparable to traditional industrial vendors."
+      "**Documentation and support quality** — datasheets, application notes, technical support comparable to traditional industrial vendors.",
+      "**Fanless, passively cooled hardware** — industrial controllers and industrial PCs usually avoid fans. Fan bearings wear out, fans pull dust, oil mist, and conductive particles into the enclosure, and they add vibration. Heat leaves through the case and heat sinks instead; that takes careful thermal design but removes a common field-failure point."
     ]},
 
     { type: "h3", text: "Specific Products" },
     { type: "ul", items: [
       "**Arduino Opta** — $200-$300 PLC programmable in Arduino C++ or IEC 61131-3 (ladder, ST, FBD via PLC IDE). 8 digital inputs, 4 relay outputs, optional Ethernet/RS-485/WiFi/BLE. The most polished hobby-to-industrial bridge currently shipping.",
-      "**Arduino Portenta Machine Control** — higher-end Arduino industrial controller. More I/O, more interfaces (Profinet, Modbus, EtherCAT), STM32H7-based. Pro-tier pricing.",
+      "**Arduino Portenta Machine Control** — higher-end Arduino industrial controller. More I/O, more interfaces (Modbus RTU/TCP, CAN, Ethernet), STM32H7-based. Pro-tier pricing.",
       "**Revolution Pi** — Raspberry Pi Compute Module-based industrial controller. DIN-rail, isolated I/O, IEC 61131-3 via Codesys runtime. The standard Pi-based industrial product.",
       "**Codesys-on-Pi** — install Codesys runtime on a Raspberry Pi, get a soft-PLC programmable in IEC 61131-3. Fine for prototypes; industrial-grade hardware (Revolution Pi, Strato Pi) recommended for deployment.",
       "**Industrial Shields** — both Arduino-based and Pi-based industrial controllers. Spanish company, broad product range.",
@@ -8483,8 +8489,17 @@ const EMBED_LESSONS = [
       "**OTA (Over-the-Air) firmware update** — for connected products, essentially mandatory. Built-in bootloader, signed firmware, fail-safe rollback, A/B partitioning.",
       "**Long-term support** — committing to security updates and bug fixes for 5-10 years post-shipment. Plan your software architecture for it.",
       "**Fleet management** — once you have thousands of devices in the field, you need infrastructure to monitor, deploy, and roll back across the fleet. Particle, Memfault, AWS IoT Core, Azure IoT Hub all play here.",
-      "**Cybersecurity disclosure** — as connected products become regulated (EU CRA, US executive orders), product security disclosures and remediation processes are increasingly required.",
+      "**Cybersecurity disclosure** — the EU Cyber Resilience Act (CRA) has required manufacturers to report actively exploited vulnerabilities and severe security incidents in their products since 11 September 2026, and its full essential requirements (secure-by-design, vulnerability handling, security updates over the support period) apply from December 2027. US executive orders on software security add similar pressure. Put a disclosure and remediation process in place before you ship.",
       "**Open-source license compliance** — you're using GPL, MIT, Apache code in your firmware. Track licenses, provide source where required, document attribution."
+    ]},
+
+    { type: "h3", text: "Connected-Factory Concepts" },
+    { type: "ul", items: [
+      "**IIoT gateway** — a device (often an industrial-grade Linux SBC) between the plant floor and IT systems. It reads data from PLCs and devices over industrial protocols such as Modbus, CAN, or industrial Ethernet, and republishes it over IT protocols such as MQTT, REST, or OPC UA to historians, MES, and cloud analytics.",
+      "**Edge computing** — processing data close to where it is produced (on the node, the gateway, or a local server) instead of sending everything to the cloud. It cuts latency and bandwidth, keeps sensitive data on site, and lets the plant keep working if the internet link drops. The cloud still handles fleet-wide analytics and long-term storage, so the two complement each other. The capstone's on-node vibration features are an example.",
+      "**Digital twin** — a virtual model of a specific machine or line, kept in sync with live data from the real equipment. Used for what-if simulation, analytics, predictive maintenance, and operator training without touching the real machine.",
+      "**OT security** — plant networks used to be isolated; remote monitoring and IIoT links now connect them to corporate networks and the internet. Stuxnet (discovered in 2010) sabotaged industrial equipment by tampering with PLC logic and showed that controllers are real targets. Design for defense in depth: network segmentation, authenticated and encrypted links, signed firmware, and least-privilege remote access.",
+      "**Functional safety standards** — when an embedded system's failure could hurt someone, these standards give the framework for analyzing hazards and showing the remaining risk is acceptable: IEC 61508 (the generic base standard, with SIL levels), ISO 13849 (safety-related parts of machinery control systems, with Performance Levels), and ISO 26262 for road vehicles. As the Industrial Hybrids lesson notes, most hybrids don't yet carry these ratings."
     ]},
 
     { type: "callout", style: "warning",
@@ -8533,13 +8548,13 @@ const EMBED_LESSONS = [
     { type: "p", text: "This capstone is the synthesis of everything in the previous 13 lessons. You'll design two versions of the same system — hobby-grade and production-grade — and compare costs, lead times, and lifecycle characteristics. The same exercise template applies to any embedded project you face." },
 
     { type: "h3", text: "The Use Case" },
-    { type: "p", text: "**Application**: a machine condition monitoring system. Read vibration and temperature from a sensor on an industrial motor every 100 ms, log to a database, alert via email if values exceed thresholds, provide a web dashboard for operators. Deployed across 50 motors in a small factory." },
+    { type: "p", text: "**Application**: a machine condition monitoring system. Sample vibration from an accelerometer on an industrial motor at several kHz in short bursts, reduce each burst on the node to a few features (RMS, peak, and energy in a few frequency bands), and publish those features with the motor temperature every 100 ms to 1 s. Log to a database, alert via email if values exceed thresholds, and provide a web dashboard for operators. Deployed across 50 motors in a small factory." },
 
     { type: "h3", text: "Version A — Hobby-Grade Build" },
-    { type: "p", text: "**Goal**: working system, deployed in 4-6 weeks, $200/node total cost." },
+    { type: "p", text: "**Goal**: working system, deployed in 4-6 weeks, under $50/node in hardware." },
     { type: "ul", items: [
       "**MCU**: ESP32 dev board ($8). Built-in WiFi, generous compute, well-documented.",
-      "**Sensors**: ADXL345 vibration ($5) + DS18B20 temperature ($2) on I2C/1-Wire. Direct connection to ESP32 GPIO.",
+      "**Sensors**: ADXL345 accelerometer ($5, on SPI so it can stream at its top ~3.2 kHz output rate) + DS18B20 temperature ($2) on 1-Wire. Direct connection to ESP32 GPIO.",
       "**Power**: USB power adapter ($5).",
       "**Enclosure**: 3D-printed PLA box ($3 in filament).",
       "**Software**: Arduino-on-ESP32 framework. PubSubClient for MQTT. Connect to a Mosquitto broker on a Raspberry Pi.",
@@ -8556,7 +8571,7 @@ const EMBED_LESSONS = [
       "**Sensors**: industrial accelerometer with 4-20 mA output ($150) + RTD for temperature ($30). Proper isolation between sensor and controller.",
       "**Power**: 24 VDC from industrial supply (already present in factory).",
       "**Networking**: industrial WiFi access points + dedicated VLAN, OR wired Modbus TCP / OPC UA.",
-      "**Backend**: industrial-grade edge gateway (Revolution Pi or Beckhoff IPC, $1500) running Codesys or industrial IoT platform. Redundant, with failover. SSD storage with proper file system journaling.",
+      "**Backend**: industrial-grade edge gateway (Revolution Pi or Beckhoff IPC) running Codesys or an industrial IoT platform. Two units at about $1,000 each in an active/standby pair, so one can fail without losing data collection. SSD storage with proper file system journaling.",
       "**Software**: ESP-IDF (not Arduino) for production-grade dual-core utilization, FreeRTOS, secure OTA update, encrypted MQTT-over-TLS, proper watchdog and BOD, fail-safe defaults.",
       "**OTA infrastructure**: Memfault or AWS IoT Device Management for fleet management, signed firmware, rollback support.",
       "**Total per node**: ~$330 + $2000 backend / 50 nodes = $370 effective per node.",
@@ -8583,7 +8598,7 @@ const EMBED_LESSONS = [
     { type: "ul", items: [
       "**Hobby version is right for**: internal R&D experiments, proof-of-concept demos, single-site deployment with engineering team on-call, learning what the requirements really are.",
       "**Production version is right for**: customer-facing deployment, multi-site rollout, contracted support obligations, regulated industries, when the cost of failure is high.",
-      "**The mistake to avoid**: deploying the hobby version to a customer site and assuming you can 'harden it later.' You can't. Hardening requires architectural decisions made from the start: ECC RAM, watchdog, isolated I/O, certified components, OTA infrastructure. Bolt-on hardening rarely works."
+      "**The mistake to avoid**: deploying the hobby version to a customer site and assuming you can 'harden it later.' You can't. Hardening requires architectural decisions made from the start: watchdog, brown-out detection, isolated I/O, certified components, OTA infrastructure, and memory-integrity checks (ECC where the platform offers it, CRC and plausibility checks where it doesn't). Bolt-on hardening rarely works."
     ]},
 
     { type: "h3", text: "The Pitch" },
@@ -8702,7 +8717,7 @@ const EMBED_FINAL_EXAM = [
       "Pi's Linux is identical to desktop Linux — no embedded considerations apply"
     ],
     "correct": 1,
-    "explanation": "Linux gives Pi enormous capability but non-deterministic timing typically in milliseconds. Rules out hard real-time but fine for many applications."
+    "explanation": "Linux gives Pi enormous capability but worst-case timing jitter from hundreds of µs to several ms under load. Rules out hard real-time but fine for many applications."
   },
   {
     "phase": 1,
@@ -8846,7 +8861,7 @@ const EMBED_FINAL_EXAM = [
       "Certification PLCs must hold before use in safety-critical industrial applications"
     ],
     "correct": 1,
-    "explanation": "Standardizes ladder, structured text, function block, instruction list, sequential function chart. Vendor extensions exist but core paradigm transfers."
+    "explanation": "Standardizes ladder, structured text, function block diagram and sequential function chart (instruction list in editions before 2025). Vendor extensions exist but core paradigm transfers."
   },
   {
     "phase": 2,
@@ -8894,7 +8909,7 @@ const EMBED_FINAL_EXAM = [
       "Mandated by safety regulations — office Ethernet prohibited for any industrial use"
     ],
     "correct": 1,
-    "explanation": "EtherCAT achieves sub-microsecond determinism. PROFINET supports real-time and standard traffic. Hardware similar to office Ethernet but timing/protocol differ."
+    "explanation": "EtherCAT reaches sub-100 µs cycles with sub-microsecond jitter (distributed clocks). PROFINET supports real-time and standard traffic. Hardware similar to office Ethernet but timing/protocol differ."
   },
   {
     "phase": 2,
@@ -8985,12 +9000,12 @@ const EMBED_FINAL_EXAM = [
     "question": "Right way to design a watchdog timer for industrial embedded?",
     "options": [
       "Software-only watchdog implemented within main program loop — sufficient because software knows its own state",
-      "Independent hardware watchdog separate from main MCU — requires periodic kick from properly-functioning code, resets system if code hangs",
+      "Hardware watchdog with its own clock (on-chip, or external IC for critical systems), fed only by a supervisor that confirmed all subsystems are healthy — resets system if code hangs",
       "Watchdog timers are obsolete — modern MCUs never hang or execute incorrectly",
       "Watchdog timers should be disabled — they cause unwanted resets that interrupt production"
     ],
     "correct": 1,
-    "explanation": "Independent hardware watchdog kicked periodically by properly-executing code. Software-only watchdogs miss the case where software hangs."
+    "explanation": "Hardware watchdog with its own clock (on-chip, or external IC for critical systems), fed by a supervisor that checks all subsystems. Software-only watchdogs miss the case where software hangs."
   },
   {
     "phase": 3,
@@ -9033,12 +9048,12 @@ const EMBED_FINAL_EXAM = [
     "question": "Why are RTOSes different from standard OSes like Linux?",
     "options": [
       "Simpler versions of Linux — same scheduling philosophy with less feature surface",
-      "Use priority-based preemptive scheduling with bounded worst-case latency — Linux uses fair scheduling without latency guarantees",
+      "Designed and analyzed for bounded worst-case latency — general-purpose Linux is tuned for throughput and fairness, needing PREEMPT_RT plus careful configuration to approach bounded latency",
       "RTOSes are obsolete — modern Linux is fully real-time and replaces RTOS in all current designs",
       "Restricted to military applications — commercial embedded uses standard Linux"
     ],
     "correct": 1,
-    "explanation": "RTOS: strict priority-based preemptive scheduling, bounded worst-case latency. Linux: fair scheduler optimized for throughput, non-deterministic latencies."
+    "explanation": "RTOS: priority-based preemptive scheduling designed and analyzed for bounded worst-case latency. Stock Linux: tuned for throughput and fairness, worst case hundreds of µs to several ms under load; PREEMPT_RT brings it to tens of µs, measured rather than guaranteed."
   },
   {
     "phase": 3,
