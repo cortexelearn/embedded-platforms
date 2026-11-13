@@ -5748,7 +5748,7 @@ const MOTOR_LESSONS = [
       "**Forgetting the gearbox** — gearbox reflected inertia and reflected torque are what the motor sees, not the load directly.",
       "**Ignoring duty cycle** — a 50% duty cycle doubles the apparent thermal capacity, but only if cooling time is real, not just specified.",
       "**Neglecting starting torque** — many loads (rolls, mills, anything with static friction) need 1.5-3× running torque just to break loose.",
-      "**No margin for ambient temperature** — datasheet ratings are usually at 25 °C ambient. At 50 °C you've lost most of your margin."
+      "**No margin for ambient temperature** — check the reference ambient on the datasheet. Industrial IEC/NEMA motors are normally rated at 40 °C, while many small servo and BLDC sheets quote 25 °C, so a 50 °C enclosure can use up most of the margin on those."
     ]},
 
     { type: "callout", style: "warning",
@@ -7341,12 +7341,12 @@ const MOTOR_FINAL_EXAM = [
     "question": "Why does ambient temperature matter for motor selection?",
     "options": [
       "Ambient temperature is irrelevant — motors are environmentally sealed and unaffected by external conditions",
-      "Motor ratings assume standard ambient (typically 40°C); higher ambients require derating; aerospace altitudes affect cooling effectiveness",
+      "Motor ratings assume a stated reference ambient (often 40 °C for industrial motors, 25 °C for many small servos); higher ambients require derating; aerospace altitudes affect cooling effectiveness",
       "Only matters for outdoor motors — indoor motors operate at controlled temperature regardless",
       "Ambient temperature affects only paint life on motor housing — no operational impact"
     ],
     "correct": 1,
-    "explanation": "Continuous rating is thermal-limited. Higher ambient = less cooling margin = needed derating. Aerospace adds altitude effects on cooling air density."
+    "explanation": "Continuous rating is thermal-limited. Check the datasheet's reference ambient (often 40 °C industrial, 25 °C for many small servo/BLDC motors); higher ambient = less cooling margin = needed derating. Aerospace adds altitude effects on cooling air density."
   },
   {
     "phase": 4,
