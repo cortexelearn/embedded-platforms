@@ -6043,7 +6043,7 @@ const MOTOR_LESSONS = [
       "**Holding torque** — the torque the motor produces with full current applied at zero speed. The headline spec.",
       "**Detent torque** — the torque without any current, just from the permanent magnet's interaction with the stator teeth.",
       "**Pull-in torque** — the maximum torque the motor can start a load against without losing steps.",
-      "**Pull-out (slewing) torque** — the maximum torque while running. Always less than pull-in."
+      "**Pull-out (slewing) torque** — the maximum load torque the motor can carry once it is already running at a given step rate without losing steps. It is always higher than pull-in torque at the same rate, because starting from rest also has to accelerate the rotor and load inertia. That gap is why stepper moves are ramped up to speed instead of being started directly at the target step rate."
     ]},
 
     { type: "h3", text: "When Steppers Are the Right Answer" },
