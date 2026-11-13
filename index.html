@@ -9462,7 +9462,7 @@ const COPILOT_LESSONS = [
     { type: "h3", text: "The Data Governance Prerequisites (the Important Ones)" },
     { type: "p", text: "Most painful Copilot deployment failures are not licensing issues. They're data governance gaps. Microsoft strongly recommends these BEFORE turning on M365 Copilot:" },
     { type: "ul", items: [
-      "**Sensitivity labels** (Microsoft Purview Information Protection) applied to documents containing confidential, restricted, or CUI content. Copilot inherits the label's protections — labeled content stays restricted; Copilot can't surface it to unauthorized users.",
+      "**Sensitivity labels** (Microsoft Purview Information Protection) applied to documents containing confidential, restricted, or CUI content. Labels that apply encryption carry their access rules into Copilot: Copilot can use the content only for a user who has the needed usage rights (VIEW and EXTRACT). Copilot also offers to carry the label onto new content it creates from labeled files. Labels that only classify or mark content help with visual marking and DLP but don't block access by themselves.",
       "**SharePoint permission audit** — run the SharePoint Advanced Management permission state report. Identify oversharing (sites with 'Everyone except external users' or overly-broad groups) and remediate. This is the #1 source of post-Copilot 'wait, who can see this?' incidents.",
       "**Restricted SharePoint Search (RSS)** — limits Copilot's view to specifically allowed SharePoint sites during initial rollout. Reduces blast radius while you remediate oversharing.",
       "**Data Loss Prevention (DLP) policies** — block sensitive content (Social Security numbers, credit cards, custom CUI patterns) from being shared via Copilot responses, email, or Teams.",
@@ -9516,12 +9516,12 @@ const COPILOT_LESSONS = [
     { question: "Why are sensitivity labels (Microsoft Purview) a key prerequisite for safe Copilot use with sensitive engineering content?",
       options: [
         "Labels improve Copilot's response speed by routing queries through optimized indexing paths",
-        "Sensitivity labels are decorative metadata used for audit reporting but don't enforce technical restrictions",
+        "Sensitivity labels are decorative metadata used only for audit reporting and can never enforce technical restrictions",
         "Labels are a legacy SharePoint feature that prevents Copilot from accessing tagged content entirely",
-        "Copilot inherits the label's protections — labeled restricted content stays inaccessible to unauthorized users, and Copilot suggests applying the same label to derived content"
+        "Labels that apply encryption carry their access rules into Copilot (it can use the content only if the user has the needed usage rights), and Copilot can carry the label onto new content it creates from labeled files"
       ],
       correct: 3,
-      explanation: "Sensitivity labels are the policy enforcement layer for confidential, restricted, and CUI content. Copilot honors them: can't surface labeled content to unauthorized users, and when generating new content from labeled sources, suggests inheriting the label. Without sensitivity labels, Copilot has no signal for which content needs extra protection." }
+      explanation: "Labels that apply encryption or usage rights are the enforcement layer: Copilot can use encrypted content only when the user has VIEW and EXTRACT rights, so a user who can open a file but lacks EXTRACT won't get it summarized. When Copilot creates new content from labeled files, it can carry the label forward. Labels that only classify content don't block access on their own; they support marking, DLP, and auditing. Without labels, Copilot and your DLP policies have no signal for which content needs extra protection." }
   ]
 },
 
@@ -9844,10 +9844,10 @@ const COPILOT_LESSONS = [
     { type: "h3", text: "CUI-Aware Note-Taking Practices" },
     { type: "p", text: "OneNote and Loop are notably easy to overshare with. Practices for aerospace engineers handling sensitive content:" },
     { type: "ul", items: [
-      "**Apply sensitivity labels** to OneNote sections containing controlled content. Inheritance is honored by Copilot.",
+      "**Apply sensitivity labels** to OneNote sections containing controlled content. If the content must be restricted, use a label that applies encryption — a classification-only label marks it but does not stop Copilot or anyone who already has access.",
       "**Don't take ITAR/EAR notes in commercial tenants.** OneNote in commercial M365 is not authorized for ITAR. If you're handling export-controlled content, use a GCC High notebook.",
       "**Avoid 'shared by link' for sensitive notebooks.** Once content is link-shared, anyone with the link may access it depending on tenant settings — and Copilot may surface it.",
-      "**Tag CUI-marked notes explicitly.** The CUI marking should appear in the note content; the sensitivity label is the technical enforcement.",
+      "**Tag CUI-marked notes explicitly.** The CUI marking should appear in the note content; a sensitivity label that applies encryption is the technical enforcement.",
       "**Audit access periodically.** OneNote sharing accumulates; the person who shared a section three years ago may no longer remember. Periodic access reviews are due diligence."
     ]},
 
@@ -9935,7 +9935,7 @@ const COPILOT_LESSONS = [
     { type: "h3", text: "What's NOT Indexed (the Sharp Edges)" },
     { type: "ul", items: [
       "**Personal Teams chats** — typically indexed for the participants but not others.",
-      "**Encrypted files with restrictive sensitivity labels** — Copilot honors the protection; can't read what the user can't access.",
+      "**Encrypted files where the user lacks the needed rights** — Copilot needs the user's VIEW and EXTRACT usage rights; a user who can open a file but lacks EXTRACT still won't get Copilot to summarize it.",
       "**External shared content (from outside the tenant)** — generally not indexed.",
       "**Files in non-Microsoft cloud storage** — Google Drive, Dropbox, etc. — not indexed unless you've set up a Microsoft Graph connector (admin task).",
       "**Some specialty file types** — CAD files (STEP, IGES, native CAD formats) are not indexed for content; only their metadata. Engineering drawing PDFs may be indexed only for text-extractable content.",
@@ -10614,7 +10614,7 @@ const COPILOT_LESSONS = [
     { type: "h3", text: "Step 4 — Account for Data Sensitivity" },
     { type: "ul", items: [
       "ECR data may contain CUI Specified (if the program is CUI or ITAR-controlled). If so, the entire workflow must be in GCC High.",
-      "Sensitivity labels applied to all ECR artifacts ensure Copilot honors restrictions.",
+      "Sensitivity labels that apply encryption on ECR artifacts carry their access rules into Copilot; classification-only labels mark content but don't restrict it by themselves.",
       "The autonomous Triage Agent operates under a service account with least-privilege permissions — only the SharePoint sites and channels relevant to ECRs.",
       "Cross-discipline review requests are scoped to the engineers' tenant; no external sharing.",
       "Audit logs in Purview capture all agent actions for traceability."
@@ -11988,13 +11988,13 @@ const COPILOT_FINAL_EXAM = [
     "phase": 1,
     "question": "Why are Purview sensitivity labels a key Copilot prerequisite?",
     "options": [
-      "Copilot inherits label protections — labeled restricted content stays inaccessible to unauthorized users; Copilot suggests inheriting labels on derived content",
+      "Labels that apply encryption carry access rules into Copilot (the user needs the right usage rights); Copilot can carry labels onto content it creates from labeled files",
       "Labels improve Copilot's response generation speed by streamlining content classification",
-      "Sensitivity labels are decorative metadata used for compliance reporting but don't enforce restrictions",
+      "Sensitivity labels are decorative metadata for compliance reporting only and can never enforce restrictions",
       "Labels block Copilot from processing any tagged content regardless of user permissions"
     ],
     "correct": 0,
-    "explanation": "Sensitivity labels are the policy enforcement layer for confidential/restricted/CUI content. Copilot honors them; without labels, no signal for which content needs extra protection."
+    "explanation": "Encrypting labels are the enforcement layer: Copilot needs the user's VIEW and EXTRACT rights to use the content, and can carry labels onto derived content. Classification-only labels don't block access by themselves. Without labels, there is no signal for which content needs extra protection."
   },
   {
     "phase": 1,
