@@ -9721,8 +9721,8 @@ const COPILOT_LESSONS = [
       "**Trend identification** — 'what trends do you see in this sales data?' — Copilot summarizes patterns and outliers."
     ]},
 
-    { type: "h3", text: "Python in Excel (Premium / Frontier)" },
-    { type: "p", text: "M365 Copilot Premium tier includes Python execution within Excel — Copilot can write and run Python scripts on your data for advanced analysis (regressions, statistical tests, custom calculations, data transformations). Python is sandboxed; doesn't access external systems. This is the most powerful new Excel capability in years for data-heavy engineering work — but it's premium-tier only as of mid-2025." },
+    { type: "h3", text: "Python in Excel and Copilot's Python Analysis" },
+    { type: "p", text: "Two related features are easy to confuse. **Python in Excel** is an Excel feature: you write Python in a cell and it runs in a Microsoft cloud sandbox with no access to your local files or external systems. It comes with qualifying Microsoft 365 business and enterprise plans, with standard compute and a monthly allowance of faster premium compute. More premium compute is a separate Python in Excel add-on, not a Copilot license. **Copilot's Python-based analysis** is a Copilot feature: you ask Copilot in Excel for deeper analysis (regressions, statistical tests, custom calculations, data transformations) and it writes and runs the Python for you. It follows your Copilot licensing. Plans, limits, and names change, so check what your tenant includes before you plan around either. For data-heavy engineering work, this is one of the most useful Excel capabilities in years." },
 
     { type: "h3", text: "The Critical Prerequisite: Data Structure" },
     { type: "p", text: "Copilot in Excel works best when data is in a proper Excel Table (Ctrl+T) or a clean contiguous range with headers in row 1. It struggles with:" },
@@ -9750,7 +9750,7 @@ const COPILOT_LESSONS = [
       "**Test data summarization** — load a CSV of test runs into a Table, ask Copilot for summary statistics, trends, outliers.",
       "**BOM cost roll-up** — Copilot generates the SUMIFS / SUMPRODUCT formulas correctly when the data is structured.",
       "**Schedule analysis** — convert a flat task list into a pivot showing planned/actual by phase, by program. Works if the schedule is in tabular form.",
-      "**Parametric study results** — Copilot in Python (Premium) excels here: scatter plots, regression fits, sensitivity rankings."
+      "**Parametric study results** — Copilot's Python-based analysis (or Python in Excel directly) excels here: scatter plots, regression fits, sensitivity rankings."
     ]},
 
     { type: "h3", text: "The Verification Discipline" },
@@ -9764,13 +9764,13 @@ const COPILOT_LESSONS = [
     ]},
 
     { type: "callout", style: "key",
-      text: "**Copilot Chat (free) gives you:** ability to paste tabular data into the prompt and have Copilot suggest analysis approaches or formulas. Whether you also get Copilot inside Excel depends on your organization's label: Copilot Chat (Basic) does not include Excel, while Microsoft 365 Copilot (Basic) gives standard, fair-use-limited in-app access. **M365 Copilot Enterprise additionally unlocks:** the full, priority Copilot experience directly in Excel (ribbon button, cell-level sparkle icon), formula generation in-place, PivotTable creation, charting, trend analysis, and (Premium tier) Python execution for advanced analysis. For engineers who live in Excel, this is the second-most-valuable Enterprise feature after Word-to-PowerPoint." },
+      text: "**Copilot Chat (free) gives you:** ability to paste tabular data into the prompt and have Copilot suggest analysis approaches or formulas. Whether you also get Copilot inside Excel depends on your organization's label: Copilot Chat (Basic) does not include Excel, while Microsoft 365 Copilot (Basic) gives standard, fair-use-limited in-app access. **M365 Copilot Enterprise additionally unlocks:** the full, priority Copilot experience directly in Excel (ribbon button, cell-level sparkle icon), formula generation in-place, PivotTable creation, charting, trend analysis, and Copilot's Python-based analysis for advanced work (check your tenant's current licensing; Python in Excel itself is a separate Excel feature). For engineers who live in Excel, this is the second-most-valuable Enterprise feature after Word-to-PowerPoint." },
   ],
   quizzes: [
     {
       question: "What's the #1 prerequisite for Copilot in Excel to give good answers?",
       options: [
-        "A subscription to the Premium tier with Python-in-Excel enabled for the user's license",
+        "A Python in Excel premium-compute add-on assigned to the user's license",
         "Data in proper Excel Table format (or clean contiguous range with single-row headers) — Copilot struggles with merged cells, multi-row headers, and non-tabular layouts",
         "Network connectivity above 100 Mbps to support real-time analysis of large datasets",
         "The Excel desktop application installed locally rather than running through the web browser version"
@@ -9778,7 +9778,7 @@ const COPILOT_LESSONS = [
       correct: 1,
       explanation: "Copilot in Excel needs clean tabular data. Engineering Excel files are often heavily merged, multi-tab, and non-tabular — Copilot performs poorly on them. Restructure to a proper Table first, then ask."
     },
-    { question: "Which Copilot in Excel task is best-suited for the Premium / Frontier Python feature?",
+    { question: "Which Copilot in Excel task is the best fit for Copilot's Python-based analysis?",
       options: [
         "Simple SUM and AVERAGE formulas across a single column of data",
         "Conditional formatting rules to highlight outlier values in a dataset",
@@ -9786,7 +9786,7 @@ const COPILOT_LESSONS = [
         "Cell formatting changes like font sizes, borders, and color coding for readability"
       ],
       correct: 2,
-      explanation: "Python in Excel (Premium tier) opens up serious statistical and computational analysis directly inside the workbook. Regressions, statistical tests, custom transformations — work that previously required separate Python scripts or specialized tools." },
+      explanation: "Copilot's Python-based analysis (built on Python in Excel) opens up serious statistical and computational analysis directly inside the workbook. Regressions, statistical tests, custom transformations — work that previously required separate Python scripts or specialized tools." },
     { question: "Copilot generates a formula for your engineering analysis. What's the right verification discipline?",
       options: [
         "Accept the formula if Copilot's confidence indicator is above 90 percent",
@@ -10005,7 +10005,7 @@ const COPILOT_LESSONS = [
     { type: "h3", text: "Other Pre-Built and Frontier Agents" },
     { type: "ul", items: [
       "**Microsoft 365 Admin Agent** — for IT admins to manage Copilot itself.",
-      "**Writing Coach, Career Coach, Learning Coach** — coaching agents in M365 Copilot Premium tier.",
+      "**Writing Coach, Career Coach, Learning Coach** — pre-built coaching agents; which ones you see depends on your Copilot license and tenant settings, so check the Agent Store.",
       "**Frontier Program agents** — early-access agents (Surveys, Flow Builder, Skills, App Builder, Workflows) for tenants opted into Microsoft's preview program.",
       "**Prompt Coach and Idea Coach** — available in Copilot Chat free tier."
     ]},
@@ -12108,7 +12108,7 @@ const COPILOT_FINAL_EXAM = [
     "phase": 2,
     "question": "#1 prerequisite for Copilot in Excel to give good answers?",
     "options": [
-      "A Premium tier license with Python-in-Excel enabled for the user's account",
+      "A Python in Excel premium-compute add-on assigned to the user's account",
       "Network bandwidth above 100 Mbps to handle real-time analysis of large datasets",
       "Data in proper Excel Table format or clean contiguous range with single-row headers — Copilot struggles with merged cells, multi-row headers, non-tabular layouts",
       "The Excel desktop application installed locally — web version has limited Copilot capabilities"
@@ -12118,7 +12118,7 @@ const COPILOT_FINAL_EXAM = [
   },
   {
     "phase": 2,
-    "question": "Which Copilot in Excel task best uses the Premium Python feature?",
+    "question": "Which task is the best fit for Copilot's Python-based analysis in Excel?",
     "options": [
       "Simple SUM and COUNT formulas across a single column of numeric data",
       "Conditional formatting rules to visually flag outlier or threshold-exceeding values",
@@ -12126,7 +12126,7 @@ const COPILOT_FINAL_EXAM = [
       "Advanced statistical analysis — regressions, hypothesis tests, custom calculations, sensitivity studies"
     ],
     "correct": 3,
-    "explanation": "Python in Excel opens serious statistical and computational analysis directly in the workbook. Premium tier only."
+    "explanation": "Copilot's Python-based analysis opens serious statistical and computational analysis directly in the workbook. Licensing for it, and for Python in Excel itself, varies by plan — check what your tenant includes."
   },
   {
     "phase": 2,
