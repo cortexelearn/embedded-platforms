@@ -10164,20 +10164,20 @@ const COPILOT_LESSONS = [
     { type: "h3", text: "What Studio Costs" },
     { type: "p", text: "Copilot Studio billing is metered:" },
     { type: "ul", items: [
-      "**Per-message** charges for agent interactions, varying by feature (generative answers, actions, etc.).",
+      "**Copilot Credits** are the billing unit — agent interactions consume credits at rates that vary by feature (generative answers, actions, tenant grounding, etc.).",
       "**Pre-purchase plans** offer Copilot Credit Commit Units with discounts.",
       "**Pay-as-you-go** for variable usage.",
-      "**Some agents are free** — declarative agents grounded only in public web content cost nothing. Agents grounded in SharePoint or Graph connectors incur metered consumption.",
+      "**Some agents are free** — declarative agents grounded only in public web content cost nothing. Agents grounded in SharePoint or Graph connectors consume Copilot Credits when used by people without a Microsoft 365 Copilot license (for example, Copilot Chat users). Use by licensed Microsoft 365 Copilot users inside Microsoft 365 Copilot is generally covered by their license. Billing rules change, so check Microsoft's current Copilot Studio billing page.",
       "**As of April 2026**: no Azure subscription required for pay-as-you-go billing; can be set up directly in Studio."
     ]},
 
     { type: "callout", style: "key",
-      text: "**Copilot Chat (free) lets users:** consume agents that others have built and made available to Copilot Chat users (via Copilot Credits / metered billing arrangements). **M365 Copilot Enterprise additionally unlocks:** full Studio agent authoring, deployment to M365 Copilot channels, and the integrated Agent Builder for simpler scenarios. **Copilot Studio licensing** is separate from M365 Copilot — agents can be deployed to either Copilot Chat or M365 Copilot users with metered consumption from Copilot Credits." },
+      text: "**Copilot Chat (free) lets users:** consume agents that others have built and made available to Copilot Chat users (via Copilot Credits / metered billing arrangements). **M365 Copilot Enterprise additionally unlocks:** full Studio agent authoring, deployment to M365 Copilot channels, and the integrated Agent Builder for simpler scenarios. **Copilot Studio licensing** is separate from M365 Copilot — agents can be deployed to either Copilot Chat or M365 Copilot users. Unlicensed (Copilot Chat) use of agents that reach tenant data consumes Copilot Credits; licensed M365 Copilot users' use inside Microsoft 365 Copilot is generally covered by their license." },
   ],
   quizzes: [
     { question: "What's the main capability Copilot Studio adds over the in-Copilot Agent Builder?",
       options: [
-        "Faster response generation and lower per-message costs for high-volume agent deployments",
+        "Faster response generation and lower Copilot Credit costs for high-volume agent deployments",
         "Better-quality language model access than the consumer-grade Agent Builder provides",
         "Topics (structured conversation flows), connectors to external systems, actions/tools the agent can perform, multi-channel deployment, full ALM environment management — Studio is for production-grade agents",
         "Visual theming options to match corporate branding across the agent's chat interface"
@@ -10197,11 +10197,11 @@ const COPILOT_LESSONS = [
       options: [
         "Free for the free Copilot Chat users — Microsoft absorbs the cost as a consumer feature",
         "Same as M365 Copilot Enterprise users — flat $30/month per user with unlimited agent usage",
-        "Metered via Copilot Credits — even Copilot Chat users incur per-message consumption charges for agents that reach into SharePoint or Graph connector content",
+        "Metered via Copilot Credits — Copilot Chat users without an M365 Copilot license consume credits when they use agents that reach into SharePoint or Graph connector content",
         "Free for the first 1000 messages per month, then a per-message rate kicks in for additional usage"
       ],
       correct: 2,
-      explanation: "Agents that access tenant data via SharePoint or Graph connectors are metered, regardless of whether the consumer has Copilot Chat free or M365 Copilot Enterprise. Copilot Credits / pay-as-you-go covers the consumption. Declarative web-only agents are free." }
+      explanation: "For users without a Microsoft 365 Copilot license, such as Copilot Chat users, agents that use tenant data through SharePoint or Graph connectors are paid for from Copilot Credits (prepaid packs or pay-as-you-go). Licensed users' use of the same agent inside Microsoft 365 Copilot is generally covered by their license. Declarative web-only agents are free. Check the current Copilot Studio billing rules before budgeting." }
   ]
 },
 
@@ -12288,7 +12288,7 @@ const COPILOT_FINAL_EXAM = [
     "phase": 3,
     "question": "Main capability Copilot Studio adds over in-Copilot Agent Builder?",
     "options": [
-      "Faster response generation and lower per-message costs for high-volume deployments",
+      "Faster response generation and lower Copilot Credit costs for high-volume deployments",
       "Topics (structured conversation flows), connectors to external systems, actions/tools, multi-channel deployment, full ALM — Studio is for production-grade agents",
       "Better-quality language model access than Agent Builder's consumer-grade tier provides",
       "Visual theming options to match corporate branding across the agent's chat interface"
@@ -12315,10 +12315,10 @@ const COPILOT_FINAL_EXAM = [
       "Free for Copilot Chat users — Microsoft absorbs the agent cost as a consumer-tier feature",
       "Free for the first 1000 messages monthly, then per-message billing applies above the threshold",
       "Same as M365 Copilot Enterprise users — flat per-user fee with unlimited agent usage",
-      "Metered via Copilot Credits — even Chat users incur per-message consumption for agents reaching into SharePoint or Graph connector content"
+      "Metered via Copilot Credits — unlicensed Chat users consume credits when using agents that reach into SharePoint or Graph connector content"
     ],
     "correct": 3,
-    "explanation": "Agents accessing tenant data are metered regardless of consumer's license. Declarative web-only agents are free."
+    "explanation": "Users without an M365 Copilot license consume Copilot Credits when using tenant-data agents. Licensed users' use inside M365 Copilot is generally covered. Declarative web-only agents are free. Check current billing rules."
   },
   {
     "phase": 3,
