@@ -10006,7 +10006,7 @@ const COPILOT_LESSONS = [
     { type: "ul", items: [
       "**Microsoft 365 Admin Agent** — for IT admins to manage Copilot itself.",
       "**Writing Coach, Career Coach, Learning Coach** — pre-built coaching agents; which ones you see depends on your Copilot license and tenant settings, so check the Agent Store.",
-      "**Frontier Program agents** — early-access agents (Surveys, Flow Builder, Skills, App Builder, Workflows) for tenants opted into Microsoft's preview program.",
+      "**Frontier Program agents** — early-access agents (Surveys, Flow Builder, Skills, App Builder, Workflows) for tenants opted into Microsoft's Frontier preview program. Availability changes as agents leave preview, so check what your tenant shows.",
       "**Prompt Coach and Idea Coach** — available in Copilot Chat free tier."
     ]},
 
@@ -10229,8 +10229,8 @@ const COPILOT_LESSONS = [
       "**Pattern 3 — Autonomous trigger.** Agent monitors a SharedMailbox / Teams channel / scheduled time. When a triggering condition is met, agent reasons through the situation and executes a flow. Used carefully for high-volume, low-risk automation."
     ]},
 
-    { type: "h3", text: "Microsoft 365 Copilot Workflows Agent" },
-    { type: "p", text: "Microsoft has shipped a built-in Workflows Agent inside M365 Copilot Chat — for end users to create their own simple automations conversationally:" },
+    { type: "h3", text: "Microsoft 365 Copilot Workflows Agent (Frontier Preview)" },
+    { type: "p", text: "Microsoft is previewing a Workflows Agent in Microsoft 365 Copilot that lets end users create their own simple automations conversationally. As of this writing it requires your tenant to be in Microsoft's Frontier early-access program and is not generally available, so check current availability and license requirements before planning around it. How it works:" },
     { type: "ul", items: [
       "User types: 'Every Monday at 9am, summarize my upcoming week's calendar and post it to my Teams channel.'",
       "Workflows Agent builds the flow: trigger on schedule → fetch calendar → AI summarization → post to Teams.",
@@ -10273,7 +10273,7 @@ const COPILOT_LESSONS = [
     { type: "p", text: "For aerospace, the right pattern is almost always agent + human checkpoint. The agent does the prep work, the synthesis, the drafting; a human reviews before any consequential action (external email, system update, contract response, supplier commitment). The agent saves the human time; the human saves the company from agent mistakes." },
 
     { type: "callout", style: "key",
-      text: "**Copilot Chat (free) gives users:** the built-in Workflows Agent for creating simple automations conversationally. **M365 Copilot Enterprise additionally unlocks:** full Copilot Studio Agent Flows with complex actions, autonomous triggers, integration with 1,000+ connectors, multi-step agentic workflows, ALM and governance. Real production agentic automation lives in Enterprise + Studio." },
+      text: "**Workflows Agent:** a Frontier-program preview for creating simple automations conversationally. It is not a standard part of free Copilot Chat; check current availability and license requirements. **M365 Copilot Enterprise with Copilot Studio unlocks:** full Copilot Studio Agent Flows with complex actions, autonomous triggers, integration with 1,000+ connectors, multi-step agentic workflows, ALM and governance. Real production agentic automation lives in Enterprise + Studio." },
 
     { type: "callout", style: "warning",
       text: "**The autonomous agent risk model.** An agent that drafts an email and asks a human to send it is low-risk. An agent that sends emails on its own is high-risk. An agent that updates supplier records or kicks off ECNs without human review is very high-risk. Architect for human checkpoints at every consequential action. The agent's productivity comes from the prep work, not from autonomy in execution." },
@@ -10596,7 +10596,7 @@ const COPILOT_LESSONS = [
         ["Detailed impact analysis", "M365 Copilot Enterprise as engineer assistant — draft sections, cross-reference standards, summarize related test data", "M365 Copilot Enterprise"],
         ["Cross-disciplinary review collection", "Studio agent — auto-generates customized requests to specific engineers, tracks responses", "Studio + Power Automate"],
         ["ECB prep package assembly", "Word→PowerPoint via M365 Copilot Enterprise; aggregate impact analyses, recommendation, risk", "M365 Copilot Enterprise"],
-        ["Status communications", "Workflows Agent (built-in M365 Copilot Chat) — templated status update emails on schedule", "M365 Copilot Chat (free)"],
+        ["Status communications", "Scheduled Power Automate flow sending templated status update emails (or the Workflows Agent, if your tenant has the Frontier preview)", "Power Automate (standard connectors in most M365 plans); Workflows Agent needs M365 Copilot + Frontier opt-in"],
         ["Post-ECB documentation", "M365 Copilot Enterprise — generate ECB minutes summary, close-out summary", "M365 Copilot Enterprise"]
       ]
     },
@@ -10607,7 +10607,7 @@ const COPILOT_LESSONS = [
       "**Autonomous ECR Triage Agent (Studio)** — Trigger: new SharePoint ECR list item OR email to ECR mailbox. Actions: (1) extract structured info from ECR; (2) classify by subsystem via grounded knowledge; (3) draft initial impact assessment using M365 Copilot's Graph grounding on related historical ECRs; (4) post to a #ecr-triage Teams channel for senior engineer review; (5) on approval, create routing tasks to subsystem leads.",
       "**Subsystem Lead Assistant (declarative agent in M365 Copilot)** — Each subsystem lead gets a personalized M365 Copilot agent grounded in their subsystem's standards, recent ECRs, related drawings. Helps draft detailed impact analyses.",
       "**ECB Prep Workflow** — On schedule (3 days before ECB meeting): an agent flow gathers all closed impact analyses for the upcoming ECB agenda, drafts a Word document with each ECR's summary/impact/recommendation, generates a PowerPoint deck via Copilot, posts to the ECB SharePoint site.",
-      "**Status Communications** — Workflows Agent (free Copilot Chat) used by ECR coordinator to send templated status emails to originators weekly.",
+      "**Status Communications** — a scheduled Power Automate flow (or the Workflows Agent, where the Frontier preview is enabled) used by the ECR coordinator to send templated status emails to originators weekly.",
       "**ECB Minutes & Closure** — During the ECB Teams meeting, Copilot meeting summarization captures decisions. A post-meeting flow distributes decisions and closes out approved ECRs in SharePoint."
     ]},
 
@@ -10647,7 +10647,7 @@ const COPILOT_LESSONS = [
     { type: "ul", items: [
       "**Title**: Copilot-Enabled Engineering Change Request Workflow",
       "**Problem**: 600 engineer-hours per quarter spent on ECR processing; manual handoffs cause delays; inconsistent impact assessments.",
-      "**Proposed solution**: combine M365 Copilot Enterprise (for in-app productivity), Copilot Studio autonomous Triage Agent (for classification and impact draft), and Workflow agents (for status communications). Architecture described above.",
+      "**Proposed solution**: combine M365 Copilot Enterprise (for in-app productivity), Copilot Studio autonomous Triage Agent (for classification and impact draft), and a scheduled Power Automate flow (for status communications; the Workflows Agent preview can build it where enabled). Architecture described above.",
       "**Investment**: $8,400/year (Enterprise licenses + Studio metered consumption).",
       "**Return**: ~$80K/year in time savings, plus cycle time and consistency improvements.",
       "**Payback**: ~1 month.",
@@ -12358,7 +12358,7 @@ const COPILOT_FINAL_EXAM = [
   },
   {
     "phase": 3,
-    "question": "M365 Copilot Workflows Agent (built-in) is best for what?",
+    "question": "M365 Copilot Workflows Agent (Frontier preview) is best for what?",
     "options": [
       "Complex enterprise integration with SAP, Salesforce, and custom on-premises systems",
       "Database management and SQL query generation for engineering data warehouses",
@@ -12366,7 +12366,7 @@ const COPILOT_FINAL_EXAM = [
       "Simple user-built automations described conversationally — schedule-triggered email summaries, calendar digests, basic templated workflows"
     ],
     "correct": 3,
-    "explanation": "Workflows Agent inside M365 Copilot Chat builds simple Power Automate flows from natural-language descriptions. Complex flows still require Power Automate or Studio."
+    "explanation": "The Workflows Agent (a Frontier-program preview in Microsoft 365 Copilot; check current availability) builds simple Power Automate flows from natural-language descriptions. Complex flows still require Power Automate or Studio."
   },
   {
     "phase": 3,
