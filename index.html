@@ -4198,7 +4198,7 @@ const AM_LESSONS = [
     { type: "p", text: "PLA and PETG print fine open-air. ABS, ASA, polycarbonate, and PA-CF need an enclosure to prevent warping and delamination. PEEK and ULTEM 9085 need an actively heated chamber (60–90 °C ambient or higher). If your enclosure can't reach those numbers, you can't reliably print those materials." },
 
     { type: "callout", style: "key",
-      text: "**Calibration order.** Tram the bed mechanically. Auto-mesh on top of that. Set Z-offset against a single-layer test. Calibrate e-steps. Calibrate flow. Then — and only then — start tuning slicer profiles. Doing it in any other order means you're tuning a moving target." },
+      text: "**Calibration and tuning order.** One sequence, used throughout this course: tram the bed mechanically → auto-mesh on top of that → set Z-offset against a single-layer test → calibrate e-steps → temperature tower → flow → pressure advance → retraction tower → cooling. The first four steps are machine calibration (this lesson); the rest are per-material slicer tuning, covered in the Slicer Fundamentals lesson. Change one variable per test and don't skip ahead — tuning a later step before the earlier ones are right means you're tuning a moving target." },
   ],
   quizzes: [
     {
@@ -4334,7 +4334,7 @@ const AM_LESSONS = [
 
     { type: "h3", text: "Quality Tuning Order" },
     { type: "ul", items: [
-      "First-layer Z-offset → temperature tower → retraction tower → pressure advance → flow → cooling. Tune in that order on a new printer or new material.",
+      "Use the calibration and tuning order from the FDM Machine Setup & Calibration lesson: tram → mesh → Z-offset → e-steps → temperature tower → flow → pressure advance → retraction tower → cooling. On a new material with an already-calibrated printer, start at the temperature tower.",
       "Each test should change exactly one variable. Tuning two at once wastes both tests."
     ]},
 
