@@ -6024,10 +6024,10 @@ const MOTOR_LESSONS = [
         "VFDs reduce motor cost — they enable the use of cheaper motor designs in any application requirement",
         "VFDs eliminate the need for slip — induction motors run at synchronous speed when controlled by VFDs",
         "VFDs are required by safety regulations for any motor above 50 hp regardless of application",
-        "VFDs allow variable speed control by adjusting frequency — induction motors can now serve precision motion roles previously reserved for DC/BLDC"
+        "VFDs allow efficient variable-speed operation by changing supply frequency — letting induction motors take over many speed-control jobs once handled by DC drives"
       ],
       correct: 3,
-      explanation: "VFDs vary the AC frequency feeding the motor, which changes synchronous speed (and thus actual speed). Combined with vector control, modern VFDs give induction motors variable-speed capability with respectable dynamic response. This let induction motors take over applications historically served by DC motors — fans/pumps with energy savings, conveyors with variable speed, even some servo work." }
+      explanation: "VFDs vary the AC frequency feeding the motor, which changes synchronous speed (and thus actual speed). This let induction motors take over many speed-control jobs historically handled by DC drives — fans and pumps run at reduced speed for energy savings, variable-speed conveyors, mixers, machine-tool spindles. Even with vector control, a VFD-driven induction motor typically has lower bandwidth and poorer low-speed torque control than a BLDC/PMSM servo, so precision motion remains BLDC/PMSM territory." }
   ]
 },
 
@@ -6957,12 +6957,12 @@ const MOTOR_FINAL_EXAM = [
     "question": "Why do VFDs revolutionize AC induction applications?",
     "options": [
       "Reduce motor cost — enable use of cheaper motor designs in any application requirement",
-      "Allow variable speed control by adjusting frequency — induction can now serve precision motion roles",
+      "Allow efficient variable-speed operation by changing frequency — induction takes over many speed-control jobs once done by DC drives",
       "Eliminate the need for slip — induction motors run at synchronous speed when VFD-controlled",
       "Required by safety regulations for any motor above 50 hp regardless of application"
     ],
     "correct": 1,
-    "explanation": "VFDs vary AC frequency, changing synchronous speed. Modern VFDs with vector control give induction motors variable-speed servo-like capability."
+    "explanation": "VFDs vary AC frequency, changing synchronous speed. That let induction motors take over many variable-speed jobs once handled by DC drives (pumps, fans, conveyors, spindles). Precision motion still favors BLDC/PMSM servos: VFD-driven induction has lower bandwidth and weaker low-speed torque control."
   },
   {
     "phase": 2,
