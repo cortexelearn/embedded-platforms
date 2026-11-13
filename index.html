@@ -5606,7 +5606,7 @@ const MOTOR_LESSONS = [
         "The two ratings are identical — modern motor specifications list one combined rating that covers all applications"
       ],
       correct: 1,
-      explanation: "Peak current (sometimes called stall current) is short-duration capability — moves, accelerations, brief overloads. Continuous current is thermal limit — what the motor can sustain indefinitely without overheating. Real applications need both: continuous to handle the steady-state, peak for transient demands. Sizing for only one underspecs the motor."
+      explanation: "Peak current is the short-burst limit the manufacturer allows for a stated time and duty cycle — moves, accelerations, brief overloads. It is not stall current: stall current (V/R) is usually well above the peak rating, and the drive's current limit must keep the motor from ever reaching it. Continuous current is thermal limit — what the motor can sustain indefinitely without overheating. Real applications need both: continuous to handle the steady-state, peak for transient demands. Sizing for only one underspecs the motor."
     }
   ]
 },
@@ -5628,7 +5628,7 @@ const MOTOR_LESSONS = [
     { type: "h3", text: "Other Standard Specs" },
     { type: "ul", items: [
       "**No-load current** — current the motor draws spinning freely at rated voltage. Tells you about bearing friction, magnet drag, and windage losses. Higher than expected = mechanical problem.",
-      "**Stall torque & stall current** — what the motor produces at zero speed. Stall current = V / R (winding resistance). Run at stall for more than seconds and you'll burn the motor.",
+      "**Stall torque & stall current** — what the motor produces at zero speed. Stall current = V / R (winding resistance). It is usually well above the rated peak current, so the drive's current limit must keep the motor from ever reaching it; an uncontrolled stall at full voltage burns the motor within seconds.",
       "**Continuous vs peak ratings** — continuous is the thermal limit (sustained indefinitely at rated cooling). Peak is what the motor can do for short bursts (typically 2-5 seconds, with a duty cycle limit).",
       "**Thermal class** — class B (130 °C), F (155 °C), H (180 °C), N (200 °C), R (220 °C). Insulation system temperature rating, NOT operating temperature. Most aerospace motors are F or H minimum.",
       "**Derating curves** — how performance falls off at elevated ambient temperature, altitude, or duty cycle. Always check derating before sizing — a motor that's perfect at 25 °C ambient may be undersized at 60 °C."
@@ -5652,7 +5652,7 @@ const MOTOR_LESSONS = [
     ]},
 
     { type: "h3", text: "A Worked Reading" },
-    { type: "p", text: "Imagine a small BLDC datasheet says: Kt = 0.05 Nm/A, R = 1.0 Ω, I_max_continuous = 4 A, I_peak = 12 A (5 sec, 10% duty), thermal class F. That tells you: continuous torque ≈ 0.05 × 4 = 0.2 Nm. Peak torque (briefly) ≈ 0.05 × 12 = 0.6 Nm. Stall current at 24 V supply ≈ V/R = 24 A — way over the continuous rating, which is why you need current-limiting drive electronics. Insulation good to 155 °C. With a one-line read of Kt and the current ratings, you've already characterized the useful operating envelope." },
+    { type: "p", text: "Imagine a small BLDC datasheet says: Kt = 0.05 Nm/A, R = 1.0 Ω, I_max_continuous = 4 A, I_peak = 12 A (5 sec, 10% duty), thermal class F. That tells you: continuous torque ≈ 0.05 × 4 = 0.2 Nm. Peak torque (briefly) ≈ 0.05 × 12 = 0.6 Nm. Stall current at 24 V supply ≈ V/R = 24 A — double the 12 A peak rating and six times the continuous rating, which is why you need current-limiting drive electronics. Insulation good to 155 °C. With a one-line read of Kt and the current ratings, you've already characterized the useful operating envelope." },
 
     { type: "callout", style: "key",
       text: "**The two-number rule.** If you can extract Kt and the continuous current rating from a datasheet, you can predict 80% of the motor's useful behavior in your application. Everything else is refinement and edge cases." },
@@ -5744,7 +5744,7 @@ const MOTOR_LESSONS = [
 
     { type: "h3", text: "Common Sizing Mistakes" },
     { type: "ul", items: [
-      "**Using stall torque as design torque** — stall is a peak rating that will burn the motor in seconds. Always size on continuous ratings.",
+      "**Using stall torque as design torque** — stall torque is a zero-speed, full-current figure, not a usable rating, and holding it will burn the motor in seconds. Size on continuous ratings and check transients against the stated peak rating.",
       "**Forgetting the gearbox** — gearbox reflected inertia and reflected torque are what the motor sees, not the load directly.",
       "**Ignoring duty cycle** — a 50% duty cycle doubles the apparent thermal capacity, but only if cooling time is real, not just specified.",
       "**Neglecting starting torque** — many loads (rolls, mills, anything with static friction) need 1.5-3× running torque just to break loose.",
