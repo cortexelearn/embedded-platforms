@@ -5582,7 +5582,7 @@ const MOTOR_LESSONS = [
 
     { type: "h3", text: "The Universal Torque-Speed-Power Triangle" },
     { type: "p", text: "Mechanical power output equals torque times angular velocity: P = τ × ω. Every motor has a torque-speed curve — typically high torque at low speed (where current is highest because back-EMF is lowest), falling off as speed rises. Power peaks somewhere in the middle and falls off at both extremes." },
-    { type: "p", text: "Three points on every motor's curve matter: stall torque (zero speed, maximum current, where you'd burn it out if held there), no-load speed (maximum speed, near-zero torque, near-zero current), and the maximum-power point (somewhere in between). When you spec a motor, you're picking a curve that contains your operating point with margin to spare." },
+    { type: "p", text: "Three points on every motor's curve matter: stall torque (zero speed, maximum current, where you'd burn it out if held there), no-load speed (maximum speed, near-zero torque, near-zero current), and the maximum-power point (somewhere in between). When you spec a motor, you're picking a curve that contains your operating point with margin to spare. Two datasheet ideas show up here and are covered in depth in the next lesson. The torque constant Kt is the torque produced per amp of current. And every motor has two current ratings: a continuous rating (the current it can carry indefinitely without overheating) and a higher peak rating allowed only for short bursts, such as accelerations." },
 
     { type: "h3", text: "Why Different Motor Types Exist" },
     { type: "p", text: "Given that the underlying physics is identical, why do we have a dozen motor types? Because the practical engineering problems differ enormously: how do you commutate (switch current direction in the loop) — mechanically with brushes, or electronically? Where do you put the magnets (rotor, stator, or just induce them)? Do you need precise position control or just rotation? Do you need infinite rotation or limited oscillation? Each motor type is an engineering answer to a particular combination of those questions." },
@@ -5638,7 +5638,7 @@ const MOTOR_LESSONS = [
     { type: "h3", text: "The Two Master Constants: Kt and Kv (or Ke)" },
     { type: "p", text: "**Torque constant Kt** has units of Nm/A. It tells you how much torque the motor produces per amp of current: τ = Kt × I. Higher Kt means more torque per amp, but also (because of the universal pairing below) lower speed per volt." },
     { type: "p", text: "**Velocity constant Kv** has units of RPM/V (or rad/s/V in proper SI). It tells you the no-load speed per volt of supply: ω_noload = Kv × V. Higher Kv means more speed per volt, but lower torque per amp." },
-    { type: "p", text: "**The crucial pairing:** in SI units, Kt and Ke (the back-EMF constant, V/(rad/s)) are numerically equal. They describe the same physics — the coupling between torque and speed in the electromagnetic circuit. You cannot independently choose Kt and Kv; they are reciprocals." },
+    { type: "p", text: "**The crucial pairing:** in SI units, Kt and Ke (the back-EMF constant, V/(rad/s)) are numerically equal. They describe the same physics — the coupling between torque and speed in the electromagnetic circuit. You cannot independently choose Kt and Kv. They are reciprocals only when Kv is expressed in rad/s per volt (Kt = 1/Kv). With the more common RPM-per-volt figure, Kt in N·m/A ≈ 9.55 / Kv. Plug a datasheet RPM/V number straight into 1/Kv and your Kt will be off by roughly a factor of ten." },
 
     { type: "h3", text: "Other Standard Specs" },
     { type: "ul", items: [
@@ -5646,7 +5646,8 @@ const MOTOR_LESSONS = [
       "**Stall torque & stall current** — what the motor produces at zero speed. Stall current = V / R (winding resistance). It is usually well above the rated peak current, so the drive's current limit must keep the motor from ever reaching it; an uncontrolled stall at full voltage burns the motor within seconds.",
       "**Continuous vs peak ratings** — continuous is the thermal limit (sustained indefinitely at rated cooling). Peak is what the motor can do for short bursts (typically 2-5 seconds, with a duty cycle limit).",
       "**Thermal class** — class B (130 °C), F (155 °C), H (180 °C), N (200 °C), R (220 °C). Insulation system temperature rating, NOT operating temperature. Most aerospace motors are F or H minimum.",
-      "**Derating curves** — how performance falls off at elevated ambient temperature, altitude, or duty cycle. Always check derating before sizing — a motor that's perfect at 25 °C ambient may be undersized at 60 °C."
+      "**Derating curves** — how performance falls off at elevated ambient temperature, altitude, or duty cycle. Always check derating before sizing — a motor that's perfect at 25 °C ambient may be undersized at 60 °C.",
+      "**Enclosure and cooling method** — because the continuous rating is a thermal limit, it depends on how heat leaves the motor. Common industrial types: TEFC (totally enclosed, fan-cooled: a shaft-mounted fan blows air over a finned frame), TENV (totally enclosed, non-ventilated: no fan, relies on natural convection and conduction, so it's larger for the same rating), and ODP (open drip-proof: room air passes through the motor, cheap and cool-running but not for dirty or wet sites). Liquid cooling pushes the rating higher still. Better cooling earns the same motor a higher continuous rating."
     ]},
 
     { type: "h3", text: "Specs That Lie" },
@@ -5721,8 +5722,9 @@ const MOTOR_LESSONS = [
     { type: "ul", items: [
       "**Continuous duty (S1)** — runs at one operating point forever. Pump motors, fans. Sized to continuous ratings.",
       "**Short-time duty (S2)** — runs briefly then cools. Garage doors, momentary actuators. Can use peak ratings within duty cycle.",
-      "**Intermittent (S3-S6)** — varying degrees of run/idle ratios. The motor must dissipate the heat it accumulates.",
-      "**Continuous with variable load (S7-S10)** — runs continuously but with changing torque demand. RMS torque is the design driver."
+      "**Intermittent periodic (S3-S5)** — repeating run/rest cycles, with or without significant starting or electrical braking in each cycle. The motor must shed the heat it builds up during the rest periods.",
+      "**Continuous periodic with changing load (S6-S8)** — the motor stays energized but cycles through load and no-load periods, braking, or speed steps. RMS torque is the design driver.",
+      "**Non-periodic and discrete-load duty (S9-S10)** — load and speed vary irregularly, or step between a few distinct levels. Size on an equivalent (RMS or thermal-equivalent) load, usually with the motor vendor's help."
     ]},
     { type: "p", text: "For most aerospace mechanisms, you'll be in S2 (one-shot deployment) or S3 (cycling test fixtures, environmental control). Always identify which IEC duty class your application is — sizing is different for each." },
 
@@ -5779,7 +5781,7 @@ const MOTOR_LESSONS = [
         "Stepper motor — open-loop precision, ideal for any high-precision motion application"
       ],
       correct: 2,
-      explanation: "BLDC/PMSM with appropriate drives and encoders handle precise variable-speed servo applications best — smooth motion, low cogging, full closed-loop control. Brushed DC works but with brush wear and cogging issues. AC induction is for fixed/variable-speed industrial drives, not precision motion. Stepper is open-loop and loses sync under load."
+      explanation: "BLDC/PMSM with appropriate drives and encoders handle precise variable-speed servo applications best — smooth motion, low cogging, full closed-loop control. Brushed DC works, but brushes wear and typical iron-core designs cog noticeably. AC induction is for fixed/variable-speed industrial drives, not precision motion. Stepper is open-loop and loses sync under load."
     },
     { question: "What's the typical mistake engineers make when comparing motor types?",
       options: [
@@ -5817,7 +5819,7 @@ const MOTOR_LESSONS = [
     { type: "p", text: "A brushed DC motor has four key parts:" },
     { type: "ul", items: [
       "**Stator** — typically permanent magnets in small motors, or wound field coils in larger ones. The stationary magnetic field.",
-      "**Rotor (armature)** — wound coils on a laminated steel core. The current-carrying conductor that experiences torque.",
+      "**Rotor (armature)** — wound coils on a laminated steel core. The current-carrying conductor that experiences torque. Most low-cost brushed motors use this iron-core rotor, and its slotted iron is pulled toward the stator magnets at preferred angles, which produces cogging (torque ripple you can feel with no current flowing). Coreless (ironless) brushed motors instead use a self-supporting copper winding with no rotor iron, so they have almost no cogging; they cost more and are a common pick for small precision servos.",
       "**Commutator** — segmented copper ring on the rotor shaft. Mechanically switches current direction in the windings as the rotor turns.",
       "**Brushes** — typically carbon (with various metal additives), spring-loaded against the commutator. Carry current from the stationary supply terminals to the rotating windings."
     ]},
@@ -5870,15 +5872,15 @@ const MOTOR_LESSONS = [
       ],
       correct: 0,
       explanation: "Brushed DC still wins in cost-sensitive, simple-control, low-duty-cycle applications. Wiper motors, basic gear motors, toys, automotive seat/window actuators. Where total cost of ownership matters and the lifecycle is short, brushed DC's simplicity (just apply voltage, vary speed) beats brushless complexity. For high-performance or long-life applications, brushless wins." },
-    { question: "Why do brushed DC motors typically have higher cogging than equivalent brushless designs?",
+    { question: "Why do low-cost iron-core brushed DC motors typically have more cogging than servo-grade brushless designs?",
       options: [
         "Brushed DC motors are mechanically less precise — the cogging comes from machined parts rather than the magnetic design",
         "Brushed DC motors have different magnetic circuit topologies — slot/pole combinations chosen for cost rather than smoothness",
         "Brushed DC motors lack the high-resolution encoder feedback that smooths cogging in brushless designs",
-        "Brushed DC motors actually have lower cogging than brushless designs — this is a common misconception in motor selection"
+        "Brushed DC motors have no cogging at all, because the commutator switches current before any detent position can form"
       ],
       correct: 1,
-      explanation: "Cogging torque comes from rotor magnets attracting to stator iron tooth alignments. Designs that minimize cogging use skewed slots, fractional slot/pole counts, and specialized magnet geometries — generally driving up cost. Brushed DC motors are usually built for cost, not low cogging. Brushless motors aimed at servo applications use cogging-minimizing techniques." }
+      explanation: "Cogging torque comes from rotor magnets attracting to stator iron tooth alignments. Designs that minimize cogging use skewed slots, fractional slot/pole counts, and specialized magnet geometries — generally driving up cost. Brushed DC motors are usually built for cost, not low cogging. Brushless motors aimed at servo applications use cogging-minimizing techniques. Coreless (ironless) brushed motors are the exception to the brushed pattern: with no slotted rotor iron they have almost no cogging. And the commutator has nothing to do with cogging, because cogging exists even with zero current." }
   ]
 },
 
@@ -5904,15 +5906,15 @@ const MOTOR_LESSONS = [
     { type: "p", text: "The technical distinction comes down to the back-EMF waveform:" },
     { type: "ul", items: [
       "**BLDC (trapezoidal back-EMF)** — windings concentrated, magnets configured to produce a flat-topped EMF waveform. Driven with six-step block commutation: turn one phase pair on at a time, in sequence. Simpler control, slightly more torque ripple. Common in fans, pumps, drone motors.",
-      "**PMSM (sinusoidal back-EMF)** — distributed windings, magnets producing a smooth sinusoidal EMF. Driven with sinusoidal currents and Field-Oriented Control (FOC). Smoother torque, more efficient at variable speed. Dominant in servos, EV traction, aerospace actuation."
+      "**PMSM (sinusoidal back-EMF)** — often distributed windings (fractional-slot concentrated windings are also common), magnets producing a smooth sinusoidal EMF. Driven with sinusoidal currents and Field-Oriented Control (FOC). Smoother torque, more efficient at variable speed. Dominant in servos, EV traction, aerospace actuation."
     ]},
     { type: "p", text: "In practice, the same physical motor can often be driven either way. Most modern drives implement FOC even on motors that started life as 'BLDC' — sinusoidal control is just better for most applications." },
 
     { type: "h3", text: "Sensored vs Sensorless" },
     { type: "p", text: "The drive needs to know rotor position to commutate. Two approaches:" },
     { type: "ul", items: [
-      "**Sensored** — Hall-effect sensors give discrete 60° position updates (good enough for BLDC six-step), or an encoder/resolver gives continuous position (required for FOC and high-precision PMSM). Reliable, expensive, more wires.",
-      "**Sensorless** — algorithms estimate rotor position from back-EMF (above some minimum speed) or high-frequency injection (at low/zero speed). Cheaper, fewer wires, but harder to start from rest under load. Common in fans, pumps, ESCs."
+      "**Sensored** — Hall-effect sensors give discrete 60° position updates (good enough for BLDC six-step), or an encoder/resolver gives continuous position (the usual choice for high-precision PMSM servos and full torque at standstill). Reliable, expensive, more wires.",
+      "**Sensorless** — algorithms estimate rotor position from back-EMF (above some minimum speed) or high-frequency injection (at low/zero speed). Cheaper, fewer wires, but harder to start from rest under load. Common in fans, pumps, and drone ESCs, which typically run sensorless FOC. Either way, FOC needs a continuous rotor-angle signal: from an encoder, a resolver, or a sensorless estimator."
     ]},
 
     { type: "h3", text: "FOC at the Conceptual Level" },
@@ -5986,7 +5988,7 @@ const MOTOR_LESSONS = [
     ]},
 
     { type: "h3", text: "NEMA / IEC Frames and Standardization" },
-    { type: "p", text: "Industrial induction motors are aggressively standardized. NEMA (US) and IEC (international) define frame sizes that fix shaft height, bolt pattern, and shaft dimensions for given power ratings. A 56-frame motor from any manufacturer fits the same mounting holes as any other 56-frame motor. This is unique among motor types and is part of why induction dominates industry — you can swap brands without redesigning the machine." },
+    { type: "p", text: "Industrial induction motors are aggressively standardized. NEMA (US) and IEC (international) define frame sizes that fix shaft height, bolt pattern, and shaft dimensions for given power ratings. A 56-frame motor from any manufacturer fits the same mounting holes as any other 56-frame motor. Few motor families are standardized this thoroughly: stepper NEMA sizes (such as NEMA 17 and NEMA 23) fix only the faceplate and mounting bolts, while industrial induction frames fix the whole mounting and shaft envelope. That is part of why induction dominates industry — you can swap brands without redesigning the machine." },
 
     { type: "h3", text: "VFDs (Variable Frequency Drives)" },
     { type: "p", text: "Plain induction motors run at one speed (set by line frequency). To control speed, you need a Variable Frequency Drive: an electronic device that takes fixed-frequency line power and synthesizes variable-frequency three-phase output. VFDs unlock induction motors for speed control applications — pumps, HVAC, machine tool spindles." },
@@ -6056,11 +6058,11 @@ const MOTOR_LESSONS = [
     { type: "p", text: "Stepper motors are the cheap-and-cheerful answer to position control. They move in discrete angular increments — typically 1.8° per step (200 steps/rev) or 0.9° per step (400 steps/rev) — and you can drive them open-loop without any encoder feedback. For low-speed, light-load positioning applications they're hard to beat. For everything else they're a trap." },
 
     { type: "h3", text: "How Steppers Work" },
-    { type: "p", text: "A typical hybrid stepper has a permanent-magnet rotor with many fine teeth and a stator with multiple phases (typically two, sometimes three or five). Energizing the phases in sequence steps the rotor one tooth at a time. Reverse the sequence — reverse direction. Stop energizing — the rotor holds at the last commanded position with magnetic detent torque." },
+    { type: "p", text: "A typical hybrid stepper has a permanent-magnet rotor with many fine teeth and a stator with multiple phases (typically two, sometimes three or five). Energizing the phases in sequence steps the rotor one tooth at a time. Reverse the sequence — reverse direction. Keep the phases energized at standstill and the rotor holds at the last commanded position. With power removed, only a small detent torque remains (typically a few percent of holding torque). So most designs keep a reduced holding current on, or add a brake, if the load can back-drive the motor." },
     { type: "ul", items: [
       "**Full step** — one phase-pair energized at a time. 200 steps/rev for the standard 1.8° motor.",
       "**Half step** — alternate one-phase and two-phase energization. 400 steps/rev, smoother but unequal torque per step.",
-      "**Microstep** — modulate phase currents sinusoidally to interpolate between physical step positions. 1/16 to 1/256 microsteps/rev are common. Enormous resolution increases without changing the motor."
+      "**Microstep** — modulate phase currents sinusoidally to interpolate between physical step positions. Divisions of 1/16 to 1/256 of a full step are common. Enormous resolution increases without changing the motor."
     ]},
     { type: "p", text: "Critical insight: microstepping increases positional resolution but does NOT proportionally increase positional accuracy. The motor still has discrete magnetic detent positions, and at low microstep currents the torque between physical steps is very weak. Microstepping is great for smooth motion at moderate speed; it's marketing for ultra-precise static positioning." },
 
@@ -6084,7 +6086,7 @@ const MOTOR_LESSONS = [
     { type: "ul", items: [
       "**Open-loop positioning at low to moderate speed** — 3D printers, CNC machines (low-end), positioning stages, syringe pumps, simple actuators.",
       "**Cost-sensitive applications** — drives are simple (just step and direction inputs typically), no encoder needed.",
-      "**Holding position without power consumed in motion** — magnetic detent holds the rotor with zero current.",
+      "**Holding position at standstill** — the drive holds the rotor stiffly at the commanded position with reduced current. With power off, only the small detent torque remains, which can hold only very light loads that cannot back-drive the motor.",
       "**Repeatable indexing** — print head positioning, sample handling, telescope filters."
     ]},
 
@@ -6144,7 +6146,7 @@ const MOTOR_LESSONS = [
     { type: "p", text: "Limited Angle Torque (LATT) motors and galvanometers are specialized actuators for one use case: high-bandwidth oscillation over a limited angular range, with no commutation needed because the rotor never makes a full turn. They're invisible in everyday products but critical in optical scanners, fast-steering mirrors, gimbals, and aerospace pointing systems." },
 
     { type: "h3", text: "What Makes Them Different" },
-    { type: "p", text: "A typical LATT motor has a stationary magnet structure and a rotor consisting of a flat coil mounted on a shaft. Apply current to the coil — Lorentz force produces torque, the coil rotates. Reverse current — opposite torque. Because the rotor only needs to swing through ±15° to ±45° typically, there's no need to commutate as the rotor turns. No brushes, no electronic commutation algorithm — just a coil in a magnet, driven by an analog current command." },
+    { type: "p", text: "A typical LATT motor has a stationary magnet structure and a rotor consisting of a flat coil mounted on a shaft. Apply current to the coil — Lorentz force produces torque, the coil rotates. Reverse current — opposite torque. Because the rotor only needs to swing through a limited arc — typically within about ±45° (90° total travel), and often only ±10° to ±25° mechanical for galvo scanners — there's no need to commutate as the rotor turns. No brushes, no electronic commutation algorithm — just a coil in a magnet, driven by an analog current command." },
     { type: "p", text: "Some variants put the coil on the stator and the magnet on the rotor (similar to a moving-magnet voice coil); the principle is the same." },
 
     { type: "h3", text: "Why This Matters: Bandwidth" },
@@ -6188,10 +6190,10 @@ const MOTOR_LESSONS = [
         "Continuous rotation at high speed with limited torque output — opposite of standard motor design priorities",
         "Standard rotary motion with a mechanical limit switch — the same as a standard motor with limit hardware added",
         "Linear motion applications — the 'angle' refers to the angle of a flat coil rather than rotational position",
-        "High torque over a limited angular range (typically less than 90°) without full rotation — gimbals, optical scanners, throttle actuators"
+        "High torque over a limited angular range (typically within about ±45°, so 90° or less of total travel) without full rotation — gimbals, optical scanners, throttle actuators"
       ],
       correct: 3,
-      explanation: "LAT motors produce torque over a constrained angular range — often ±30° to ±60° — without ever doing full rotations. Used in galvanometer scanners, gimbals, throttle actuators, optical positioning. Designed for high torque density and bandwidth within their range; not for continuous rotation." },
+      explanation: "LAT motors produce torque over a constrained angular range — typically within about ±45° (90° total travel) — without ever doing full rotations. Used in galvanometer scanners, gimbals, throttle actuators, optical positioning. Designed for high torque density and bandwidth within their range; not for continuous rotation." },
     {
       question: "Why are galvanometer (galvo) motors special?",
       options: [
@@ -6201,7 +6203,7 @@ const MOTOR_LESSONS = [
         "Galvos rotate slowly but with very high torque — opposite of the high-speed requirements they're often paired with"
       ],
       correct: 1,
-      explanation: "Galvos are LAT motors designed for very fast small-angle motion with high precision. Typical specs: ±20° travel, response in milliseconds, micro-radian repeatability. Used in laser cutting, marking, scanning, optical metrology. Different design considerations than standard motors — bandwidth, inertia, and small-signal linearity dominate."
+      explanation: "Galvos are LAT motors designed for very fast small-angle motion with high precision. Typical specs: about ±10° to ±25° mechanical travel, response in milliseconds, micro-radian repeatability. Used in laser cutting, marking, scanning, optical metrology. Different design considerations than standard motors — bandwidth, inertia, and small-signal linearity dominate."
     },
     { question: "When is a LAT or galvo motor the right answer vs a standard servo?",
       options: [
@@ -6251,7 +6253,8 @@ const MOTOR_LESSONS = [
     { type: "ul", items: [
       "**Pole count** — more poles means lower speed at given frequency (n_sync = 120f/p). Higher pole counts give higher torque density and lower acoustic noise but worse high-speed performance.",
       "**Slot count** — more slots means smoother torque (less ripple) but more complex winding and higher cost. Common ratios: 12-slot 10-pole, 12-slot 14-pole, 9-slot 6-pole, 6-slot 4-pole.",
-      "**Slot/pole combinations** — chosen carefully to minimize cogging and harmonics. Some combinations have known good performance; others have pathological torque ripple."
+      "**Slot/pole combinations** — chosen carefully to minimize cogging and harmonics. Some combinations have known good performance; others have pathological torque ripple.",
+      "**Slot fill factor** — the share of each slot's cross-section that is actually copper; the rest is insulation, wire enamel, and gaps between round wires. More copper in the same slot means lower winding resistance and lower I²R loss. Round-wire windings land roughly between 30% and 78% depending on the winding method, and rectangular hairpin conductors reach about 80%+. The next lesson covers how each method gets there."
     ]},
 
     { type: "h3", text: "Skew" },
@@ -6281,7 +6284,7 @@ const MOTOR_LESSONS = [
         "The percentage of stator slot volume occupied by copper windings — higher fill means more copper, less resistance, better efficiency"
       ],
       correct: 3,
-      explanation: "Slot fill factor (sometimes 'copper fill ratio') is conductor area / total slot area. Higher fill (60-70% is good for wound motors, hairpin/bar wound can exceed 75%) means more copper carrying current, lower I²R losses, better efficiency. Fill is limited by insulation requirements, manufacturability, and slot geometry. It's a key metric for motor designers." },
+      explanation: "Slot fill factor (sometimes 'copper fill ratio') is conductor area / total slot area. Higher fill (60-70% is good for round-wire windings, while hairpin/bar windings reach ~80%+) means more copper carrying current, lower I²R losses, better efficiency. Fill is limited by insulation requirements, manufacturability, and slot geometry. It's a key metric for motor designers." },
     { question: "Why are rotors of induction motors often skewed (twisted slightly along the length)?",
       options: [
         "Skewing is a manufacturing artifact with no functional purpose — it doesn't affect motor performance",
@@ -6305,7 +6308,7 @@ const MOTOR_LESSONS = [
 
     { type: "h3", text: "Concentrated vs Distributed Windings" },
     { type: "ul", items: [
-      "**Concentrated windings** — each coil wraps around a single stator tooth. Short end turns (less wasted copper), simpler manufacturing, better fault tolerance (one phase fails, the others still work). Used in BLDC, segmented PMSM, and modern high-efficiency designs. Trapezoidal back-EMF naturally results.",
+      "**Concentrated windings** — each coil wraps around a single stator tooth. Short end turns (less wasted copper), simpler manufacturing, better fault tolerance (one phase fails, the others still work). Used in BLDC, segmented PMSM, and modern high-efficiency designs. They tend toward a less sinusoidal (more trapezoidal) back-EMF, but with a suitable slot/pole choice (fractional-slot designs) they are also widely used in sinusoidal PMSM servos.",
       "**Distributed windings** — each coil spans multiple stator slots. Longer end turns, more complex winding process, but smoother sinusoidal back-EMF for PMSM applications and traditional construction for AC induction. Dominant in industrial induction motors."
     ]},
 
@@ -6313,7 +6316,7 @@ const MOTOR_LESSONS = [
     { type: "ul", items: [
       "**Hand winding** — for prototypes, repairs, very large motors. High labor cost, variable quality, but maximum flexibility.",
       "**Needle winding** — automated, used for concentrated windings in BLDC stators. A needle traverses around each tooth laying wire. Excellent fill factor, good repeatability.",
-      "**Flyer winding** — automated, used for concentrated windings on segmented stators. A rotating arm winds onto each removable segment, then segments are assembled into the stator. Highest fill factor (~75%), highest cost equipment.",
+      "**Flyer winding** — automated, used for concentrated windings on segmented stators. A rotating arm winds onto each removable segment, then segments are assembled into the stator. Very high fill factor for round wire (~70-78%), expensive equipment.",
       "**Coil insertion** — for distributed windings in induction motors. Coils are pre-formed, then mechanically inserted into the slots through a slot opening. The classic high-volume induction motor process.",
       "**Hairpin winding** — newer, used in EV traction motors. Rectangular wire formed into hairpins, inserted into slots, then welded at the ends. Highest fill factor possible (~80%+), best thermal performance, complex tooling."
     ]},
@@ -6346,7 +6349,8 @@ const MOTOR_LESSONS = [
       "**Connection joint quality** — soldered or welded joints should be smooth and shiny, not granular.",
       "**Insulation integrity** — no nicks, scrapes, or wear marks visible. Hi-pot test confirms.",
       "**Lead identification** — phase leads correctly labeled and oriented per drawing.",
-      "**Resistance test** — phase-to-phase and phase-to-ground. Phase resistances should match each other within ~3%."
+      "**Resistance test** — phase-to-phase and phase-to-ground. Phase resistances should match each other within ~3%.",
+      "**Record a baseline** — once the motor is installed, capture a vibration reading and a current signature (the frequency spectrum of the supply current). Comparing later readings against it is how current-signature analysis spots broken rotor bars, eccentricity, bearing faults, or supply imbalance, using a clamp-on probe without stopping the motor. The failure-modes lesson covers this in more detail."
     ]},
 
     { type: "callout", style: "key",
@@ -6394,14 +6398,14 @@ const MOTOR_LESSONS = [
 
     { type: "h3", text: "Permanent Magnet Materials" },
     { type: "ul", items: [
-      "**NdFeB (Neodymium-Iron-Boron)** — the workhorse. Highest energy product (BHmax) of any commercial magnet, ~30-50 MGOe. Cheap per energy density. Limitations: temperature derate (standard grades lose magnetism above 80 °C, high-temp grades to 200 °C), corrosion (require nickel or epoxy coating), supply chain (China dominates rare earth mining and refining).",
+      "**NdFeB (Neodymium-Iron-Boron)** — the workhorse. Highest energy product (BHmax) of any commercial magnet, ~30-50 MGOe. Cheap per energy density. Limitations: temperature derate (standard grades are limited to about 80 °C, high-coercivity grades are rated up to about 180-200 °C), corrosion (require nickel or epoxy coating), supply chain (China dominates rare earth mining and refining).",
       "**SmCo (Samarium-Cobalt)** — older but excellent. Lower energy product (~20-30 MGOe) but vastly better high-temperature performance (up to 350 °C operating). Naturally corrosion-resistant. More expensive per unit of magnetism. Used in aerospace high-temperature applications, defense, and where temperature stability is paramount.",
       "**Ferrite (ceramic)** — cheapest, weakest (~3-5 MGOe). Used in low-cost low-performance applications (consumer fans, simple BLDC). Robust against demagnetization.",
       "**AlNiCo** — mostly historical now. Excellent temperature stability, mediocre energy product. Still used in some specialty instruments."
     ]},
 
     { type: "h3", text: "Magnetization" },
-    { type: "p", text: "Magnets are typically pressed and sintered as unmagnetized 'green' parts, then magnetized in a final step using a high-current pulse coil that briefly saturates the magnet's magnetic domains in the desired orientation. For motor applications, magnets are usually radially or diametrically magnetized. After magnetization, magnets are extremely difficult to handle safely — pinch hazards are real, and a dropped sintered NdFeB block will shatter (it's brittle ceramic)." },
+    { type: "p", text: "Sintered magnets are typically pressed in an aligning magnetic field (the unsintered compact is called a 'green' part), sintered, machined, and then magnetized in a final step using a high-current pulse coil that briefly saturates the magnet's magnetic domains in the desired orientation. For motor applications, magnets are usually radially or diametrically magnetized. After magnetization, magnets are extremely difficult to handle safely — pinch hazards are real, and a dropped sintered NdFeB block will shatter (it's a brittle sintered alloy)." },
     { type: "p", text: "Some manufacturers magnetize after assembly into the rotor — fixturing the magnet positions before applying the magnetizing pulse. This solves the handling-magnetized-magnets problem but requires a powerful magnetizer and careful design." },
 
     { type: "h3", text: "Why Balancing Matters" },
@@ -6410,19 +6414,19 @@ const MOTOR_LESSONS = [
     { type: "ul", items: [
       "**Vibration** — measurable, audible, transmitted to the structure.",
       "**Bearing wear** — radial loads from unbalance accelerate bearing failure.",
-      "**Audible noise** — most motor 'humming' has an unbalance component.",
+      "**Vibration and noise at running speed** — unbalance shows up at once-per-revolution (1×) frequency. The steady hum of an AC motor is mostly electromagnetic, at twice line frequency, so don't blame every hum on unbalance.",
       "**Reduced bearing life** — typically the dominant life-limiting effect."
     ]},
 
     { type: "h3", text: "Dynamic Balancing" },
-    { type: "p", text: "Balancing is performed on a balancing machine: the rotor is spun at design speed (or a controlled lower speed), and sensors measure the residual vibration. Computer algorithms tell the operator where to add or remove material — typically by drilling small balance holes in non-critical locations of the rotor. Industry-standard balancing classes (ISO 1940):" },
+    { type: "p", text: "Balancing is performed on a balancing machine: the rotor is spun at design speed (or a controlled lower speed), and sensors measure the residual vibration. Computer algorithms tell the operator where to add or remove material — typically by drilling small balance holes in non-critical locations of the rotor. Industry-standard balance quality grades (ISO 1940-1, now superseded by ISO 21940-11):" },
     { type: "ul", items: [
-      "**G16, G6.3** — Standard for large industrial motors and pumps.",
+      "**G6.3** — General-purpose industrial electric motors, pumps, and fans.",
       "**G2.5** — Standard for high-speed industrial motors, machine tool spindles, larger BLDC motors.",
       "**G1.0** — High-precision: spindles, larger gimbals.",
       "**G0.4** — Ultra-precision: turbomolecular pumps, high-end optical scanners, gyroscopes."
     ]},
-    { type: "p", text: "Each class is a tighter limit on residual mass moment per unit rotor mass. Higher classes (G0.4) require more time on the balancing machine and tighter material tolerances upstream." },
+    { type: "p", text: "The grade number is the permitted specific unbalance (residual unbalance per unit rotor mass) multiplied by the maximum service angular speed, expressed in mm/s. So at a given grade, a faster rotor is allowed less residual unbalance. Tighter (lower-numbered) grades such as G0.4 require more time on the balancing machine and tighter material tolerances upstream." },
 
     { type: "h3", text: "Runout & Concentricity" },
     { type: "p", text: "Beyond mass balance, the rotor must also be geometrically concentric. **Runout** is the geometric deviation of a feature (shaft surface, magnet outer diameter) from perfect rotational symmetry. Even a perfectly balanced rotor with high runout will produce torque ripple (varying air gap → varying flux), audible noise, and bearing wear." },
@@ -6448,7 +6452,7 @@ const MOTOR_LESSONS = [
         "NdFeB magnets are the only type approved for aerospace applications under current regulations"
       ],
       correct: 0,
-      explanation: "NdFeB has the highest BHmax (energy product) of commercial magnet materials — typically 30-50 MGOe vs ~3 MGOe for ferrite. This means smaller, lighter, more powerful motors for given specs. Trade-offs: relatively low operating temperature limit (~150-200°C depending on grade), requires corrosion protection, supply chain has historically been volatile. SmCo handles higher temperatures; ferrite is cheaper for cost-sensitive applications." },
+      explanation: "NdFeB has the highest BHmax (energy product) of commercial magnet materials — typically 30-50 MGOe vs ~3 MGOe for ferrite. This means smaller, lighter, more powerful motors for given specs. Trade-offs: relatively low operating temperature limit (standard grades ~80 °C, high-coercivity grades up to ~180-200 °C), requires corrosion protection, supply chain has historically been volatile. SmCo handles higher temperatures; ferrite is cheaper for cost-sensitive applications." },
     { question: "Why must motor rotors be dynamically balanced after assembly?",
       options: [
         "Dynamic balancing is a cosmetic step — modern manufacturing produces rotors that are inherently balanced without correction",
@@ -6467,7 +6471,7 @@ const MOTOR_LESSONS = [
         "Installing the motor at the wrong angle — affects appearance but not bearing or winding life"
       ],
       correct: 1,
-      explanation: "Bearings are the leading life-limiting component in well-designed motors. Pressed against the wrong race (outer when rotating outer, or vice versa), contaminated during install, insufficient or wrong lubricant, side load during press — any of these can cause early bearing failure. Many motor failures attributed to other causes trace back to assembly errors at this step."
+      explanation: "Bearings are the leading life-limiting component in well-designed motors. Press force applied through the wrong ring, so the load passes through the rolling elements and dents the raceways (press only on the ring that has the interference fit), contaminated during install, insufficient or wrong lubricant, side load during press — any of these can cause early bearing failure. Many motor failures attributed to other causes trace back to assembly errors at this step."
     }
   ]
 },
@@ -6555,7 +6559,7 @@ const MOTOR_LESSONS = [
         "Encoders measure motor temperature — used to derate the drive output when the motor overheats"
       ],
       correct: 1,
-      explanation: "Servo control requires closed-loop feedback. The drive commands position/velocity; the encoder reports actual position/velocity; the drive computes error and adjusts output. Without encoder feedback, the drive runs open-loop (like a stepper) — works for some applications but loses the precision and dynamic response that makes servo systems valuable. Common encoder types: incremental optical, absolute optical, magnetic, resolver."
+      explanation: "Servo control requires closed-loop feedback. The drive commands position/velocity; the encoder reports actual position/velocity; the drive computes error and adjusts output. Without a position sensor, the drive either runs open-loop (like a stepper) or estimates rotor position sensorlessly from back-EMF or signal injection. Sensorless control works well for fans, pumps, and drone ESCs but is weak at very low speed and standstill, so it loses the precise positioning and stiff low-speed response that make servo systems valuable. Common encoder types: incremental optical, absolute optical, magnetic, resolver."
     }
   ]
 },
@@ -6580,6 +6584,7 @@ const MOTOR_LESSONS = [
       "**Improper mounting** — wrong fit class, hammered installation, contamination at install."
     ]},
     { type: "p", text: "Diagnostic signatures: increasing audible noise (gravel, then grinding), increasing vibration (especially in characteristic bearing-fault frequencies), increasing heat at the bearing housing, eventually catastrophic seizure." },
+    { type: "p", text: "**Grease and rated life.** Grease is not interchangeable. Base-oil viscosity, thickener type, consistency (NLGI grade), and temperature range all have to suit the bearing's speed, operating temperature, and environment. The wrong grease, or mixing incompatible greases, shortens bearing life sharply. Rated bearing life is quoted as L10 hours: the running time that 90% of a group of identical bearings is expected to exceed at a stated load and speed. Typical motor bearings fall roughly in the 20,000-100,000 hour range depending on load, speed, lubrication, and environment, yet bearings are still usually the first part of a motor to wear out." },
 
     { type: "h3", text: "Insulation Breakdown" },
     { type: "p", text: "Winding insulation fails from:" },
@@ -6595,7 +6600,7 @@ const MOTOR_LESSONS = [
     { type: "h3", text: "Demagnetization" },
     { type: "p", text: "Permanent magnets can lose magnetism — irreversibly — from:" },
     { type: "ul", items: [
-      "**Excessive temperature** — exceeding the magnet's irreversible-loss curve. Common with NdFeB above 100-150 °C depending on grade.",
+      "**Excessive temperature** — exceeding the magnet's irreversible-loss curve. For NdFeB the limit is about 80 °C for standard grades and up to about 180-200 °C for high-coercivity grades, and lower still if a strong reverse field acts at the same time.",
       "**Reverse field** — short-circuit fault currents during operation produce strong stator fields opposing the magnet flux.",
       "**Mechanical shock** — less common with sintered magnets but can occur with severe impact."
     ]},
@@ -6617,7 +6622,7 @@ const MOTOR_LESSONS = [
     { type: "h3", text: "When to Repair vs Replace" },
     { type: "p", text: "Industry rule of thumb: if repair cost exceeds 60% of new motor cost, replace. Beyond cost, consider:" },
     { type: "ul", items: [
-      "**Repaired motors** typically lose 1-3% efficiency from rewinding (steel core loss).",
+      "**Rewound motors** can keep their original efficiency if the shop follows good rewind practice: controlled stripping temperature, a matching winding design, and core-loss testing. Poor practice, especially overheating the core during stripping (which damages the lamination insulation), can cost a point or more of efficiency. Ask the repair shop for before-and-after core-loss test results.",
       "**For aerospace**: most flight-critical motors are not field-repaired. Send to OEM-certified repair facility or replace.",
       "**Documented failures** in critical applications often drive design improvements; the 'failed' motor is more valuable as an investigation specimen than as a repaired part."
     ]},
@@ -6668,11 +6673,11 @@ const MOTOR_LESSONS = [
     { type: "p", text: "This capstone is a full motor selection from blank page to defensible recommendation. The exercise is the test of everything in the previous 13 lessons. Use it as a template for real specifications you'll write." },
 
     { type: "h3", text: "The Problem" },
-    { type: "p", text: "**Application**: an aerospace test stand fixture that rotates a small (5 kg) component under instrumentation for vibration testing. Required motion: oscillate the fixture ±90° at 0.5 Hz (2 sec/cycle). Mass moment of inertia of fixture + component about the axis: 0.020 kg·m². Operating environment: lab ambient, 20-30 °C. Continuous duty for 8-hour test runs." },
+    { type: "p", text: "**Application**: an aerospace test stand fixture that rotates a small (5 kg) component under instrumentation for vibration testing. Required motion: oscillate the fixture ±90° at 0.5 Hz (2 sec/cycle). Mass moment of inertia of fixture + component about the axis: 0.020 kg·m². The rotation axis is vertical and the fixture is balanced about it, so gravity adds essentially no torque. Operating environment: lab ambient, 20-30 °C. Continuous duty for 8-hour test runs." },
 
     { type: "h3", text: "Step 1 — Load Profile" },
     { type: "p", text: "Motion profile: ±90° (= ±π/2 rad) at 0.5 Hz. Sinusoidal motion: angular velocity ω(t) = (π/2) × 2π × 0.5 × cos(2π × 0.5 × t) = π/2 × π × cos(πt). Peak velocity = π²/2 ≈ 4.93 rad/s. Peak angular acceleration = (π/2) × (2π × 0.5)² = π³/2 ≈ 15.5 rad/s²." },
-    { type: "p", text: "Peak inertial torque = J × α_peak = 0.020 × 15.5 = 0.31 Nm. Peak velocity in RPM: 4.93 rad/s × 60/(2π) ≈ 47 RPM. Continuous-duty profile (S1) since runs are 8 hours." },
+    { type: "p", text: "Peak inertial torque = J × α_peak = 0.020 × 15.5 = 0.31 Nm. Add an allowance of 0.05 Nm for bearing friction and cable drag. That's an estimate: confirm it by measuring breakaway torque on the first build. Peak velocity in RPM: 4.93 rad/s × 60/(2π) ≈ 47 RPM. Duty: continuous operation with a cyclic load. The motor never rests during an 8-hour run, but the torque swings sinusoidally and reverses every half-cycle, so this is not the constant-load S1 case. Size it thermally on RMS torque and check the peak separately. For sinusoidal motion, RMS = peak / √2, so 0.31 / 1.414 ≈ 0.22 Nm before margin." },
 
     { type: "h3", text: "Step 2 — Eliminate Motor Types" },
     { type: "ul", items: [
@@ -6687,7 +6692,7 @@ const MOTOR_LESSONS = [
     { type: "h3", text: "Step 3 — Derive Specs" },
     { type: "p", text: "Including a 2.0× safety factor for inertial torque (test fixture might exceed 5 kg with cabling, mounting hardware, etc.):" },
     { type: "ul", items: [
-      "**Continuous torque** at low speed: 0.31 × 2.0 = **0.62 Nm minimum**",
+      "**Continuous torque** at low speed: 0.31 × 2.0 + 0.05 (friction and cable drag) = **0.67 Nm minimum**. This is deliberately sized on the peak so the continuous rating covers every point of the cycle; the inertial RMS load (≈0.22 Nm before margin) is far lower.",
       "**Peak speed**: 47 RPM (well below typical motor capability)",
       "**Continuous duty**: required",
       "**Position control**: ±0.5° peak position error at extremes (encoder feedback required)",
@@ -6699,7 +6704,7 @@ const MOTOR_LESSONS = [
 
     { type: "h3", text: "Step 5 — Validate" },
     { type: "ul", items: [
-      "**Torque margin**: 1.5 / 0.62 = 2.4×. Safe.",
+      "**Torque margin**: 1.5 / 0.67 ≈ 2.2× over the sized peak requirement, and roughly 6-7× over the unmargined RMS load. Comfortable.",
       "**Speed**: motor rated to 3000+ RPM, our peak is 47 RPM. Easily.",
       "**Inertia ratio**: a frameless rotor in this torque range is typically on the order of 10⁻⁴ kg·m² (use the datasheet value), so the load-to-rotor ratio is high — on the order of 100:1. Acceptable here: the rotor is rigidly mounted to the load with no gearbox backlash or coupling wind-up, and a 0.5 Hz motion needs little control bandwidth. Confirm during drive tuning.",
       "**Continuous duty**: motor + drive both rated continuous at this load. Frameless continuous ratings assume a stated heat-sink mounting, so confirm the fixture provides it. Confirm thermal class F or H, ambient 30 °C.",
@@ -6714,10 +6719,10 @@ const MOTOR_LESSONS = [
       "**Application**: aerospace component vibration test fixture, ±90° oscillation at 0.5 Hz, 5 kg payload.",
       "**Selected motor**: [Manufacturer Model #X] — frameless BLDC torque motor, 1.5 Nm continuous, direct drive, with a separate absolute ring encoder [Manufacturer Model #E].",
       "**Selected drive**: [Manufacturer Model #Y] — matched servo amplifier, EtherCAT, integrated safety functions.",
-      "**Justification**: required peak torque 0.31 Nm × 2× safety factor = 0.62 Nm; selected continuous rating 1.5 Nm gives 2.4× margin. Direct drive avoids gearbox backlash; the high load-to-rotor inertia ratio is acceptable with a rigid rotor-to-shaft mount at 0.5 Hz. Continuous duty rated. Fits mechanical envelope.",
+      "**Justification**: required peak inertial torque 0.31 Nm × 2× safety factor = 0.62 Nm, plus 0.05 Nm for friction and cable drag = 0.67 Nm (RMS load about 0.22 Nm before margin); selected continuous rating 1.5 Nm gives about 2.2× margin. Direct drive avoids gearbox backlash; the high load-to-rotor inertia ratio is acceptable with a rigid rotor-to-shaft mount at 0.5 Hz. Continuous duty rated. Fits mechanical envelope.",
       "**Cost**: $X for motor + $Y for drive + cabling = $Z total system cost.",
       "**Alternatives considered and rejected**: brushed DC (brush wear over 8-hour runs), open-loop stepper (high-inertia load, resonance and missed-step risk with no position feedback), geared housed servo (meets the inertia guideline but adds backlash at every reversal and another wear part).",
-      "**Risks**: thermal headroom adequate but not generous in worst-case ambient; verify cooling on first build. Frameless integration (bearings, air gap, encoder mounting) is our responsibility; review the fixture drawings with the motor vendor."
+      "**Risks**: thermal margin is large (about 2.2× over the sized peak and several times the RMS load), so heat is not the main concern. The real residual risks are a structural resonance in the fixture being excited by the drive or its harmonics, and flex life of the motor and encoder cables over about 14,400 ±90° cycles in every 8-hour run. Check both on the first build. Frameless integration (bearings, air gap, encoder mounting) is our responsibility; review the fixture drawings with the motor vendor."
     ]},
 
     { type: "callout", style: "key",
@@ -6845,7 +6850,7 @@ const MOTOR_FINAL_EXAM = [
       "Stepper motor — open-loop precision, ideal for any high-precision motion application"
     ],
     "correct": 2,
-    "explanation": "BLDC/PMSM with drives and encoders handle precision servo applications best. Brushed DC has brush wear and cogging issues. Stepper is open-loop."
+    "explanation": "BLDC/PMSM with drives and encoders handle precision servo applications best. Brushed DC has brush wear and, in common iron-core designs, cogging. Stepper is open-loop."
   },
   {
     "phase": 1,
@@ -6897,15 +6902,15 @@ const MOTOR_FINAL_EXAM = [
   },
   {
     "phase": 1,
-    "question": "Why do brushed DC motors typically have higher cogging?",
+    "question": "Why do low-cost iron-core brushed DC motors typically have more cogging?",
     "options": [
-      "Actually have lower cogging than brushless — common misconception in motor selection",
+      "Have no cogging at all — the commutator switches current before any detent can form",
       "Mechanically less precise — cogging comes from machined parts rather than magnetic design",
       "Lack high-resolution encoder feedback that smooths cogging in brushless designs",
       "Different magnetic circuit topologies — slot/pole combinations chosen for cost rather than smoothness"
     ],
     "correct": 3,
-    "explanation": "Cogging comes from rotor magnet-to-stator iron attraction. Anti-cogging design (skewing, fractional slots) costs money; brushed DC usually optimized for cost."
+    "explanation": "Cogging comes from rotor magnet-to-stator iron attraction. Anti-cogging design (skewing, fractional slots) costs money; low-cost iron-core brushed DC is usually optimized for cost. Coreless brushed motors have almost no cogging."
   },
   {
     "phase": 2,
@@ -7020,12 +7025,12 @@ const MOTOR_FINAL_EXAM = [
     "question": "What's a limited angle torque (LAT) motor designed for?",
     "options": [
       "Continuous rotation at high speed with limited torque output",
-      "High torque over limited angular range (typically less than 90°) without full rotation — gimbals, scanners, actuators",
+      "High torque over limited angular range (typically within about ±45°, 90° total or less) without full rotation — gimbals, scanners, actuators",
       "Standard rotary motion with a mechanical limit switch added",
       "Linear motion applications — 'angle' refers to the angle of a flat coil"
     ],
     "correct": 1,
-    "explanation": "LAT motors: high torque over ±30° to ±60° without full rotation. Used in galvos, gimbals, throttle actuators, optical positioning."
+    "explanation": "LAT motors: high torque within about ±45° (90° total) without full rotation. Used in galvos, gimbals, throttle actuators, optical positioning."
   },
   {
     "phase": 2,
@@ -7037,7 +7042,7 @@ const MOTOR_FINAL_EXAM = [
       "Rotate slowly but with very high torque — opposite of high-speed requirements they're paired with"
     ],
     "correct": 2,
-    "explanation": "Galvos: ±20° travel, millisecond response, micro-radian repeatability. For laser cutting, scanning, optical metrology."
+    "explanation": "Galvos: about ±10° to ±25° mechanical travel, millisecond response, micro-radian repeatability. For laser cutting, scanning, optical metrology."
   },
   {
     "phase": 2,
@@ -7177,11 +7182,11 @@ const MOTOR_FINAL_EXAM = [
     "options": [
       "Bearings are universal — all motor bearings last the design life of the motor regardless of service factor",
       "Bearings always fail within 5,000 hours — they're consumable items replaced quarterly in production",
-      "Typically 20,000-100,000 hours depending on load, speed, lubrication, environment — properly maintained, often exceeds motor life",
+      "Typically 20,000-100,000 hours (L10) depending on load, speed, lubrication, environment — yet bearings are still usually the first motor component to wear out",
       "Bearing life isn't predictable — motors fail randomly regardless of specifications or maintenance"
     ],
     "correct": 2,
-    "explanation": "Manufacturer's L10 rating + service factor + maintenance practices set realistic expectations. 20K-100K hours is normal range."
+    "explanation": "Manufacturer's L10 rating + service factor + maintenance practices set realistic expectations. 20K-100K hours is the normal range, but bearings usually still wear out before the windings or magnets, which is why they lead the failure statistics."
   },
   {
     "phase": 3,
@@ -7217,7 +7222,7 @@ const MOTOR_FINAL_EXAM = [
       "Cosmetic — different shapes used to distinguish manufacturer products in the marketplace"
     ],
     "correct": 1,
-    "explanation": "Round wire = traditional, flexible. Hairpin and bar conductors achieve higher fill (~75%+) for better efficiency in higher-current applications like EVs."
+    "explanation": "Round wire = traditional, flexible. Hairpin and bar conductors achieve higher fill (~80%+) for better efficiency in higher-current applications like EVs."
   },
   {
     "phase": 3,
