@@ -17,7 +17,7 @@
 
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+  <script crossorigin src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
 
   <style>
     html, body { margin: 0; padding: 0; height: 100%; overscroll-behavior: none; }
@@ -904,7 +904,7 @@ function renderInline(text) {
   const parts = String(text).split(/(\*\*[^*]+\*\*|`[^`]+`|\*(?=\S)[^*]*?[^*\s]\*(?![\w*]))/g);
   return parts.map((p, i) => {
     if (p.startsWith("**") && p.endsWith("**") && p.length >= 4) {
-      return <strong key={i}>{p.slice(2, -2)}</strong>;
+      return <strong key={i}>{renderInline(p.slice(2, -2))}</strong>;
     }
     if (p.startsWith("`") && p.endsWith("`") && p.length >= 2) {
       return <code key={i} style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace", fontSize: "0.92em", background: "#ede7d6", padding: "1px 5px", borderRadius: 3 }}>{p.slice(1, -1)}</code>;
@@ -13351,15 +13351,19 @@ function CourseApp() {
       try {
         const parsed = JSON.parse(ev.target.result);
         const data = parsed.data || parsed;
-        const fileTrack = parsed.track || "ai"; // default to ai for old v1 exports
+        const fileTrack = parsed.track || currentTrack; // old exports belong to the locked track
+        if (fileTrack !== currentTrack) {
+          window.alert(`Import refused: this file is for the ${fileTrack} track. This course is locked to ${courseTitle}.`);
+          return;
+        }
 
         // Validate
         if (!data || typeof data !== "object") throw new Error("Invalid file format");
         if (!Array.isArray(data.completed)) throw new Error("Missing 'completed' array");
 
         // Determine the active-track lesson count for validation
-        const targetLessonCount = fileTrack === "mba" ? MBA_LESSONS.length : AI_LESSONS.length;
-        const targetTrackName = fileTrack === "mba" ? "MBA" : "AI";
+        const targetLessonCount = LESSONS.length;
+        const targetTrackName = courseTitle;
 
         // Filter completed to valid lesson indices for the target track
         const validCompleted = data.completed.filter(n =>
@@ -13367,20 +13371,14 @@ function CourseApp() {
         );
 
         // Summarize what will be imported for the confirm dialog
-        const willSwitchTrack = fileTrack !== currentTrack;
         const msg =
           `Import progress?\n\n` +
-          `• Track: ${targetTrackName}${willSwitchTrack ? " (will switch from current track)" : ""}\n` +
+          `• Track: ${targetTrackName}\n` +
           `• ${validCompleted.length} of ${targetLessonCount} lessons will be marked complete\n` +
           `• Display preferences will be restored\n\n` +
           `This will REPLACE the ${targetTrackName} track's current progress. Continue?`;
 
         if (!window.confirm(msg)) return;
-
-        // Switch track if needed (will trigger load from that track's key; we'll overwrite below)
-        if (willSwitchTrack) {
-          setCurrentTrack(fileTrack);
-        }
 
         // Apply imported data
         setCompleted(new Set(validCompleted));
@@ -13443,7 +13441,7 @@ function CourseApp() {
           if (currentLesson > 0) goTo(currentLesson - 1); else goHome();
           e.preventDefault();
         } else if (e.key === "ArrowRight") {
-          handleNext(currentLesson);
+          if (currentLesson < LESSONS.length - 1) goTo(currentLesson + 1);
           e.preventDefault();
         } else if (e.key === "Escape") {
           goHome();
