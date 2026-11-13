@@ -4313,7 +4313,7 @@ const AM_LESSONS = [
 
     { type: "h3", text: "The High-Impact Parameters" },
     { type: "ul", items: [
-      "**Layer height** — typically 0.1–0.3 mm. Smaller = better surface finish, longer print time, weaker Z-bonding per layer (though more layers).",
+      "**Layer height** — typically 0.1–0.3 mm, kept well under the nozzle diameter (no more than about 75% of it). Smaller = better surface finish and longer print time. Its effect on Z strength is not simple: very tall layers near the nozzle diameter fuse poorly, but within the normal range (say 0.1 to 0.2 mm on a 0.4 mm nozzle), print temperature, cooling, and line width usually matter more than layer height.",
       "**Line width** — usually 100–120% of nozzle diameter. Wider lines print faster and stronger but lose fine detail.",
       "**Walls / perimeters** — three to five walls is the structural backbone of an FDM part. Infill matters less than wall count for strength.",
       "**Infill** — 15–25% gyroid or grid for most functional parts; only go higher for genuinely load-bearing applications.",
@@ -4357,11 +4357,11 @@ const AM_LESSONS = [
       options: [
         "Smaller layers print faster but with reduced detail — strength is unrelated to layer height in modern FDM",
         "Larger layers are stronger because they have more material per layer to resist load",
-        "Smaller layers bond better and produce stronger parts; larger layers print faster but have weaker interlayer bonds",
+        "Very tall layers reduce interlayer fusion — keep layer height well under the nozzle diameter, and tune temperature and cooling first, since they usually matter more than small layer-height changes",
         "Layer height affects only the visible surface finish, not any internal mechanical property"
       ],
       correct: 2,
-      explanation: "Smaller layers (0.1-0.2mm) have more interlayer bonds per unit height, and each bond covers more relative thermal-fusion area. Larger layers (0.3+) print faster but produce weaker parts in the Z direction. Balance: 0.2mm is typical compromise; 0.1mm for stronger or finer-detail parts; 0.3mm for fast tooling that doesn't need strength." },
+      explanation: "Layer height does affect Z strength, but not in a straight line. Layers that approach the nozzle diameter (above roughly 75% of it) get too little squish and fuse poorly, so parts split along layer lines. Within the normal range, say 0.1 to 0.2 mm on a 0.4 mm nozzle, print temperature, cooling, and line width usually change interlayer strength more than layer height does. Typical practice: 0.2 mm as the default, finer layers for surface detail, up to about 0.3 mm for fast tooling, with temperature and cooling tuned first." },
     { question: "What does 'wall count' (perimeter count) do?",
       options: [
         "Wall count is a cosmetic setting that affects only visible exterior appearance — no mechanical effect",
@@ -4390,7 +4390,7 @@ const AM_LESSONS = [
     { type: "p", text: "Corners lift off the bed; long flat parts curl. Causes: bed temperature too low → no enclosure for high-temp material → poor first-layer adhesion → too-aggressive cooling on lower layers. Add a brim, raise bed temp, enclose the printer." },
 
     { type: "h3", text: "Layer Separation / Delamination" },
-    { type: "p", text: "Visible gaps between layers, or the print snaps cleanly along layer lines. Causes: print temperature too low → cooling fan too high → layer height too tall (>75% of nozzle diameter) → poor inter-layer adhesion from a worn nozzle. Increase temperature 5–10 °C, reduce cooling, drop layer height." },
+    { type: "p", text: "Visible gaps between layers, or the print snaps cleanly along layer lines. Causes: print temperature too low → cooling fan too high → layer height too tall (>75% of nozzle diameter) → poor inter-layer adhesion from a worn nozzle. Increase temperature 5–10 °C and reduce cooling first; if layer height is close to the nozzle diameter, bring it well under it." },
 
     { type: "h3", text: "Ringing / Ghosting" },
     { type: "p", text: "Echoes of features visible on adjacent surfaces, especially after sharp corners. Causes: print speed too high for the printer's stiffness → acceleration too high → loose belts → unbalanced part orientation. Reduce acceleration, tighten belts, slow down." },
@@ -5138,10 +5138,10 @@ const AM_FINAL_EXAM = [
       "Smaller layers print faster but with reduced detail — strength is unrelated to layer height in modern FDM",
       "Layer height affects only the visible surface finish, not any internal mechanical property",
       "Larger layers are stronger because they have more material per layer to resist load",
-      "Smaller layers bond better and produce stronger parts; larger layers print faster but have weaker interlayer bonds"
+      "Very tall layers reduce interlayer fusion — keep layer height well under the nozzle diameter and tune temperature and cooling first"
     ],
     "correct": 3,
-    "explanation": "Smaller layers = more interlayer bonds per unit height = stronger Z-direction. 0.2mm typical compromise; 0.1mm stronger; 0.3mm fast tooling."
+    "explanation": "Layers near the nozzle diameter fuse poorly. Within the normal 0.1–0.2 mm range, temperature, cooling, and line width usually matter more than layer height. 0.2 mm is the usual default; up to about 0.3 mm for fast tooling."
   },
   {
     "phase": 2,
